@@ -1,4 +1,5 @@
 using Digger;
+using Digger.Demo;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Input.Scripts;

@@ -1,14 +1,17 @@
 ﻿using System;
 using Domains.Input.Scripts;
+using Domains.Mining.Scripts;
 using Domains.Player.Events;
+using Domains.Player.Scripts;
 using Lightbug.CharacterControllerPro.Core;
 using Lightbug.CharacterControllerPro.Demo;
 using Lightbug.CharacterControllerPro.Implementation;
 using Lightbug.Utilities;
+using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
 
-namespace Domains.Mining.Scripts
+namespace Domains.Gameplay.Mining.Scripts
 {
     [MMRequiresConstantRepaint]
     [AddComponentMenu("Character Controller Pro/Demo/Character/States/Normal Movement")]
@@ -28,6 +31,8 @@ namespace Domains.Mining.Scripts
         public CrouchParameters crouchParameters = new();
 
         public LookingDirectionParameters lookingDirectionParameters = new();
+
+        [Header("Feedbacks")] [SerializeField] private MMFeedbacks mineFeedback;
 
 
         [Header("Animation")] [SerializeField] protected string groundedParameter = "Grounded";
@@ -151,8 +156,15 @@ namespace Domains.Mining.Scripts
 
         public override void CheckExitTransition()
         {
-            if (CustomInputBindings.IsMineMouseButtonPressed())
-                CharacterStateController.EnqueueTransition<MiningState>();
+            if (CustomInputBindings.IsMineMouseButtonPressed() && !PlayerStaminaManager.IsPlayerOutOfStamina())
+            {
+                mineFeedback?.PlayFeedbacks();
+                UnityEngine.Debug.Log("Mining");
+
+                CharacterStateController.EnqueueTransition<ShovelMiningState>();
+
+                mineFeedback?.PlayFeedbacks();
+            }
         }
 
         public override void ExitBehaviour(float dt, CharacterState toState)

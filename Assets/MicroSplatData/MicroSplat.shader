@@ -78,6 +78,7 @@ Shader "Terrain"
       #define _MICROTERRAIN 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _PERTEXSMOOTHSTR 1
       #define _BRANCHSAMPLES 1
@@ -5082,6 +5083,7 @@ float3 GetTessFactors ()
       #define _MICROTERRAIN 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _PERTEXSMOOTHSTR 1
       #define _BRANCHSAMPLES 1
@@ -10014,6 +10016,7 @@ float3 GetTessFactors ()
       #define _MICROTERRAIN 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _PERTEXSMOOTHSTR 1
       #define _BRANCHSAMPLES 1
@@ -15034,6 +15037,7 @@ float3 GetTessFactors ()
       #define _MICROTERRAIN 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _PERTEXSMOOTHSTR 1
       #define _BRANCHSAMPLES 1
@@ -19859,6 +19863,7 @@ float3 GetTessFactors ()
       #define _MICROTERRAIN 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _PERTEXSMOOTHSTR 1
       #define _BRANCHSAMPLES 1
@@ -24695,7 +24700,7 @@ float3 GetTessFactors ()
       UsePass "Hidden/Nature/Terrain/Utilities/SELECTION"
 
    }
-   Dependency "BaseMapShader" =  "Hidden/Terrain_Base-1818449732"
-   Fallback "Hidden/Terrain_Base-1818449732"
+   Dependency "BaseMapShader" =  "Hidden/Terrain_Base334936742"
+   Fallback "Hidden/Terrain_Base334936742"
    CustomEditor "MicroSplatShaderGUI"
 }
