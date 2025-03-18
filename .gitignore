@@ -78,6 +78,7 @@ crashlytics-build.properties
 
 # RiderFlow plugin
 /[Aa]ssets/Plugins/Editor/JetBrains*
+/[Aa]ssets/Plugins/*
 
 # OS generated
 .DS_Store
