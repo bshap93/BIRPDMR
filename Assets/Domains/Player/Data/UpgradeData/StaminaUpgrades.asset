@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b82d13edcd624048b3e42078ab62b87, type: 3}
+  m_Name: StaminaUpgrades
+  m_EditorClassIdentifier: 
+  upgradeTypeName: Stamina Implant
+  upgradeNames:
+  - Redi-Go
+  - Ultra-Whip
+  - God-Man
+  description: 
+  upgradeCosts: 2c01000040060000800c0000
