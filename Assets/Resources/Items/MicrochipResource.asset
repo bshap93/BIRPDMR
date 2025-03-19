@@ -17,4 +17,4 @@ MonoBehaviour:
   ItemDescription: A bundle of semiconductor raw material.
   ItemIcon: {fileID: 0}
   ItemWeight: 1
-  ItemValue: 50
+  ItemValue: 200

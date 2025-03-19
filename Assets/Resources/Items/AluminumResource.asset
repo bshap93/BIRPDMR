@@ -17,4 +17,4 @@ MonoBehaviour:
   ItemDescription: A bundle of aluminum foil and raw metal.
   ItemIcon: {fileID: 0}
   ItemWeight: 1
-  ItemValue: 5
+  ItemValue: 50
