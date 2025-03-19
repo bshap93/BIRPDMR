@@ -107,7 +107,7 @@ namespace Domains.Items
             InventoryEvent.Trigger(InventoryEventType.ContentChanged, this);
         }
 
-        public void SetWeightLimit(int weightLimit)
+        public void SetWeightLimit(float weightLimit)
         {
             _weightLimit = weightLimit;
         }
@@ -137,6 +137,11 @@ namespace Domains.Items
                 UniqueID = uniqueID;
                 BaseItem = item;
             }
+        }
+
+        public float GetMaxWeight()
+        {
+            return _weightLimit;
         }
     }
 }

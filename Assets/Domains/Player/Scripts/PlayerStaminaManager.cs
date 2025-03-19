@@ -57,15 +57,6 @@ namespace Domains.Player.Scripts
         }
 
 
-        private void Update()
-        {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.F5)) // Press F5 to force save
-            {
-                SavePlayerStamina();
-                UnityEngine.Debug.Log("Manual Save Triggered!");
-            }
-        }
-
         private void OnEnable()
         {
             this.MMEventStartListening();
@@ -180,8 +171,6 @@ namespace Domains.Player.Scripts
             }
 
             PlayerStatusEvent.Trigger(PlayerStatusEventType.ResetStamina);
-
-            SavePlayerStamina();
         }
 
         public static void SavePlayerStamina()

@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using Domains.Gameplay.Mining.Scripts;
-using Domains.Mining.Scripts;
 using Domains.Player.Scripts;
 using Gameplay.Events;
 using MoreMountains.Feedbacks;
@@ -53,17 +53,23 @@ namespace Domains.Items
 
         private void Start()
         {
-            if (PickableManager.IsItemPicked(uniqueID))
-            {
-                Destroy(gameObject);
-                return;
-            }
+            // Wait for the PickableManager to finish loading before checking if this item is picked
+            StartCoroutine(InitializeAfterPickableManager());
 
             _targetInventory = FindFirstObjectByType<Inventory>();
 
             if (_targetInventory == null) UnityEngine.Debug.LogWarning("No inventory found in scene");
 
             if (pickedMmFeedbacks != null) pickedMmFeedbacks.Initialization(gameObject);
+        }
+
+        private IEnumerator InitializeAfterPickableManager()
+        {
+            // Wait a frame to ensure PickableManager has initialized
+            yield return null;
+
+            // Now check if this item should be destroyed
+            if (PickableManager.IsItemPicked(uniqueID)) Destroy(gameObject);
         }
 
         private void Update()
@@ -156,8 +162,7 @@ namespace Domains.Items
                     pickedMmFeedbacks?.PlayFeedbacks();
 
                     // Save item as picked
-                    PickableManager.SavePickedItem(uniqueID, true);
-                    PickableManager.PickedItems.Add(uniqueID);
+                    PickableManager.AddPickedItem(uniqueID, true);
 
                     // Trigger event
                     ItemEvent.Trigger(ItemEventType.Picked, entry, transform);

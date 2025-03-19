@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 using MoreMountains.Tools;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Scene.Scripts
 {
@@ -31,7 +32,8 @@ namespace Domains.Scene.Scripts
         public static List<InventoryEntryData> InventoryContentData = new();
 
         // Add this to PlayerInventoryManager
-        [SerializeField] private List<InventoryEntryData> _currentInventoryItems = new();
+        [FormerlySerializedAs("_currentInventoryItems")] [SerializeField]
+        private List<InventoryEntryData> currentInventoryItems = new();
 
         [CanBeNull] public InventoryBarUpdater inventoryBarUpdater;
 
@@ -53,6 +55,7 @@ namespace Domains.Scene.Scripts
             {
                 UnityEngine.Debug.Log("[PlayerInventoryManager] No save file found, forcing initial save...");
                 ResetInventory(); // Ensure default values are set
+                SaveInventory();
             }
 
             PlayerInventory.SetWeightLimit(PlayerInfoSheet.WeightLimit);
@@ -60,15 +63,6 @@ namespace Domains.Scene.Scripts
             LoadInventory();
         }
 
-// Then in Update() method (or you could do this in LateUpdate to be more efficient)
-        private void Update()
-        {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.F5)) // Press F5 to force save
-            {
-                SaveInventory();
-                UnityEngine.Debug.Log("Player inventory saved");
-            }
-        }
 
         private void OnEnable()
         {
@@ -84,14 +78,8 @@ namespace Domains.Scene.Scripts
         {
             UnityEngine.Debug.Log($"Inventory event received: {eventType.EventType}");
 
-            // Add this to save when inventory changes
-            if (eventType.EventType == InventoryEventType.ContentChanged) SaveInventory();
 
-            if (eventType.EventType == InventoryEventType.SellAllItems)
-            {
-                PlayerInventory.SellAllItems();
-                SaveInventory();
-            }
+            if (eventType.EventType == InventoryEventType.SellAllItems) PlayerInventory.SellAllItems();
         }
 
 
@@ -132,11 +120,6 @@ namespace Domains.Scene.Scripts
             return ES3.FileExists(GetSaveFilePath());
         }
 
-        public void Initialize()
-        {
-            ResetInventory();
-            if (inventoryBarUpdater != null) inventoryBarUpdater.Initialize();
-        }
 
         public void LoadInventory()
         {
@@ -158,6 +141,8 @@ namespace Domains.Scene.Scripts
                     }
                 }
 
+                InventoryEvent.Trigger(InventoryEventType.ContentChanged, PlayerInventory);
+
                 UnityEngine.Debug.Log($"✅ Loaded inventory data from {saveFilePath}");
             }
             else
@@ -166,13 +151,14 @@ namespace Domains.Scene.Scripts
                     $"No saved inventory data found at {saveFilePath} or key doesn't exist. Creating new inventory.");
                 InventoryContentData = new List<InventoryEntryData>();
                 PlayerInventory.Content.Clear();
-                SaveInventory(); // Create an empty inventory save
             }
         }
 
         public static void ResetInventory()
         {
             InventoryContentData = new List<InventoryEntryData>();
+            PlayerInventory?.Content.Clear();
+
 
             // Only try to clear the inventory if we're in Play mode with an active inventory
             if (Application.isPlaying && PlayerInventory != null) PlayerInventory.Content.Clear();
@@ -186,23 +172,6 @@ namespace Domains.Scene.Scripts
                 {
                     ES3.DeleteKey(InventoryKey, saveFilePath);
                     UnityEngine.Debug.Log($"Deleted inventory data from {saveFilePath}");
-                }
-
-                return; // Skip the SaveInventory call below
-            }
-
-            SaveInventory();
-        }
-
-        private static void RestoreInventory(Inventory inventory, List<InventoryEntryData> inventoryContentData)
-        {
-            foreach (var itemData in inventoryContentData)
-            {
-                var item = GetItemByID(itemData.ItemID);
-                if (item != null)
-                {
-                    var entry = new Inventory.InventoryEntry(itemData.UniqueID, item); // Use saved UniqueID
-                    inventory.AddItem(entry);
                 }
             }
         }

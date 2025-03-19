@@ -1,8 +1,10 @@
 using System;
 using Digger.Modules.Runtime.Sources;
 using Domains.Player.Events;
+using Domains.Scene.Scripts;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
@@ -10,12 +12,12 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
     public static DiggerDataManager Instance { get; private set; }
 
     public DiggerMasterRuntime diggerMasterRuntime;
-    
+
     public MMFeedbacks deleteAllDataFeedbacks;
     public MMFeedbacks saveDataFeedbacks;
-    
+
     public bool autoSave = true;
-    
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -25,36 +27,27 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
         }
 
         Instance = this;
-
     }
 
-    private void Update()
+    public void ResetDiggerData()
     {
-        if (UnityEngine.Input.GetKeyDown(KeyCode.F5)) // Press F5 to force save
-        {
-            
-            saveDataFeedbacks?.PlayFeedbacks();
-            
-            Debug.Log("PersistAll called at " + DateTime.Now);
-
-
-            diggerMasterRuntime.PersistAll();
-
-        }
-        
-        if (UnityEngine.Input.GetKeyDown(KeyCode.F6)) // Press F6 to force delete all data
-        {
-            deleteAllDataFeedbacks?.PlayFeedbacks();
-            diggerMasterRuntime.DeleteAllPersistedData();
-        }
-        
+        deleteAllDataFeedbacks?.PlayFeedbacks();
+        diggerMasterRuntime.DeleteAllPersistedData();
     }
+
+
+    public void SaveDiggerData()
+    {
+        saveDataFeedbacks?.PlayFeedbacks();
+        diggerMasterRuntime.PersistAll();
+    }
+
 
     private void OnEnable()
     {
         this.MMEventStartListening();
     }
-    
+
     private void OnDisable()
     {
         this.MMEventStopListening();
@@ -62,16 +55,14 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
 
     public void OnMMEvent(DiggerEvent eventType)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
-    
+
+    // On App Quit
     private void OnApplicationQuit()
     {
-        if (autoSave)
-        {
-            
-        Debug.Log("Application quitting - persisting Digger data");
-        diggerMasterRuntime.PersistAll();
-        }
+        if (autoSave) SaveDiggerData();
+
+        SaveManager.Instance.SaveAll();
     }
 }

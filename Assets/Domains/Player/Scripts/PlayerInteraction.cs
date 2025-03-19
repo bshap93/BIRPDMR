@@ -4,7 +4,6 @@ using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Input.Scripts;
-using Domains.Mining.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 

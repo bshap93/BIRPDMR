@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b82d13edcd624048b3e42078ab62b87, type: 3}
   m_Name: DrillUpgrades
   m_EditorClassIdentifier: 
-  upgradeTypeName: Digging Tool
+  upgradeTypeName: Mining
   upgradeNames:
   - Shovel LV2
   - Drill LV1
@@ -20,3 +20,14 @@ MonoBehaviour:
   - Null Ray Atomizer
   description: 
   upgradeCosts: 2c01000040060000800c0000581b0000
+  effectTypes: 00000000000000000000000000000000
+  effectValues:
+  - 2
+  - 2
+  - 2
+  - 2
+  toolChangeIDs:
+  - 
+  - Drill
+  - 
+  - Atomizer

@@ -55,14 +55,6 @@ namespace Domains.Player.Scripts
             LoadPlayerHealth();
         }
 
-        private void Update()
-        {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.F5)) // Press F5 to force save
-            {
-                SavePlayerHealth();
-                UnityEngine.Debug.Log("Player health saved");
-            }
-        }
 
         private void OnEnable()
         {
@@ -182,8 +174,6 @@ namespace Domains.Player.Scripts
             }
 
             PlayerStatusEvent.Trigger(PlayerStatusEventType.ResetHealth);
-
-            SavePlayerHealth();
         }
 
 

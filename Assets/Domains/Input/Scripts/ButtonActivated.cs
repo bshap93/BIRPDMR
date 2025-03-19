@@ -1,5 +1,4 @@
 ﻿using Domains.Gameplay.Mining.Scripts;
-using Domains.Mining.Scripts;
 using Domains.SaveLoad;
 using MoreMountains.Feedbacks;
 using UnityEngine;
@@ -51,14 +50,13 @@ namespace Domains.Input.Scripts
             {
                 OnActivation.Invoke();
                 activationFeedback?.PlayFeedbacks();
-                UnityEngine.Debug.Log("Button Activated!");
             }
         }
 
 
         public void TriggerSave()
         {
-            UnityEngine.Debug.Log("Triggering save");
+            UnityEngine.Debug.LogError("Triggering save");
             SaveLoadEvent.Trigger(SaveLoadEventType.Save);
         }
     }

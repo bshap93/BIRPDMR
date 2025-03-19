@@ -20,3 +20,14 @@ MonoBehaviour:
   - Robotic Assistants
   description: 
   upgradeCosts: 2c01000040060000800c000000190000
+  effectTypes: 01000000010000000100000001000000
+  effectValues:
+  - 5
+  - 5
+  - 5
+  - 100
+  toolChangeIDs:
+  - 
+  - 
+  - 
+  - 

@@ -18,30 +18,32 @@ namespace Domains.Debug
 
             if (isEditorMode) UnityEngine.Debug.Log("Running data reset in Editor mode...");
 
-            // Reset Pickables - only if not in editor mode, or make PickableManager.ResetPickedItems() editor-safe
-            if (!isEditorMode)
-            {
-                PickableManager.ResetPickedItems();
-            }
-            else
-            {
-                // Direct file manipulation for Editor mode
-                if (ES3.FileExists(SaveManager.SaveFileName))
-                    if (ES3.KeyExists("PickedItems", SaveManager.SaveFileName))
-                    {
-                        ES3.DeleteKey("PickedItems", SaveManager.SaveFileName);
-                        UnityEngine.Debug.Log("Reset picked items data");
-                    }
-            }
-            
-
             // Reset stats
             PlayerStaminaManager.ResetPlayerStamina();
+            PlayerStaminaManager.SavePlayerStamina();
+
+            // Reset health
             PlayerHealthManager.ResetPlayerHealth();
+            PlayerHealthManager.SavePlayerHealth();
+
+            // Reset inventory
             PlayerInventoryManager.ResetInventory();
+            PlayerInventoryManager.SaveInventory();
+
+            // Reset currency
             PlayerCurrencyManager.ResetPlayerCurrency();
+            PlayerCurrencyManager.SavePlayerCurrency();
+
+            // reset pickables
             PickableManager.ResetPickedItems();
+            PickableManager.SaveAllPickedItems();
+
+            // Reset upgrades
             PlayerUpgradeManager.ResetPlayerUpgrades();
+            PlayerUpgradeManager.SaveUpgrades();
+
+            // Reset digger data if it exists
+            if (DiggerDataManager.Instance != null) DiggerDataManager.Instance.ResetDiggerData();
 
 
             UnityEngine.Debug.Log("All save data cleared successfully.");

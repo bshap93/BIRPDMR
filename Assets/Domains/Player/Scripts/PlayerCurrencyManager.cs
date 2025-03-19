@@ -99,7 +99,7 @@ namespace Domains.Player.Scripts
         public static void AddCurrency(int amount)
         {
             CompanyCredits += amount;
-            SavePlayerCurrency();
+            // Add an event trigger to notify UI and other systems
         }
 
         public static void RemoveCurrency(int amount)
@@ -113,14 +113,11 @@ namespace Domains.Player.Scripts
             {
                 CompanyCredits -= amount;
             }
-
-            SavePlayerCurrency();
         }
 
         public static void SetCurrency(int amount)
         {
             CompanyCredits = amount;
-            SavePlayerCurrency();
         }
 
         private static string GetSaveFilePath()
@@ -160,8 +157,6 @@ namespace Domains.Player.Scripts
             {
                 CompanyCredits = characterStatProfile.InitialCurrency;
             }
-
-            SavePlayerCurrency();
         }
 
         public static void SavePlayerCurrency()

@@ -1,6 +1,5 @@
 ﻿using System;
 using Domains.Input.Scripts;
-using Domains.Mining.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
 using Lightbug.CharacterControllerPro.Core;

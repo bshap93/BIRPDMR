@@ -1,6 +1,5 @@
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
-using Domains.Gameplay.Mining.Scripts;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
@@ -8,9 +7,9 @@ using Lightbug.CharacterControllerPro.Implementation;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 
-namespace Domains.Mining.Scripts
+namespace Domains.Gameplay.Mining.Scripts
 {
-    public class MiningState : CharacterState
+    public class DrillMiningState : CharacterState
     {
         private static readonly int SwingMiningTool = Animator.StringToHash("SwingMiningTool");
         [SerializeField] private float miningRange = 5f;

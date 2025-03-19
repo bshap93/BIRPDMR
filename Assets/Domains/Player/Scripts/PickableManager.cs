@@ -26,12 +26,14 @@ namespace Domains.Player.Scripts
 
         private string _savePath;
 
+        private Dictionary<string, bool> _pickedItemIdWasPicked;
+
 
         private void Start()
         {
             _savePath = GetSaveFilePath();
 
-            if (!ES3.FileExists(_savePath))
+            if (!HasSavedData())
             {
                 UnityEngine.Debug.Log("[PickableManager] No save file found, forcing initial save...");
                 ResetPickedItems(); // Ensure default values are set
@@ -43,7 +45,7 @@ namespace Domains.Player.Scripts
         private void Update()
         {
             if (UnityEngine.Input.GetKeyDown(KeyCode.F5)) // Press F5 to force save
-                SavePickedItem("test", true);
+                AddPickedItem("test", true);
         }
 
 
@@ -61,7 +63,7 @@ namespace Domains.Player.Scripts
         {
             if (eventType.EventType == ItemEventType.Picked)
             {
-                SavePickedItem(eventType.Item.UniqueID, true);
+                AddPickedItem(eventType.Item.UniqueID, true);
                 UnityEngine.Debug.Log($"Item picked: {eventType.Item.BaseItem.ItemName}");
             }
         }
@@ -75,24 +77,39 @@ namespace Domains.Player.Scripts
         {
             if (_savePath == null)
                 _savePath = GetSaveFilePath();
-            var exists = ES3.FileExists(_savePath);
-            if (exists)
+
+            if (ES3.FileExists(_savePath))
             {
-                var keys = ES3.GetKeys(_savePath);
-                foreach (var key in keys)
-                    if (ES3.Load<bool>(key, _savePath))
-                        PickedItems.Add(key);
+                // Check if we have the entire HashSet saved under "PickedItems" key
+                if (ES3.KeyExists("PickedItems", _savePath))
+                {
+                    // Load the entire HashSet at once
+                    var loadedItems = ES3.Load<HashSet<string>>("PickedItems", _savePath);
+                    PickedItems.Clear();
+
+                    foreach (var item in loadedItems)
+                    {
+                        PickedItems.Add(item);
+                        UnityEngine.Debug.Log("Loaded picked item: " + item);
+                    }
+                }
+                else
+                {
+                    // Fallback to the old method of loading individual keys
+                    var keys = ES3.GetKeys(_savePath);
+                    foreach (var key in keys)
+                        if (ES3.KeyExists(key, _savePath) && ES3.Load<bool>(key, _savePath))
+                        {
+                            UnityEngine.Debug.Log("Loaded picked item: " + key);
+                            PickedItems.Add(key);
+                        }
+                }
             }
         }
 
         public static void ResetPickedItems()
         {
-            var saveFilePath = GetSaveFilePath();
-            // Delete the Easy Save file storing picked items
-            ES3.DeleteFile(GetSaveFilePath());
-
-            // Clear the in-memory picked items list (if used)
-            PickedItems.Clear();
+            PickedItems = new HashSet<string>();
         }
 
 
@@ -101,15 +118,35 @@ namespace Domains.Player.Scripts
             return PickedItems.Contains(uniqueID);
         }
 
-        public static void SavePickedItem(string uniqueID, bool b)
+        public static void AddPickedItem(string uniqueID, bool b)
         {
-            ES3.Save(uniqueID, b, GetSaveFilePath());
-            UnityEngine.Debug.Log($"Item {uniqueID} saved as picked: {b}");
+            if (b)
+                PickedItems.Add(uniqueID);
+
+            UnityEngine.Debug.Log($"Item {uniqueID} marked as picked: {b}");
+        }
+
+
+        public static void SaveAllPickedItems()
+        {
+            var saveFilePath = GetSaveFilePath();
+
+            // Save both the full HashSet and individual items
+            ES3.Save("PickedItems", PickedItems, saveFilePath);
+
+            // Also save individual items for backwards compatibility
+            foreach (var uniqueID in PickedItems)
+                ES3.Save(uniqueID, true, saveFilePath);
         }
 
         public static void SaveItemPosition(string itemPickerUniqueID, Vector3 transformPosition, string prefabName)
         {
             throw new NotImplementedException();
+        }
+
+        public bool HasSavedData()
+        {
+            return ES3.FileExists(_savePath);
         }
     }
 }
