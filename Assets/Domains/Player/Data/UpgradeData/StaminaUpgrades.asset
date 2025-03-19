@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b82d13edcd624048b3e42078ab62b87, type: 3}
   m_Name: StaminaUpgrades
   m_EditorClassIdentifier: 
-  upgradeTypeName: Stamina Implant
+  upgradeTypeName: Endurance
   upgradeNames:
-  - Redi-Go
-  - Ultra-Whip
-  - God-Man
+  - Stamina Boost
+  - Stamina Max
+  - Fuel Tank Size x2
+  - Deuterium Hybrid Fuel Tank
   description: 
-  upgradeCosts: 2c01000040060000800c0000
+  upgradeCosts: 2c01000040060000800c0000581b0000

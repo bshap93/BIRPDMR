@@ -17,8 +17,6 @@ Shader "Terrain"
    {
             [HideInInspector] _Control0 ("Control0", 2D) = "red" {}
       [HideInInspector] _Control1 ("Control1", 2D) = "black" {}
-      [HideInInspector] _Control2 ("Control2", 2D) = "black" {}
-      [HideInInspector] _Control3 ("Control3", 2D) = "black" {}
       
 
       // Splats
@@ -46,7 +44,7 @@ Shader "Terrain"
    }
    SubShader
    {
-            Tags {"RenderType" = "Opaque" "Queue" = "Geometry+100" "IgnoreProjector" = "False"  "TerrainCompatible" = "true" "SplatCount" = "16"}
+            Tags {"RenderType" = "Opaque" "Queue" = "Geometry+100" "IgnoreProjector" = "False"  "TerrainCompatible" = "true" "SplatCount" = "8"}
 
       
       Pass
@@ -78,6 +76,7 @@ Shader "Terrain"
       #define _MICROTERRAIN 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _MAX8TEXTURES 1
       #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _PERTEXSMOOTHSTR 1
@@ -86,7 +85,6 @@ Shader "Terrain"
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
       #define _TRIPLANARUSEFACENORMALS 1
-      #define _MSRENDERLOOP_SURFACESHADER 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -5083,6 +5081,7 @@ float3 GetTessFactors ()
       #define _MICROTERRAIN 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _MAX8TEXTURES 1
       #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _PERTEXSMOOTHSTR 1
@@ -5091,7 +5090,6 @@ float3 GetTessFactors ()
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
       #define _TRIPLANARUSEFACENORMALS 1
-      #define _MSRENDERLOOP_SURFACESHADER 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -10016,6 +10014,7 @@ float3 GetTessFactors ()
       #define _MICROTERRAIN 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _MAX8TEXTURES 1
       #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _PERTEXSMOOTHSTR 1
@@ -10024,7 +10023,6 @@ float3 GetTessFactors ()
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
       #define _TRIPLANARUSEFACENORMALS 1
-      #define _MSRENDERLOOP_SURFACESHADER 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -15037,6 +15035,7 @@ float3 GetTessFactors ()
       #define _MICROTERRAIN 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _MAX8TEXTURES 1
       #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _PERTEXSMOOTHSTR 1
@@ -15045,7 +15044,6 @@ float3 GetTessFactors ()
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
       #define _TRIPLANARUSEFACENORMALS 1
-      #define _MSRENDERLOOP_SURFACESHADER 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -19863,6 +19861,7 @@ float3 GetTessFactors ()
       #define _MICROTERRAIN 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _MAX8TEXTURES 1
       #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _PERTEXSMOOTHSTR 1
@@ -19871,7 +19870,6 @@ float3 GetTessFactors ()
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
       #define _TRIPLANARUSEFACENORMALS 1
-      #define _MSRENDERLOOP_SURFACESHADER 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -24700,7 +24698,7 @@ float3 GetTessFactors ()
       UsePass "Hidden/Nature/Terrain/Utilities/SELECTION"
 
    }
-   Dependency "BaseMapShader" =  "Hidden/Terrain_Base334936742"
-   Fallback "Hidden/Terrain_Base334936742"
+   Dependency "BaseMapShader" =  "Hidden/Terrain_Base-336804923"
+   Fallback "Hidden/Terrain_Base-336804923"
    CustomEditor "MicroSplatShaderGUI"
 }

@@ -98,19 +98,19 @@ MonoBehaviour:
   allTextureChannelSmoothness: 3
   allTextureChannelAO: 1
   sourceTextures:
-  - terrainLayer: {fileID: 8574412962073106934, guid: a651dfb326db308418a29a548ba77787, type: 2}
-    diffuse: {fileID: 2800000, guid: c8ff55901eca00d4b8fbbc8cb349a65f, type: 3}
-    height: {fileID: 2800000, guid: c09c607497b5e0d43b9284cad879897d, type: 3}
+  - terrainLayer: {fileID: 8574412962073106934, guid: 6ddb4f6684bb2744790992b3b0b68eb2, type: 2}
+    diffuse: {fileID: 2800000, guid: 0784f37db20973d4488b7e2a96330ee6, type: 3}
+    height: {fileID: 2800000, guid: d564330f4069cae4db1581539f9bc488, type: 3}
     heightChannel: 2
-    normal: {fileID: 2800000, guid: 807ce981175498c4d9175fc5b2b7291b, type: 3}
-    smoothness: {fileID: 2800000, guid: 9d837b5303b3107479195b394d6b2153, type: 3}
+    normal: {fileID: 2800000, guid: e9aa952ddcaa08849ab6169ca8706f02, type: 3}
+    smoothness: {fileID: 0}
     smoothnessChannel: 3
     isRoughness: 0
-    ao: {fileID: 2800000, guid: 2a0727d2eb8ea614bae16efa2054dfa6, type: 3}
+    ao: {fileID: 2800000, guid: 27e079f861910d040a807a1523786620, type: 3}
     aoChannel: 1
     emis: {fileID: 0}
     metal: {fileID: 0}
-    metalChannel: 0
+    metalChannel: 1
     specular: {fileID: 0}
     noiseNormal: {fileID: 0}
     detailNoise: {fileID: 0}
@@ -165,35 +165,6 @@ MonoBehaviour:
     smoothnessChannel: 3
     isRoughness: 0
     ao: {fileID: 2800000, guid: 619708dcb62efe1459b0bc8ea29876f7, type: 3}
-    aoChannel: 1
-    emis: {fileID: 0}
-    metal: {fileID: 0}
-    metalChannel: 0
-    specular: {fileID: 0}
-    noiseNormal: {fileID: 0}
-    detailNoise: {fileID: 0}
-    detailChannel: 1
-    distanceNoise: {fileID: 0}
-    distanceChannel: 1
-    traxDiffuse: {fileID: 0}
-    traxHeight: {fileID: 0}
-    traxHeightChannel: 1
-    traxNormal: {fileID: 0}
-    traxSmoothness: {fileID: 0}
-    traxSmoothnessChannel: 1
-    traxIsRoughness: 0
-    traxAO: {fileID: 0}
-    traxAOChannel: 1
-    splat: {fileID: 0}
-  - terrainLayer: {fileID: 8574412962073106934, guid: acba4790646d5e84a9066461ef2b8c93, type: 2}
-    diffuse: {fileID: 2800000, guid: 038208be6e032b743973e6333b508e82, type: 3}
-    height: {fileID: 2800000, guid: 58303ae02399f0b46a43c90a3bdb5ab5, type: 3}
-    heightChannel: 2
-    normal: {fileID: 2800000, guid: 83652a277a3b53446ad9fdf9a118141f, type: 3}
-    smoothness: {fileID: 2800000, guid: c4402e4789f8db24f84f7a533e4a3eea, type: 3}
-    smoothnessChannel: 3
-    isRoughness: 0
-    ao: {fileID: 2800000, guid: 1ffe52bc6f55113448199e076247d7ad, type: 3}
     aoChannel: 1
     emis: {fileID: 0}
     metal: {fileID: 0}
@@ -302,65 +273,7 @@ MonoBehaviour:
     traxAO: {fileID: 0}
     traxAOChannel: 1
     splat: {fileID: 0}
-  - terrainLayer: {fileID: 0}
-    diffuse: {fileID: 0}
-    height: {fileID: 0}
-    heightChannel: 2
-    normal: {fileID: 0}
-    smoothness: {fileID: 0}
-    smoothnessChannel: 3
-    isRoughness: 0
-    ao: {fileID: 0}
-    aoChannel: 1
-    emis: {fileID: 0}
-    metal: {fileID: 0}
-    metalChannel: 1
-    specular: {fileID: 0}
-    noiseNormal: {fileID: 0}
-    detailNoise: {fileID: 0}
-    detailChannel: 1
-    distanceNoise: {fileID: 0}
-    distanceChannel: 1
-    traxDiffuse: {fileID: 0}
-    traxHeight: {fileID: 0}
-    traxHeightChannel: 1
-    traxNormal: {fileID: 0}
-    traxSmoothness: {fileID: 0}
-    traxSmoothnessChannel: 1
-    traxIsRoughness: 0
-    traxAO: {fileID: 0}
-    traxAOChannel: 1
-    splat: {fileID: 0}
   sourceTextures3:
-  - terrainLayer: {fileID: 0}
-    diffuse: {fileID: 0}
-    height: {fileID: 0}
-    heightChannel: 2
-    normal: {fileID: 0}
-    smoothness: {fileID: 0}
-    smoothnessChannel: 3
-    isRoughness: 0
-    ao: {fileID: 0}
-    aoChannel: 1
-    emis: {fileID: 0}
-    metal: {fileID: 0}
-    metalChannel: 1
-    specular: {fileID: 0}
-    noiseNormal: {fileID: 0}
-    detailNoise: {fileID: 0}
-    detailChannel: 1
-    distanceNoise: {fileID: 0}
-    distanceChannel: 1
-    traxDiffuse: {fileID: 0}
-    traxHeight: {fileID: 0}
-    traxHeightChannel: 1
-    traxNormal: {fileID: 0}
-    traxSmoothness: {fileID: 0}
-    traxSmoothnessChannel: 1
-    traxIsRoughness: 0
-    traxAO: {fileID: 0}
-    traxAOChannel: 1
-    splat: {fileID: 0}
   - terrainLayer: {fileID: 0}
     diffuse: {fileID: 0}
     height: {fileID: 0}
