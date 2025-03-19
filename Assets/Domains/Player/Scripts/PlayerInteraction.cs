@@ -2,6 +2,7 @@ using Digger;
 using Digger.Demo;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
+using Domains.Gameplay.Mining.Scripts;
 using Domains.Input.Scripts;
 using Domains.Mining.Scripts;
 using UnityEngine;
@@ -23,6 +24,7 @@ namespace Domains.Player.Scripts
         private DiggerMaster _diggerMaster;
         private DiggerMasterRuntime _diggerMasterRuntime;
         private bool _interactablePrompt;
+
 
         private void Start()
         {
@@ -74,10 +76,11 @@ namespace Domains.Player.Scripts
                 if (interactable != null)
                 {
                     reticle.color = interactReticleColor;
-                    ShowInteractablePrompt(hit.collider.gameObject);
+                    interactable.ShowInteractablePrompt();
+                    _interactablePrompt = true;
 
                     // ✅ Show button prompt if applicable
-                    if (button != null) button.ShowPrompt();
+                    if (button != null) button.ShowInteractablePrompt();
                     return;
                 }
             }
@@ -85,7 +88,7 @@ namespace Domains.Player.Scripts
             // Reset if no interactable is found
             reticle.color = defaultReticleColor;
             if (_interactablePrompt)
-                HidePickupPrompt();
+                _interactablePrompt = false;
 
             HideAllPrompts(); // Hide button prompts if nothing is targeted
         }
@@ -93,20 +96,9 @@ namespace Domains.Player.Scripts
         private void HideAllPrompts()
         {
             foreach (var button in FindObjectsByType<ButtonActivated>(FindObjectsSortMode.None))
-                button.HidePrompt();
+                button.HideInteractablePrompt();
         }
 
-
-        private void ShowInteractablePrompt(GameObject item)
-        {
-            _interactablePrompt = true;
-        }
-
-
-        private void HidePickupPrompt()
-        {
-            _interactablePrompt = false;
-        }
 
         private void DetectTexture(RaycastHit hit)
         {

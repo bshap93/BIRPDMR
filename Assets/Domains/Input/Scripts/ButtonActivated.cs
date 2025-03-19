@@ -1,4 +1,5 @@
-﻿using Domains.Mining.Scripts;
+﻿using Domains.Gameplay.Mining.Scripts;
+using Domains.Mining.Scripts;
 using Domains.SaveLoad;
 using MoreMountains.Feedbacks;
 using UnityEngine;
@@ -34,6 +35,16 @@ namespace Domains.Input.Scripts
             ActivateButton();
         }
 
+        public void ShowInteractablePrompt()
+        {
+            if (_buttonPrompt != null) _buttonPrompt.Show();
+        }
+
+        public void HideInteractablePrompt()
+        {
+            if (_buttonPrompt != null) _buttonPrompt.Hide();
+        }
+
         private void ActivateButton()
         {
             if (OnActivation != null)
@@ -44,15 +55,6 @@ namespace Domains.Input.Scripts
             }
         }
 
-        public void ShowPrompt()
-        {
-            if (_buttonPrompt != null) _buttonPrompt.Show();
-        }
-
-        public void HidePrompt()
-        {
-            if (_buttonPrompt != null) _buttonPrompt.Hide();
-        }
 
         public void TriggerSave()
         {

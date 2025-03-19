@@ -16,7 +16,7 @@ namespace Domains.Input.Scripts
         // Methods to check input (abstraction layer)
         public static bool IsInteractPressed()
         {
-            return UnityEngine.Input.GetKeyDown(interactKey);
+            return UnityEngine.Input.GetKey(interactKey);
         }
 
 

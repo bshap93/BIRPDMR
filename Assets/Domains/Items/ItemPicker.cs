@@ -1,10 +1,12 @@
 using System;
+using Domains.Gameplay.Mining.Scripts;
 using Domains.Mining.Scripts;
 using Domains.Player.Scripts;
 using Gameplay.Events;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Domains.Input.Scripts; // Added for CustomInputBindings
 
 namespace Domains.Items
 {
@@ -13,6 +15,9 @@ namespace Domains.Items
         [FormerlySerializedAs("UniqueID")] public string uniqueID;
         [FormerlySerializedAs("ItemType")] public BaseItem itemType;
         [FormerlySerializedAs("Quantity")] public int quantity = 1;
+
+        [Header("Interaction Settings")] [Tooltip("How long the interact key must be held to pick up the item")]
+        public float interactionHoldTime = 1.0f; // Time required to hold the interact key
 
         [Header("Feedbacks")] [Tooltip("Feedbacks to play when the item is picked up")]
         public MMFeedbacks pickedMmFeedbacks; // Feedbacks to play when the item is picked up
@@ -29,8 +34,13 @@ namespace Domains.Items
         private bool _isInRange;
 #pragma warning restore CS0414 // Field is assigned but its value is never used
 
-
         private Inventory _targetInventory;
+        public GameObject interactablePrompt;
+
+        // Track interaction state
+        private bool _isInteracting = false;
+        private float _interactionTimer = 0f;
+        private bool _interactionComplete = false;
 
         private void Awake()
         {
@@ -56,6 +66,32 @@ namespace Domains.Items
             if (pickedMmFeedbacks != null) pickedMmFeedbacks.Initialization(gameObject);
         }
 
+        private void Update()
+        {
+            // Track interaction progress only when interacting
+            if (_isInteracting)
+            {
+                // If interaction key is still held
+                if (CustomInputBindings.IsInteractPressed())
+                {
+                    _interactionTimer += Time.deltaTime;
+
+                    UnityEngine.Debug.Log("Interaction Timer: " + _interactionTimer);
+
+                    // Check if we've reached the required hold time
+                    if (_interactionTimer >= interactionHoldTime && !_interactionComplete)
+                    {
+                        PickItem();
+                        _interactionComplete = true;
+                    }
+                }
+                else
+                {
+                    // Reset if key released before completion
+                    ResetInteraction();
+                }
+            }
+        }
 
         private void OnDestroy()
         {
@@ -77,7 +113,29 @@ namespace Domains.Items
 
         public void Interact()
         {
-            PickItem();
+            UnityEngine.Debug.Log("Interacting with item");
+            // Start the interaction timer instead of immediately picking
+            if (!_isInteracting && !_interactionComplete)
+            {
+                _isInteracting = true;
+                _interactionTimer = 0f;
+            }
+        }
+
+        private void ResetInteraction()
+        {
+            _isInteracting = false;
+            _interactionTimer = 0f;
+        }
+
+        public void ShowInteractablePrompt()
+        {
+            if (interactablePrompt != null) interactablePrompt.SetActive(true);
+        }
+
+        public void HideInteractablePrompt()
+        {
+            if (interactablePrompt != null) interactablePrompt.SetActive(false);
         }
 
         public void PickItem()

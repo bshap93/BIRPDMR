@@ -159,7 +159,6 @@ namespace Domains.Gameplay.Mining.Scripts
             if (CustomInputBindings.IsMineMouseButtonPressed() && !PlayerStaminaManager.IsPlayerOutOfStamina())
             {
                 mineFeedback?.PlayFeedbacks();
-                UnityEngine.Debug.Log("Mining");
 
                 CharacterStateController.EnqueueTransition<ShovelMiningState>();
 
