@@ -134,7 +134,7 @@ MonoBehaviour:
     normal: {fileID: 2800000, guid: bd5fe1e31b03a4b43b8ded77c4807a2b, type: 3}
     smoothness: {fileID: 2800000, guid: 70c161f7b7c7f714e9006a9c2d4eb07f, type: 3}
     smoothnessChannel: 3
-    isRoughness: 0
+    isRoughness: 1
     ao: {fileID: 2800000, guid: 46fe1d95cd6a9da4babc1ab6684f7fab, type: 3}
     aoChannel: 1
     emis: {fileID: 0}

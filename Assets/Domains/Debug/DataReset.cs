@@ -43,7 +43,7 @@ namespace Domains.Debug
             PlayerUpgradeManager.SaveUpgrades();
 
             // Reset digger data if it exists
-            if (DiggerDataManager.Instance != null) DiggerDataManager.Instance.ResetDiggerData();
+            // if (DiggerDataManager.Instance != null) DiggerDataManager.Instance.ResetDiggerData();
 
 
             UnityEngine.Debug.Log("All save data cleared successfully.");

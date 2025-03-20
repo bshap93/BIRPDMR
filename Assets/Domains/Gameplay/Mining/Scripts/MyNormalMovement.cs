@@ -31,8 +31,6 @@ namespace Domains.Gameplay.Mining.Scripts
 
         public LookingDirectionParameters lookingDirectionParameters = new();
 
-        [Header("Feedbacks")] [SerializeField] private MMFeedbacks mineFeedback;
-
 
         [Header("Animation")] [SerializeField] protected string groundedParameter = "Grounded";
 
@@ -49,6 +47,8 @@ namespace Domains.Gameplay.Mining.Scripts
         [SerializeField] protected string heightParameter = "Height";
 
         [Header("Jet Pack")] [SerializeField] protected float jetPackDuration = 0.1f;
+
+        [SerializeField] private MMFeedbacks jetPackFeedbacks;
 
         [SerializeField] protected float jetPackSpeedMultiplier = 3f;
 
@@ -156,13 +156,7 @@ namespace Domains.Gameplay.Mining.Scripts
         public override void CheckExitTransition()
         {
             if (CustomInputBindings.IsMineMouseButtonPressed() && !PlayerStaminaManager.IsPlayerOutOfStamina())
-            {
-                mineFeedback?.PlayFeedbacks();
-
                 CharacterStateController.EnqueueTransition<ShovelMiningState>();
-
-                mineFeedback?.PlayFeedbacks();
-            }
         }
 
         public override void ExitBehaviour(float dt, CharacterState toState)

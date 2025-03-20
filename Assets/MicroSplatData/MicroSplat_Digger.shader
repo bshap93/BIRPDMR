@@ -37,7 +37,6 @@ Shader "Terrain_Digger"
 
 
       _TriplanarContrast("Triplanar Contrast", Range(1.0, 8)) = 4
-     _TriplanarFaceBlend("Triplanar Face Blend", Range(0,1)) = 0
       _TriplanarUVScale("Triplanar UV Scale", Vector) = (1, 1, 0, 0)
 
 
@@ -82,7 +81,6 @@ Shader "Terrain_Digger"
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _TRIPLANAR 1
-      #define _TRIPLANARUSEFACENORMALS 1
       #define _MSRENDERLOOP_SURFACESHADER 1
       #define _MICRODIGGERMESH 1
 
@@ -988,7 +986,6 @@ Shader "Terrain_Digger"
       #endif
       float _TriplanarContrast;
       float4 _TriplanarUVScale;
-      half _TriplanarFaceBlend;
 
 
                
@@ -5117,7 +5114,6 @@ float3 GetTessFactors ()
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _TRIPLANAR 1
-      #define _TRIPLANARUSEFACENORMALS 1
       #define _MSRENDERLOOP_SURFACESHADER 1
       #define _MICRODIGGERMESH 1
 
@@ -6015,7 +6011,6 @@ float3 GetTessFactors ()
       #endif
       float _TriplanarContrast;
       float4 _TriplanarUVScale;
-      half _TriplanarFaceBlend;
 
 
                
@@ -10080,7 +10075,6 @@ float3 GetTessFactors ()
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _TRIPLANAR 1
-      #define _TRIPLANARUSEFACENORMALS 1
       #define _MSRENDERLOOP_SURFACESHADER 1
       #define _MICRODIGGERMESH 1
 
@@ -10984,7 +10978,6 @@ float3 GetTessFactors ()
       #endif
       float _TriplanarContrast;
       float4 _TriplanarUVScale;
-      half _TriplanarFaceBlend;
 
 
                
@@ -15131,7 +15124,6 @@ float3 GetTessFactors ()
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _TRIPLANAR 1
-      #define _TRIPLANARUSEFACENORMALS 1
       #define _MSRENDERLOOP_SURFACESHADER 1
       #define _MICRODIGGERMESH 1
 
@@ -16010,7 +16002,6 @@ float3 GetTessFactors ()
       #endif
       float _TriplanarContrast;
       float4 _TriplanarUVScale;
-      half _TriplanarFaceBlend;
 
 
                
@@ -19987,7 +19978,6 @@ float3 GetTessFactors ()
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _TRIPLANAR 1
-      #define _TRIPLANARUSEFACENORMALS 1
       #define _MSRENDERLOOP_SURFACESHADER 1
       #define _MICRODIGGERMESH 1
 
@@ -20883,7 +20873,6 @@ float3 GetTessFactors ()
       #endif
       float _TriplanarContrast;
       float4 _TriplanarUVScale;
-      half _TriplanarFaceBlend;
 
 
                

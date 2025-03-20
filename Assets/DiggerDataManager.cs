@@ -1,4 +1,5 @@
 using System;
+using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Player.Events;
 using Domains.Scene.Scripts;
@@ -16,6 +17,8 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
     public MMFeedbacks deleteAllDataFeedbacks;
     public MMFeedbacks saveDataFeedbacks;
 
+    public DiggerSystem[] diggerSystems;
+
     public bool autoSave = true;
 
     private void Awake()
@@ -27,12 +30,6 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
         }
 
         Instance = this;
-    }
-
-    public void ResetDiggerData()
-    {
-        deleteAllDataFeedbacks?.PlayFeedbacks();
-        diggerMasterRuntime.DeleteAllPersistedData();
     }
 
 
@@ -60,11 +57,8 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
         throw new NotImplementedException();
     }
 
-    // On App Quit
-    // private void OnApplicationQuit()
-    // {
-    //     SaveDiggerData();
-    //
-    //     // SaveManager.Instance.SaveAll();
-    // }
+    private void OnApplicationQuit()
+    {
+        SaveDiggerData();
+    }
 }

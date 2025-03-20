@@ -1,4 +1,5 @@
 using System;
+using Domains.Debug;
 using Domains.Player.Scripts;
 using Domains.SaveLoad;
 using MoreMountains.Tools;
@@ -35,6 +36,8 @@ namespace Domains.Scene.Scripts
 
         public static SaveManager Instance { get; private set; }
 
+        public bool freshStart;
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -44,6 +47,8 @@ namespace Domains.Scene.Scripts
             }
 
             Instance = this;
+
+            if (freshStart) DataReset.ClearAllSaveData();
 
             // Initialize managers if needed
             if (pickableManager == null)
@@ -116,7 +121,6 @@ namespace Domains.Scene.Scripts
             PlayerCurrencyManager.SavePlayerCurrency();
             PlayerUpgradeManager.SaveUpgrades();
             PickableManager.SaveAllPickedItems();
-            DiggerDataManager.Instance?.SaveDiggerData();
             UnityEngine.Debug.Log("All data saved");
         }
 

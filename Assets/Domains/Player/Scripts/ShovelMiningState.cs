@@ -22,7 +22,8 @@ namespace Domains.Player.Scripts
 
         public float staminaExpense = 2f;
 
-        public MMFeedbacks cannotMineFeedbacks;
+        [FormerlySerializedAs("cannotMineFeedbacks")]
+        public MMFeedbacks playerIsOutOfStaminaFB;
 
         // Digger parameters
         public float size;
@@ -55,7 +56,7 @@ namespace Domains.Player.Scripts
         {
             if (!PlayerStaminaManager.IsPlayerOutOfStamina()) return true;
 
-            cannotMineFeedbacks?.PlayFeedbacks();
+            playerIsOutOfStaminaFB?.PlayFeedbacks();
             return false;
         }
 
@@ -103,7 +104,7 @@ namespace Domains.Player.Scripts
         {
             if (PlayerStaminaManager.IsPlayerOutOfStamina())
             {
-                cannotMineFeedbacks?.PlayFeedbacks();
+                playerIsOutOfStaminaFB?.PlayFeedbacks();
                 CharacterStateController.EnqueueTransition<MyNormalMovement>();
             }
 

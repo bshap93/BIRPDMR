@@ -65,9 +65,10 @@ namespace Domains.Player.Scripts
         {
             LoadUpgrades();
 
-            myInventory = PlayerInventoryManager.PlayerInventory;
+            Instance.myInventory = PlayerInventoryManager.PlayerInventory;
 
-            miningToolSize = shovelMiningState.size;
+
+            Instance.miningToolSize = shovelMiningState.size;
         }
 
 
