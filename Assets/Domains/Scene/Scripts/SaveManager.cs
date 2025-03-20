@@ -116,17 +116,12 @@ namespace Domains.Scene.Scripts
             PlayerCurrencyManager.SavePlayerCurrency();
             PlayerUpgradeManager.SaveUpgrades();
             PickableManager.SaveAllPickedItems();
-            // Pickable save at runtime
-
-            // Reset digger data if it exists
-            if (DiggerDataManager.Instance != null) DiggerDataManager.Instance.ResetDiggerData();
-
+            DiggerDataManager.Instance?.SaveDiggerData();
             UnityEngine.Debug.Log("All data saved");
         }
 
         public bool LoadAll()
         {
-            // var inventoryLoaded = inventoryManager != null && inventoryManager.HasSavedData();
             var staminaLoaded = playerStaminaManager != null && playerStaminaManager.HasSavedData();
             var healthLoaded = playerHealthManager != null && playerHealthManager.HasSavedData();
             var inventoryLoaded = playerInventoryManager != null && playerInventoryManager.HasSavedData();
@@ -134,8 +129,9 @@ namespace Domains.Scene.Scripts
             var upgradesLoaded = playerUpgradeManager != null && playerUpgradeManager.HasSavedData();
             var pickablesLoaded = pickableManager != null && pickableManager.HasSavedData();
 
+            // Digger has no Load method
 
-            // if (inventoryLoaded) inventoryManager.LoadInventory();
+
             if (staminaLoaded) playerStaminaManager.LoadPlayerStamina();
             if (healthLoaded) playerHealthManager.LoadPlayerHealth();
             if (inventoryLoaded) playerInventoryManager.LoadInventory();
@@ -147,6 +143,13 @@ namespace Domains.Scene.Scripts
             return staminaLoaded ||
                    healthLoaded || inventoryLoaded || currencyLoaded ||
                    upgradesLoaded;
+        }
+
+
+        // On App Quit
+        private void OnApplicationQuit()
+        {
+            SaveAll();
         }
     }
 }

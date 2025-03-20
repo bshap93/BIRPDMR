@@ -1,23 +1,29 @@
 using Domains.Player.Events;
+using Domains.Player.Scripts;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class GlobalFeedbackManager : MonoBehaviour, MMEventListener<UpgradeEvent>
+public class GlobalFeedbackManager : MonoBehaviour, MMEventListener<UpgradeEvent>, MMEventListener<PlayerStatusEvent>
 {
-    [FormerlySerializedAs("UpgradeFeedbacks")] [SerializeField] MMFeedbacks upgradeFeedbacks;
-    [SerializeField] MMFeedbacks upgradeFailedFeedbacks;
+    [FormerlySerializedAs("UpgradeFeedbacks")] [SerializeField]
+    private MMFeedbacks upgradeFeedbacks;
 
-    
+    [SerializeField] private MMFeedbacks upgradeFailedFeedbacks;
+    [SerializeField] private MMFeedbacks outOfStaminaFeedbacks;
+
+
     private void OnEnable()
     {
-        this.MMEventStartListening();
+        this.MMEventStartListening<UpgradeEvent>();
+        this.MMEventStartListening<PlayerStatusEvent>();
     }
-    
+
     private void OnDisable()
     {
-        this.MMEventStopListening();
+        this.MMEventStopListening<UpgradeEvent>();
+        this.MMEventStopListening<PlayerStatusEvent>();
     }
 
     public void OnMMEvent(UpgradeEvent eventType)
@@ -26,6 +32,11 @@ public class GlobalFeedbackManager : MonoBehaviour, MMEventListener<UpgradeEvent
             upgradeFeedbacks.PlayFeedbacks();
         else if (eventType.EventType == UpgradeEventType.UpgradeFailed)
             upgradeFailedFeedbacks.PlayFeedbacks();
-        
+    }
+
+    public void OnMMEvent(PlayerStatusEvent eventType)
+    {
+        if (eventType.EventType == PlayerStatusEventType.OutOfStamina)
+            outOfStaminaFeedbacks.PlayFeedbacks();
     }
 }

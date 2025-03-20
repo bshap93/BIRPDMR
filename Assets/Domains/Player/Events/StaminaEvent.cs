@@ -11,12 +11,13 @@ namespace Domains.Player.Events
         FullyRecoverStamina,
         IncreaseMaximumStamina,
         DecreaseMaximumStamina,
-        Initialize
+        Initialize,
+        SetMaxStamina
     }
 
     public struct StaminaEvent
     {
-        static StaminaEvent _e;
+        private static StaminaEvent _e;
 
         public StaminaEventType EventType;
         public float ByValue;

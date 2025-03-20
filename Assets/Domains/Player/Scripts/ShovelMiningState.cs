@@ -6,6 +6,7 @@ using Domains.Player.Events;
 using Lightbug.CharacterControllerPro.Implementation;
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Player.Scripts
 {
@@ -16,6 +17,9 @@ namespace Domains.Player.Scripts
         public Transform cameraTransform;
         public int strokeCount = 1;
 
+        [FormerlySerializedAs("miningBehabior")]
+        public MMFeedbacks miningBehavior;
+
         public float staminaExpense = 2f;
 
         public MMFeedbacks cannotMineFeedbacks;
@@ -23,10 +27,11 @@ namespace Domains.Player.Scripts
         // Digger parameters
         public float size;
         public float opacity;
-        public BrushType brush = BrushType.Sphere;
+        public BrushType brush = BrushType.Stalagmite;
         public ActionType action = ActionType.Dig;
-        public Vector3 bruchScale = new(1.5f, 0.5f, 0.5f); // Wider strokes
+        [FormerlySerializedAs("bruchScale")] public Vector3 brushScale = new(1.5f, 0.5f, 0.5f); // Wider strokes
         public int textureIndex;
+        public float stalagmiteHeight = 10F;
 
         public bool editAsynchronously = true;
         private DiggerMasterRuntime _diggerMasterRuntime;
@@ -48,24 +53,20 @@ namespace Domains.Player.Scripts
         // Write your transitions here
         public override bool CheckEnterTransition(CharacterState fromState)
         {
-            // if (toolAnimator != null) toolAnimator.SetBool(SwingMiningTool, true);
-            if (!PlayerStaminaManager.IsPlayerOutOfStamina()) return PerformMining();
+            if (!PlayerStaminaManager.IsPlayerOutOfStamina()) return true;
 
             cannotMineFeedbacks?.PlayFeedbacks();
             return false;
         }
 
-        private float miningCooldown = 0.4f; // Adjust timing as needed
-        private float nextMiningTime = 0f;
 
         public override void UpdateBehaviour(float dt)
         {
-            if (Time.time >= nextMiningTime)
-                if (PerformMining())
-                    nextMiningTime = Time.time + miningCooldown; // Prevent rapid multiple triggers
+            miningBehavior?.PlayFeedbacks();
+            UnityEngine.Debug.Log("Played feedbacks");
         }
 
-        private bool PerformMining()
+        public void PerformMining()
         {
             RaycastHit hit;
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, miningRange))
@@ -84,7 +85,7 @@ namespace Domains.Player.Scripts
 
                     if (editAsynchronously)
                         _diggerMasterRuntime.ModifyAsyncBuffured(strokePosition, brush, action, textureIndex, opacity,
-                            size);
+                            size, stalagmiteHeight);
                     else
                         _diggerMasterRuntime.Modify(strokePosition, brush, action, textureIndex, opacity, size);
 
@@ -93,11 +94,7 @@ namespace Domains.Player.Scripts
 
                 if (miningPerformed) // ✅ Play feedback ONLY ONCE
                     StaminaEvent.Trigger(StaminaEventType.ConsumeStamina, staminaExpense);
-
-                return miningPerformed;
             }
-
-            return false;
         }
 
 

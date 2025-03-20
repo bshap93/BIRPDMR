@@ -40,6 +40,8 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
     {
         saveDataFeedbacks?.PlayFeedbacks();
         diggerMasterRuntime.PersistAll();
+
+        Debug.Log("Digger data saved.");
     }
 
 
@@ -59,10 +61,10 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
     }
 
     // On App Quit
-    private void OnApplicationQuit()
-    {
-        if (autoSave) SaveDiggerData();
-
-        SaveManager.Instance.SaveAll();
-    }
+    // private void OnApplicationQuit()
+    // {
+    //     SaveDiggerData();
+    //
+    //     // SaveManager.Instance.SaveAll();
+    // }
 }

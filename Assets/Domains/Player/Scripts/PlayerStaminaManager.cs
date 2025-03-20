@@ -83,6 +83,9 @@ namespace Domains.Player.Scripts
                 case StaminaEventType.IncreaseMaximumStamina:
                     IncreaseMaximumStamina(staminaEvent.ByValue);
                     break;
+                case StaminaEventType.SetMaxStamina:
+                    StaminaPoints = staminaEvent.ByValue;
+                    break;
             }
         }
 

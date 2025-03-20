@@ -14,13 +14,14 @@ namespace Gameplay.Character.Stamina
 
         [FormerlySerializedAs("textPlaceholder")]
         public TMP_Text textPlaceholderCurrentStamina;
+
         public TMP_Text textPlaceholderMaxStamina;
-        MMProgressBar _bar;
-        float _currentStamina;
+        private MMProgressBar _bar;
+        private float _currentStamina;
 
-        float _maxStamina;
+        private float _maxStamina;
 
-        void Awake()
+        private void Awake()
         {
             if (useTextPlaceholder)
             {
@@ -31,15 +32,16 @@ namespace Gameplay.Character.Stamina
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             this.MMEventStartListening();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             this.MMEventStopListening();
         }
+
         public void OnMMEvent(StaminaEvent eventType)
         {
             if (useTextPlaceholder)
@@ -65,6 +67,10 @@ namespace Gameplay.Character.Stamina
                         _maxStamina -= eventType.ByValue;
                         textPlaceholderMaxStamina.text = _maxStamina.ToString();
                         break;
+                    case StaminaEventType.SetMaxStamina:
+                        _maxStamina = eventType.ByValue;
+                        textPlaceholderMaxStamina.text = _maxStamina.ToString();
+                        break;
                 }
             else
                 switch (eventType.EventType)
@@ -85,8 +91,13 @@ namespace Gameplay.Character.Stamina
                         _maxStamina += eventType.ByValue;
                         _bar.UpdateBar(_currentStamina, 0, _maxStamina);
                         break;
+                    case StaminaEventType.SetMaxStamina:
+                        _maxStamina = eventType.ByValue;
+                        _bar.UpdateBar(_currentStamina, 0, _maxStamina);
+                        break;
                 }
         }
+
         public void Initialize()
         {
             _maxStamina = PlayerStaminaManager.MaxStaminaPoints;
