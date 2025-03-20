@@ -3,13 +3,14 @@ using JetBrains.Annotations;
 using MoreMountains.Tools;
 using UnityEngine;
 
-namespace Domains.UI.Events
+namespace Domains.UI_Global.Events
 {
     [Serializable]
     public enum AlertType
     {
         ItemScrapped,
-        InventoryFull
+        InventoryFull,
+        Test
     }
 
     public struct AlertEvent
@@ -20,9 +21,12 @@ namespace Domains.UI.Events
         public string AlertMessage;
         [CanBeNull] public string AlertTitle;
         [CanBeNull] public Sprite AlertIcon;
+        [CanBeNull] public AudioClip AlertSound;
+        [CanBeNull] public Color AlertColor;
 
         public static void Trigger(AlertType alertType, string alertMessage, string alertTitle = "Alert",
-            Sprite alertIcon = null)
+            Sprite alertIcon = null,
+            AudioClip alertSound = null, Color alertColor = default)
         {
             _e.AlertType = alertType;
             _e.AlertMessage = alertMessage;

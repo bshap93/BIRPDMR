@@ -70,6 +70,8 @@ namespace Gameplay.Character.Stamina
                     case StaminaEventType.SetMaxStamina:
                         _maxStamina = eventType.ByValue;
                         textPlaceholderMaxStamina.text = _maxStamina.ToString();
+                        Debug.Log($"Updated Max Stamina to {_maxStamina}"); // Debugging
+                        _bar.UpdateBar(_currentStamina, 0, _maxStamina);
                         break;
                 }
             else

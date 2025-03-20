@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Domains.Items.Events;
 using Domains.Player.Events;
-using Domains.UI.Events;
+using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 

@@ -173,6 +173,8 @@ namespace Domains.Player.Scripts
             if (upgradeType == "Endurance") // Example: Multiply stamina
             {
                 var newStamina = PlayerStaminaManager.MaxStaminaPoints * multiplier;
+                PlayerStaminaManager.MaxStaminaPoints = newStamina;
+
                 StaminaEvent.Trigger(StaminaEventType.SetMaxStamina, newStamina);
             }
             else if (upgradeType == "Mining") // Example: Multiply mining speed
