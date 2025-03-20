@@ -82,7 +82,6 @@ namespace Domains.Items
                 {
                     _interactionTimer += Time.deltaTime;
 
-                    UnityEngine.Debug.Log("Interaction Timer: " + _interactionTimer);
 
                     // Check if we've reached the required hold time
                     if (_interactionTimer >= interactionHoldTime && !_interactionComplete)

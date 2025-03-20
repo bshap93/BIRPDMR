@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.16984907, y: 0.7968364, z: -0.2859738, w: -0.50440276}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.45591295, y: 0.4559128, z: 0.45591286}
+  m_LocalScale: {x: 0.44969368, y: 0.44969353, z: 0.44969356}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2566957955025209727}
@@ -125,10 +125,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380f9b65545dc3b488923b80b2b83bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueID: 068423cc-0be3-4a6b-85ca-cf924b8ad148
+  uniqueID: 
   itemType: {fileID: 11400000, guid: dad5d6fc21478914290421293e4d0469, type: 2}
   quantity: 1
-  interactionHoldTime: 1
+  interactionHoldTime: 0.5
   pickedMmFeedbacks: {fileID: 0}
   soldMmFeedbacks: {fileID: 0}
   notPickable: 0

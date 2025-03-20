@@ -62,15 +62,37 @@ namespace Domains.Player.Scripts
                 return;
             }
 
-            RaycastHit hit;
             var rayOrigin = playerCamera.transform.position;
             var rayDirection = playerCamera.transform.forward;
 
-            if (Physics.Raycast(
-                    rayOrigin, rayDirection, out hit, interactionDistance, interactableLayer | terrainLayer))
+            // First check if there's terrain blocking the view
+            RaycastHit terrainHit;
+            var terrainBlocking = Physics.Raycast(
+                rayOrigin, rayDirection, out terrainHit, interactionDistance, terrainLayer);
+
+            // Then check for interactables
+            RaycastHit interactableHit;
+            var hitInteractable = Physics.Raycast(
+                rayOrigin, rayDirection, out interactableHit, interactionDistance, interactableLayer);
+
+            // If we hit both, check if the terrain is in front of the interactable
+            if (terrainBlocking && hitInteractable)
+                // If terrain is closer than the interactable, it's blocking
+                if (terrainHit.distance < interactableHit.distance)
+                {
+                    // Terrain is blocking, reset reticle and hide prompts
+                    reticle.color = defaultReticleColor;
+                    if (_interactablePrompt)
+                        _interactablePrompt = false;
+                    HideAllPrompts();
+                    return;
+                }
+
+            // If we reach here, either there's no terrain blocking, or the interactable is in front of terrain
+            if (hitInteractable)
             {
-                var interactable = hit.collider.GetComponent<IInteractable>();
-                var button = hit.collider.GetComponent<ButtonActivated>();
+                var interactable = interactableHit.collider.GetComponent<IInteractable>();
+                var button = interactableHit.collider.GetComponent<ButtonActivated>();
 
                 if (interactable != null)
                 {
@@ -78,13 +100,13 @@ namespace Domains.Player.Scripts
                     interactable.ShowInteractablePrompt();
                     _interactablePrompt = true;
 
-                    // ✅ Show button prompt if applicable
+                    // Show button prompt if applicable
                     if (button != null) button.ShowInteractablePrompt();
                     return;
                 }
             }
 
-            // Reset if no interactable is found
+            // Reset if no interactable is found or if it's blocked
             reticle.color = defaultReticleColor;
             if (_interactablePrompt)
                 _interactablePrompt = false;
@@ -116,13 +138,25 @@ namespace Domains.Player.Scripts
                 return;
             }
 
-            RaycastHit hit;
-            var rayOrigin = playerCamera.transform.position; // Start from the camera
-            var rayDirection = playerCamera.transform.forward; // Cast forward from camera
+            var rayOrigin = playerCamera.transform.position;
+            var rayDirection = playerCamera.transform.forward;
 
-            if (Physics.Raycast(rayOrigin, rayDirection, out hit, interactionDistance, interactableLayer))
+            // First check if terrain is blocking
+            RaycastHit terrainHit;
+            var terrainBlocking = Physics.Raycast(
+                rayOrigin, rayDirection, out terrainHit, interactionDistance, terrainLayer);
+
+            // Then check for interactables
+            RaycastHit interactableHit;
+            var hitInteractable = Physics.Raycast(
+                rayOrigin, rayDirection, out interactableHit, interactionDistance, interactableLayer);
+
+            // Only interact if:
+            // 1. We hit an interactable AND
+            // 2. Either there's no terrain blocking OR the interactable is closer than the terrain
+            if (hitInteractable && (!terrainBlocking || interactableHit.distance < terrainHit.distance))
             {
-                var interactable = hit.collider.GetComponent<IInteractable>();
+                var interactable = interactableHit.collider.GetComponent<IInteractable>();
                 if (interactable != null) interactable.Interact();
             }
         }

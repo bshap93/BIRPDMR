@@ -3,6 +3,7 @@ using Domains.Player.Scripts.ScriptableObjects;
 using Domains.Scene.Scripts;
 using Domains.UI;
 using Domains.UI_Global;
+using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEditor;
 using UnityEngine;
@@ -29,6 +30,8 @@ namespace Domains.Player.Scripts
         public static float InitialCharacterHealth;
         public HealthBarUpdater healthBarUpdater;
         public CharacterStatProfile characterStatProfile;
+
+        public MMFeedbacks hurtFeedbacks;
 
         public bool immuneToDamage;
 
