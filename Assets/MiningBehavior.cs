@@ -1,0 +1,40 @@
+using Domains.Gameplay.Mining.Events;
+using UnityEngine;
+
+public class MiningBehavior : MonoBehaviour
+{
+    [SerializeField] private ToolIteration toolIteration;
+    [SerializeField] private ToolType toolType;
+
+    private void Start()
+    {
+        GetTool();
+    }
+
+    private void GetTool()
+    {
+        toolIteration = PlayerEquipment.Instance.currentToolIteration;
+        toolType = PlayerEquipment.Instance.currentToolType;
+    }
+
+    public void OnMining()
+    {
+        GetTool();
+        switch (toolType)
+        {
+            case ToolType.Shovel:
+                switch (toolIteration)
+                {
+                    case ToolIteration.Smallest:
+                        Debug.Log("Mining with smallest shovel");
+                        ToolEvent.Trigger(ToolEventType.UseTool, ToolType.Shovel, ToolIteration.Smallest);
+                        break;
+                    case ToolIteration.SecondSmallest:
+                        ToolEvent.Trigger(ToolEventType.UseTool, ToolType.Shovel, ToolIteration.SecondSmallest);
+                        break;
+                }
+
+                break;
+        }
+    }
+}

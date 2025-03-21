@@ -37,6 +37,8 @@ namespace Domains.Player.Scripts
         public bool editAsynchronously = true;
         private DiggerMasterRuntime _diggerMasterRuntime;
 
+        public ToolIteration toolIteration;
+
 
         protected override void Start()
         {

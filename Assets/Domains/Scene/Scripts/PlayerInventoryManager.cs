@@ -112,7 +112,6 @@ namespace Domains.Scene.Scripts
 
             InventoryContentData = inventoryData; // Update static reference too
             ES3.Save(InventoryKey, inventoryData, saveFilePath);
-            UnityEngine.Debug.Log($"✅ Inventory saved at {saveFilePath}");
         }
 
         public bool HasSavedData()
