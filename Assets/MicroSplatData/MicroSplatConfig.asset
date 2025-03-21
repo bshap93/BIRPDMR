@@ -103,7 +103,7 @@ MonoBehaviour:
     height: {fileID: 2800000, guid: d564330f4069cae4db1581539f9bc488, type: 3}
     heightChannel: 2
     normal: {fileID: 2800000, guid: e9aa952ddcaa08849ab6169ca8706f02, type: 3}
-    smoothness: {fileID: 0}
+    smoothness: {fileID: 2800000, guid: b1090459dcb26904b8277a7eb7113049, type: 3}
     smoothnessChannel: 3
     isRoughness: 0
     ao: {fileID: 2800000, guid: 27e079f861910d040a807a1523786620, type: 3}

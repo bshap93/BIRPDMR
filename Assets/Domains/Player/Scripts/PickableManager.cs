@@ -124,6 +124,8 @@ namespace Domains.Player.Scripts
                 PickedItems.Add(uniqueID);
 
             UnityEngine.Debug.Log($"Item {uniqueID} marked as picked: {b}");
+
+            SaveAllPickedItems();
         }
 
 

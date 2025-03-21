@@ -26,7 +26,6 @@ public class MiningBehavior : MonoBehaviour
                 switch (toolIteration)
                 {
                     case ToolIteration.Smallest:
-                        Debug.Log("Mining with smallest shovel");
                         ToolEvent.Trigger(ToolEventType.UseTool, ToolType.Shovel, ToolIteration.Smallest);
                         break;
                     case ToolIteration.SecondSmallest:

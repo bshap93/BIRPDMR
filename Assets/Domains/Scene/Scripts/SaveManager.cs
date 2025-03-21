@@ -1,9 +1,13 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Domains.Debug;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
 using Domains.Player.Scripts.ScriptableObjects;
 using Domains.SaveLoad;
+using Domains.UI_Global.Events;
+using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -25,6 +29,8 @@ namespace Domains.Scene.Scripts
         private PlayerStaminaManager playerStaminaManager;
 
         [SerializeField] private PlayerHealthManager playerHealthManager;
+
+        [SerializeField] private MMFeedbacks saveFeedbacks;
 
         [Header("Item & Container Persistence")]
         public PickableManager pickableManager;
@@ -152,11 +158,24 @@ namespace Domains.Scene.Scripts
                    upgradesLoaded;
         }
 
+        public void CallSaveThenWait()
+        {
+            StartCoroutine(SaveAllThenWait());
+        }
+
 
         // On App Quit
         private void OnApplicationQuit()
         {
+            StartCoroutine(SaveAllThenWait());
+        }
+
+        private IEnumerator SaveAllThenWait()
+        {
             SaveAll();
+            saveFeedbacks?.PlayFeedbacks();
+            AlertEvent.Trigger(AlertType.SavingGame, "Saving game...");
+            yield return new WaitForSeconds(1);
         }
     }
 }

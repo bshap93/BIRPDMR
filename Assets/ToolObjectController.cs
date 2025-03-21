@@ -48,7 +48,6 @@ public class ToolObjectController : MonoBehaviour, MMEventListener<ToolEvent>
             switch (eventType.ToolIteration)
             {
                 case ToolIteration.Smallest:
-                    Debug.Log("Tool used with smallest iteration");
                     OnToolUseAction.Invoke();
                     break;
                 case ToolIteration.SecondSmallest:

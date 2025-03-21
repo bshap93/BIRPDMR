@@ -3,6 +3,7 @@ using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Player.Events;
 using Domains.Scene.Scripts;
+using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using Unity.VisualScripting;
@@ -47,6 +48,7 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
     {
         deleteAllDataFeedbacks?.PlayFeedbacks();
         diggerMasterRuntime.DeleteAllPersistedData();
+        AlertEvent.Trigger(AlertType.DeletingDiggerData, "Digger data deleted.");
 
         Debug.Log("Digger data deleted.");
     }

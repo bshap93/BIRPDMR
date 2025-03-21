@@ -1,5 +1,6 @@
 ﻿using Lightbug.CharacterControllerPro.Core;
 using Lightbug.CharacterControllerPro.Demo;
+using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -19,7 +20,7 @@ namespace Domains.Scene.Scripts
 
         [FormerlySerializedAs("camera")] [Header("Camera")] [SerializeField]
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
-        private Camera3D myCamera;
+        private MyCamera3D myCamera;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
         [FormerlySerializedAs("frameRateText")] [SerializeField]
@@ -31,6 +32,8 @@ namespace Domains.Scene.Scripts
 
         private NormalMovement normalMovement;
 
+        private MMSceneRestarter sceneRestarter;
+
         private void Awake()
         {
             if (characterActor != null)
@@ -39,13 +42,15 @@ namespace Domains.Scene.Scripts
             // Set the looking direction mode
             if (normalMovement != null && myCamera != null)
             {
-                if (myCamera.cameraMode == Camera3D.CameraMode.FirstPerson)
+                if (myCamera.cameraMode == MyCamera3D.CameraMode.FirstPerson)
                     normalMovement.lookingDirectionParameters.lookingDirectionMode =
                         LookingDirectionParameters.LookingDirectionMode.ExternalReference;
                 else
                     normalMovement.lookingDirectionParameters.lookingDirectionMode =
                         LookingDirectionParameters.LookingDirectionMode.Movement;
             }
+
+            sceneRestarter = GetComponent<MMSceneRestarter>();
 
 
             if (graphicsObject != null)
@@ -101,6 +106,14 @@ namespace Domains.Scene.Scripts
         public void QuitApplication()
         {
             Application.Quit();
+        }
+
+        // On App Quit
+        public void OnApplicationReset()
+        {
+            var saveManager = FindFirstObjectByType<SaveManager>();
+            saveManager.CallSaveThenWait();
+            sceneRestarter.RestartScene();
         }
     }
 }

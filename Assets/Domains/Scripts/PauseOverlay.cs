@@ -36,10 +36,6 @@ namespace Domains.Scripts
                 // ✅ Control the mouse cursor visibility and lock state
                 Cursor.visible = isPaused;
                 Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
-
-                UnityEngine.Debug.Log("CanvasGroup settings: alpha=" + _canvasGroup.alpha +
-                                      ", interactable=" + _canvasGroup.interactable +
-                                      ", blocksRaycasts=" + _canvasGroup.blocksRaycasts);
             }
         }
     }

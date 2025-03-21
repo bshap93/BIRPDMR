@@ -13,7 +13,9 @@ namespace Domains.UI_Global.Events
         Test,
         InsufficientFunds,
         OutOfStamina,
-        HealthHitZero
+        HealthHitZero,
+        SavingGame,
+        DeletingDiggerData
     }
 
     public struct AlertEvent

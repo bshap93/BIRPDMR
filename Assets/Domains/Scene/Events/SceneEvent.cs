@@ -21,7 +21,6 @@ namespace Domains.Scene.Events
         {
             _e.EventType = sceneEventType;
 
-            UnityEngine.Debug.Log("SceneEvent.Trigger: " + sceneEventType);
             MMEventManager.TriggerEvent(_e);
         }
     }

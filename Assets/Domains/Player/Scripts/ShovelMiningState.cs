@@ -66,7 +66,6 @@ namespace Domains.Player.Scripts
         public override void UpdateBehaviour(float dt)
         {
             miningBehavior?.PlayFeedbacks();
-            UnityEngine.Debug.Log("Played feedbacks");
         }
 
         public void PerformMining()

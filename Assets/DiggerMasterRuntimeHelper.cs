@@ -9,7 +9,7 @@ public class DiggerMasterRuntimeHelper : MonoBehaviour
 
     private void Start()
     {
-        diggerMasterRuntime.SetupRuntimeTerrain(terrain);
+        if (!Application.isEditor) diggerMasterRuntime.SetupRuntimeTerrain(terrain);
     }
 
 
