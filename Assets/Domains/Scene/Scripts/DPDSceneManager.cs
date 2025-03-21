@@ -47,7 +47,6 @@ namespace Domains.Scene.Scripts
                         LookingDirectionParameters.LookingDirectionMode.Movement;
             }
 
-            
 
             if (graphicsObject != null)
                 graphicsRenderers = graphicsObject.GetComponentsInChildren<Renderer>(true);
@@ -97,6 +96,11 @@ namespace Domains.Scene.Scripts
 
             characterActor.upDirectionReference = reference.verticalAlignmentReference;
             characterActor.upDirectionReferenceMode = VerticalAlignmentSettings.VerticalReferenceMode.Away;
+        }
+
+        public void QuitApplication()
+        {
+            Application.Quit();
         }
     }
 }

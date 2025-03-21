@@ -1,3 +1,4 @@
+using Domains.Player.Events;
 using Domains.Player.Scripts;
 using Domains.Scene.Scripts;
 using UnityEngine;
@@ -41,6 +42,9 @@ namespace Domains.Debug
             // Reset upgrades
             PlayerUpgradeManager.ResetPlayerUpgrades();
             PlayerUpgradeManager.SaveUpgrades();
+
+            // Try reset Digger. Note this won't work in editor mode
+            DiggerEvent.Trigger(DiggerEventType.Delete);
 
             // Reset digger data if it exists
             // if (DiggerDataManager.Instance != null) DiggerDataManager.Instance.ResetDiggerData();

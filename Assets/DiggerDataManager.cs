@@ -7,6 +7,7 @@ using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
 {
@@ -20,6 +21,7 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
     public DiggerSystem[] diggerSystems;
 
     public bool autoSave = true;
+    [FormerlySerializedAs("doNotPersist")] public bool forceDeleteOnQuit = false;
 
     private void Awake()
     {
@@ -41,6 +43,14 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
         Debug.Log("Digger data saved.");
     }
 
+    public void DeleteAllDiggerData()
+    {
+        deleteAllDataFeedbacks?.PlayFeedbacks();
+        diggerMasterRuntime.DeleteAllPersistedData();
+
+        Debug.Log("Digger data deleted.");
+    }
+
 
     private void OnEnable()
     {
@@ -54,11 +64,21 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
 
     public void OnMMEvent(DiggerEvent eventType)
     {
-        throw new NotImplementedException();
+        switch (eventType.EventType)
+        {
+            case DiggerEventType.Persist:
+                SaveDiggerData();
+                break;
+            case DiggerEventType.Delete:
+                DeleteAllDiggerData();
+                break;
+        }
     }
 
     private void OnApplicationQuit()
     {
-        SaveDiggerData();
+        if (forceDeleteOnQuit) DeleteAllDiggerData();
+
+        if (autoSave) SaveDiggerData();
     }
 }

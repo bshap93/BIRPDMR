@@ -1,5 +1,6 @@
 using System;
 using Domains.Debug;
+using Domains.Player.Events;
 using Domains.Player.Scripts;
 using Domains.SaveLoad;
 using MoreMountains.Tools;
@@ -121,6 +122,7 @@ namespace Domains.Scene.Scripts
             PlayerCurrencyManager.SavePlayerCurrency();
             PlayerUpgradeManager.SaveUpgrades();
             PickableManager.SaveAllPickedItems();
+            DiggerEvent.Trigger(DiggerEventType.Persist);
             UnityEngine.Debug.Log("All data saved");
         }
 
