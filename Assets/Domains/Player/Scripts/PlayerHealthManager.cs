@@ -34,6 +34,8 @@ namespace Domains.Player.Scripts
 
         public MMFeedbacks hurtFeedbacks;
 
+        public MMFeedbacks deathFeedbacks;
+
         public bool immuneToDamage;
 
         private string _savePath;
@@ -99,16 +101,18 @@ namespace Domains.Player.Scripts
             healthBarUpdater.Initialize();
         }
 
-        public static void ConsumeHealth(float healthToConsume)
+        public void ConsumeHealth(float healthToConsume)
         {
             if (HealthPoints - healthToConsume < 0)
             {
                 HealthPoints = 0;
                 PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfHealth);
                 AlertEvent.Trigger(AlertType.HealthHitZero, "You have run out of health!", "Out of Health", null);
+                deathFeedbacks?.PlayFeedbacks();
             }
             else
             {
+                hurtFeedbacks?.PlayFeedbacks();
                 HealthPoints -= healthToConsume;
             }
         }
