@@ -2,6 +2,7 @@
 using Domains.Player.Scripts.ScriptableObjects;
 using Domains.UI;
 using Domains.UI_Global;
+using Domains.UI_Global.Events;
 using Gameplay.Character.Stamina;
 using MoreMountains.Tools;
 using UnityEditor;
@@ -101,7 +102,7 @@ namespace Domains.Player.Scripts
             {
                 StaminaPoints = 0;
                 PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfStamina);
-                AlertManager.ShowAlert("Stamina Depleted");
+                AlertEvent.Trigger(AlertType.OutOfStamina, "You are out of stamina!", "Out of Stamina", null);
             }
             else
             {

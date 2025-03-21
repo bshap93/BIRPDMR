@@ -3,6 +3,7 @@ using Domains.Player.Scripts.ScriptableObjects;
 using Domains.Scene.Scripts;
 using Domains.UI;
 using Domains.UI_Global;
+using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEditor;
@@ -104,7 +105,7 @@ namespace Domains.Player.Scripts
             {
                 HealthPoints = 0;
                 PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfHealth);
-                AlertManager.ShowAlert("Health Depleted");
+                AlertEvent.Trigger(AlertType.HealthHitZero, "You have run out of health!", "Out of Health", null);
             }
             else
             {

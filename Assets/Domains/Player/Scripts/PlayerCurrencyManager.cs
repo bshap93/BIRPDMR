@@ -3,6 +3,7 @@ using Domains.Player.Scripts.ScriptableObjects;
 using Domains.Scene.Scripts;
 using Domains.UI;
 using Domains.UI_Global;
+using Domains.UI_Global.Events;
 using Domains.UI_Global.UIUpdaters;
 using MoreMountains.Tools;
 using UnityEditor;
@@ -107,7 +108,8 @@ namespace Domains.Player.Scripts
             if (CompanyCredits - amount < 0)
             {
                 CompanyCredits = 0;
-                AlertManager.ShowAlert("Insufficient Credits");
+                AlertEvent.Trigger(AlertType.InsufficientFunds, "You don't have enough funds to complete this action.",
+                    "Insufficient Funds", null);
             }
             else
             {

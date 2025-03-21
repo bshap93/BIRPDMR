@@ -10,6 +10,11 @@ namespace Domains.Scripts
 
         private bool _isPaused;
 
+        public UpgradeUIController(bool isPaused)
+        {
+            _isPaused = isPaused;
+        }
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Start()
         {

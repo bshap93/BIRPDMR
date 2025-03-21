@@ -10,7 +10,10 @@ namespace Domains.UI_Global.Events
     {
         ItemScrapped,
         InventoryFull,
-        Test
+        Test,
+        InsufficientFunds,
+        OutOfStamina,
+        HealthHitZero
     }
 
     public struct AlertEvent
