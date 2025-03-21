@@ -118,7 +118,6 @@ namespace Domains.Items
 
         public void Interact()
         {
-            UnityEngine.Debug.Log("Interacting with item");
             // Start the interaction timer instead of immediately picking
             if (!_isInteracting && !_interactionComplete)
             {

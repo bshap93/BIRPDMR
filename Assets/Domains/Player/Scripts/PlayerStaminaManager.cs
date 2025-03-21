@@ -29,7 +29,7 @@ namespace Domains.Player.Scripts
         // ReSharper disable once FieldCanBeMadeReadOnly.Global
         public static float InitialCharacterStamina;
         public StaminaBarUpdater staminaBarUpdater;
-        public CharacterStatProfile characterStatProfile;
+        private CharacterStatProfile characterStatProfile;
 
 
         private string _savePath;
@@ -37,6 +37,8 @@ namespace Domains.Player.Scripts
 
         private void Awake()
         {
+            characterStatProfile =
+                Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
             if (characterStatProfile != null)
                 InitialCharacterStamina = characterStatProfile.InitialMaxStamina;
             else

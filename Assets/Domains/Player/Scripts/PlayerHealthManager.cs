@@ -30,7 +30,6 @@ namespace Domains.Player.Scripts
 
         public static float InitialCharacterHealth;
         public HealthBarUpdater healthBarUpdater;
-        public CharacterStatProfile characterStatProfile;
 
         public MMFeedbacks hurtFeedbacks;
 
@@ -40,10 +39,14 @@ namespace Domains.Player.Scripts
 
         private string _savePath;
 
+        private CharacterStatProfile _characterStatProfile;
+
         private void Awake()
         {
-            if (characterStatProfile != null)
-                InitialCharacterHealth = characterStatProfile.InitialMaxHealth;
+            _characterStatProfile =
+                Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
+            if (_characterStatProfile != null)
+                InitialCharacterHealth = _characterStatProfile.InitialMaxHealth;
             else
                 UnityEngine.Debug.LogError("CharacterStatProfile not set in PlayerHealthManager");
         }

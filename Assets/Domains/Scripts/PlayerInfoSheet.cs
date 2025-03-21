@@ -1,28 +1,33 @@
+using Domains.Player.Scripts;
 using Domains.Player.Scripts.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class PlayerInfoSheet : MonoBehaviour
+namespace Domains.Scripts
 {
-    public static int WeightLimit;
-
-    [FormerlySerializedAs("InitialStats")] public CharacterStatProfile initialStats;
-    public static PlayerInfoSheet Instance { get; private set; }
-
-
-    private void Awake()
+    public class PlayerInfoSheet : MonoBehaviour
     {
-        if (Instance != null && Instance != this)
+        public static int WeightLimit;
+
+        [FormerlySerializedAs("InitialStats")] private CharacterStatProfile initialStats;
+        private static PlayerInfoSheet Instance { get; set; }
+
+
+        private void Awake()
         {
-            Destroy(gameObject);
-            return;
+            initialStats = Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
+
+            if (initialStats != null)
+                WeightLimit = initialStats.InitialWeightLimit;
+            else
+                UnityEngine.Debug.LogError("CharacterStatProfile not set in PlayerInfoSheet");
         }
-
-        Instance = this;
-
-        if (initialStats != null)
-            WeightLimit = initialStats.InitialWeightLimit;
-        else
-            Debug.LogError("CharacterStatProfile not set in PlayerInfoSheet");
     }
 }

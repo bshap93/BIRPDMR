@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Domains.Items;
 using Domains.Items.Events;
+using Domains.Scripts;
 using Domains.UI;
 using JetBrains.Annotations;
 using MoreMountains.Tools;

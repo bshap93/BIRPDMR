@@ -1,5 +1,4 @@
 using Digger.Modules.Runtime.Sources;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class DiggerMasterRuntimeHelper : MonoBehaviour
@@ -14,7 +13,6 @@ public class DiggerMasterRuntimeHelper : MonoBehaviour
     }
 
 
-    [Button("Force Delete Persisted Data", ButtonSizes.Medium)]
     public void ForceDeleteAllPersistedData()
     {
         if (diggerMasterRuntime == null)

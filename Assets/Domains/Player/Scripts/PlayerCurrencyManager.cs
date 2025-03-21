@@ -28,12 +28,14 @@ namespace Domains.Player.Scripts
         public static int InitialCurrencyAmount;
 
         public CurrencyBarUpdater currencyBarUpdater;
-        public CharacterStatProfile characterStatProfile;
+        private CharacterStatProfile characterStatProfile;
 
         private string _savePath;
 
         private void Awake()
         {
+            characterStatProfile =
+                Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
             if (characterStatProfile != null)
                 InitialCurrencyAmount = characterStatProfile.InitialCurrency;
             else

@@ -2,6 +2,7 @@ using System;
 using Domains.Debug;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
+using Domains.Player.Scripts.ScriptableObjects;
 using Domains.SaveLoad;
 using MoreMountains.Tools;
 using UnityEngine;
