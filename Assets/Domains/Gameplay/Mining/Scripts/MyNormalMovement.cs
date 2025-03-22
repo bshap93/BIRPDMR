@@ -424,15 +424,20 @@ namespace Domains.Gameplay.Mining.Scripts
         protected virtual void ProcessJetPack(float dt)
         {
             if (CharacterActions.jetPack.value)
+            {
                 CharacterActor.VerticalVelocity = Vector3.SmoothDamp(
                     CharacterActor.VerticalVelocity,
                     targetHeight * CharacterActor.Up,
                     ref smoothDampVelocity,
                     jetPackDuration
                 ) * jetPackSpeedMultiplier;
+                jetPackFeedbacks?.PlayFeedbacks();
+            }
+
 
             // CharacterActor.PlanarVelocity = Vector3.Lerp(CharacterActor.PlanarVelocity,
             //     planarMovementParameters.targetPlanarSpeed * CharacterStateController.InputMovementReference, 7f * dt);
+
 
             CharacterActor.SetYaw(CharacterActor.PlanarVelocity);
         }
