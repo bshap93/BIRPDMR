@@ -28,9 +28,11 @@ namespace Domains.Scene.Scripts
     {
         private const string InventoryKey = "InventoryContentData";
         private const string ResourcesPath = "Items";
+        public const string WeightLimitKey = "InventoryMaxWeight";
         public static Inventory PlayerInventory;
 
         public static List<InventoryEntryData> InventoryContentData = new();
+        private static float _weightLimit;
 
         // Add this to PlayerInventoryManager
         [FormerlySerializedAs("_currentInventoryItems")] [SerializeField]
@@ -59,7 +61,13 @@ namespace Domains.Scene.Scripts
                 SaveInventory();
             }
 
-            PlayerInventory.SetWeightLimit(PlayerInfoSheet.WeightLimit);
+            var weightLimit = ES3.Load<float>("InventoryMaxWeight", _savePath);
+
+            if (weightLimit > 0)
+                _weightLimit = weightLimit;
+            else
+                _weightLimit = PlayerInfoSheet.WeightLimit;
+
 
             LoadInventory();
         }
@@ -81,6 +89,9 @@ namespace Domains.Scene.Scripts
 
 
             if (eventType.EventType == InventoryEventType.SellAllItems) PlayerInventory.SellAllItems();
+
+            if (eventType.EventType == InventoryEventType.UpgradedWeightLimit)
+                IncreaseWeightLimit(eventType.WeightLimitIncrease);
         }
 
 
@@ -113,6 +124,7 @@ namespace Domains.Scene.Scripts
 
             InventoryContentData = inventoryData; // Update static reference too
             ES3.Save(InventoryKey, inventoryData, saveFilePath);
+            ES3.Save(WeightLimitKey, _weightLimit, saveFilePath);
         }
 
         public bool HasSavedData()
@@ -141,7 +153,7 @@ namespace Domains.Scene.Scripts
                     }
                 }
 
-                InventoryEvent.Trigger(InventoryEventType.ContentChanged, PlayerInventory);
+                InventoryEvent.Trigger(InventoryEventType.ContentChanged, PlayerInventory, GetMaxWeight());
 
                 UnityEngine.Debug.Log($"✅ Loaded inventory data from {saveFilePath}");
             }
@@ -192,6 +204,31 @@ namespace Domains.Scene.Scripts
                 UniqueID = itemUniqueID;
                 ItemID = baseItemItemID;
             }
+        }
+
+        public static void IncreaseWeightLimit(float getMaxWeight)
+        {
+            _weightLimit += getMaxWeight;
+            SaveInventory();
+        }
+
+        public static float GetMaxWeight()
+        {
+            return _weightLimit;
+        }
+
+        public static float GetCurrentWeight()
+        {
+            float weight = 0;
+            foreach (var entry in PlayerInventory.Content)
+                weight += entry.BaseItem.ItemWeight;
+
+            return weight;
+        }
+
+        public static float GetWeightLimit()
+        {
+            return _weightLimit;
         }
     }
 }

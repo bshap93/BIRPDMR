@@ -1,4 +1,5 @@
-﻿using MoreMountains.Tools;
+﻿using Domains.Scene.Scripts;
+using MoreMountains.Tools;
 
 namespace Domains.Items.Events
 {
@@ -6,7 +7,8 @@ namespace Domains.Items.Events
     {
         ContentChanged,
         InventoryLoaded,
-        SellAllItems
+        SellAllItems,
+        UpgradedWeightLimit
     }
 
     public struct InventoryEvent
@@ -17,10 +19,17 @@ namespace Domains.Items.Events
 
         public Inventory Inventory;
 
-        public static void Trigger(InventoryEventType eventType, Inventory inventory)
+        public float CurrentWeight;
+
+        public float WeightLimitIncrease;
+
+        public static void Trigger(InventoryEventType eventType, Inventory inventory, float weightLimit)
         {
             E.EventType = eventType;
             E.Inventory = inventory;
+
+
+            E.WeightLimitIncrease = weightLimit;
 
             MMEventManager.TriggerEvent(E);
         }

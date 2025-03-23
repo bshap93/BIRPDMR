@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Domains.Items.Events;
 using Domains.Player.Events;
+using Domains.Scene.Scripts;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
 using UnityEngine;
@@ -14,25 +15,11 @@ namespace Domains.Items
 
         public MMFeedbacks InventoryFullFeedbacks;
 
-        private float _weightLimit;
-
-
-        public float CurrentWeight()
-        {
-            float weight = 0;
-            foreach (var item in Content) weight += item.BaseItem.ItemWeight;
-
-            return weight;
-        }
-
-        public float RemainingWeight()
-        {
-            return Mathf.Max(0, _weightLimit - CurrentWeight()); // Prevent negative weight values
-        }
 
         public virtual bool AddItem(InventoryEntry item)
         {
-            if (CurrentWeight() + item.BaseItem.ItemWeight > _weightLimit)
+            if (PlayerInventoryManager.GetCurrentWeight() + item.BaseItem.ItemWeight >
+                PlayerInventoryManager.GetWeightLimit())
             {
                 UnityEngine.Debug.LogWarning("Inventory is full");
                 InventoryFullFeedbacks?.PlayFeedbacks();
@@ -41,7 +28,7 @@ namespace Domains.Items
             }
 
             Content.Add(item); // Always add as a new entry, even if identical items exist
-            InventoryEvent.Trigger(InventoryEventType.ContentChanged, this);
+            InventoryEvent.Trigger(InventoryEventType.ContentChanged, this, 0);
             return true;
         }
 
@@ -90,10 +77,10 @@ namespace Domains.Items
             return list;
         }
 
-        public virtual bool IsFull()
-        {
-            return CurrentWeight() >= _weightLimit;
-        }
+        // public virtual bool IsFull()
+        // {
+        //     return CurrentWeight() >= _weightLimit;
+        // }
 
         public virtual void SaveInventory()
         {
@@ -104,13 +91,9 @@ namespace Domains.Items
         {
             Content = new List<InventoryEntry>();
 
-            InventoryEvent.Trigger(InventoryEventType.ContentChanged, this);
+            InventoryEvent.Trigger(InventoryEventType.ContentChanged, this, 0);
         }
 
-        public void SetWeightLimit(float weightLimit)
-        {
-            _weightLimit = weightLimit;
-        }
 
         public void SellAllItems()
         {
@@ -137,11 +120,6 @@ namespace Domains.Items
                 UniqueID = uniqueID;
                 BaseItem = item;
             }
-        }
-
-        public float GetMaxWeight()
-        {
-            return _weightLimit;
         }
     }
 }

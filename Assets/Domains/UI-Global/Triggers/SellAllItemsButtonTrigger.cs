@@ -4,16 +4,19 @@ using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class SellAllItemsButtonTrigger : MonoBehaviour
+namespace Domains.UI_Global.Triggers
 {
-    private Inventory _inventory;
-
-    [FormerlySerializedAs("SellAllFeedbacks")]
-    public MMFeedbacks sellAllFeedbacks;
-
-    public void TriggerSellAll()
+    public class SellAllItemsButtonTrigger : MonoBehaviour
     {
-        sellAllFeedbacks?.PlayFeedbacks();
-        InventoryEvent.Trigger(InventoryEventType.SellAllItems, _inventory);
+        private Inventory _inventory;
+
+        [FormerlySerializedAs("SellAllFeedbacks")]
+        public MMFeedbacks sellAllFeedbacks;
+
+        public void TriggerSellAll()
+        {
+            sellAllFeedbacks?.PlayFeedbacks();
+            InventoryEvent.Trigger(InventoryEventType.SellAllItems, _inventory, 0);
+        }
     }
 }

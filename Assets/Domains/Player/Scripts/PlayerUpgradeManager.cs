@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Domains.Items;
+using Domains.Items.Events;
 using Domains.Player.Events;
 using Domains.Player.Scripts.ScriptableObjects;
 using Domains.Scene.Scripts;
@@ -24,7 +25,6 @@ namespace Domains.Player.Scripts
 
         public float miningToolSize = 0.2f;
 
-        public Inventory myInventory;
 
         [SerializeField] private float fuelCapacity = 100f; // Default fuel capacity
 
@@ -65,7 +65,7 @@ namespace Domains.Player.Scripts
         {
             LoadUpgrades();
 
-            Instance.myInventory = PlayerInventoryManager.PlayerInventory;
+            // Instance.myInventory = PlayerInventoryManager.PlayerInventory;
 
 
             Instance.miningToolSize = shovelMiningState.size;
@@ -189,12 +189,14 @@ namespace Domains.Player.Scripts
 
             if (upgradeType == "Inventory")
             {
-                myInventory.SetWeightLimit(myInventory.GetMaxWeight() + addition);
+                var inventory = FindFirstObjectByType<Inventory>();
+                InventoryEvent.Trigger(InventoryEventType.UpgradedWeightLimit, inventory, addition);
             }
             else if (upgradeType == "Endurance")
             {
                 // Increase stamina directly
                 PlayerStaminaManager.MaxStaminaPoints += addition;
+                ES3.Save("MaxStamina", PlayerStaminaManager.MaxStaminaPoints, "UpgradeSave.es3"); // Save stamina
             }
             else if (upgradeType == "FuelCapacity")
             {
@@ -232,18 +234,7 @@ namespace Domains.Player.Scripts
             // Save fuel capacity
             ES3.Save("MaxFuelCapacity", Instance.fuelCapacity, "UpgradeSave.es3");
 
-            // **Skip inventory saving if not in play mode**
-            if (Application.isPlaying)
-            {
-                if (Instance.myInventory != null)
-                    ES3.Save("InventoryMaxWeight", Instance.myInventory.GetMaxWeight(), "UpgradeSave.es3");
-                else
-                    UnityEngine.Debug.LogWarning("Skipping InventoryMaxWeight save because Inventory is null.");
-            }
-            else
-            {
-                UnityEngine.Debug.LogWarning("Skipping Inventory save because game is not in play mode.");
-            }
+            ES3.Save("InventoryMaxWeight", PlayerInventoryManager.GetMaxWeight(), "GameSave.es3");
         }
 
 
@@ -283,8 +274,8 @@ namespace Domains.Player.Scripts
                 fuelCapacity = ES3.Load<float>("MaxFuelCapacity", "UpgradeSave.es3");
 
             // Load inventory size
-            if (ES3.KeyExists("InventoryMaxWeight", "UpgradeSave.es3"))
-                myInventory.SetWeightLimit(ES3.Load<float>("InventoryMaxWeight", "UpgradeSave.es3"));
+            if (ES3.KeyExists("InventoryMaxWeight", "GameSave.es3"))
+                PlayerInventoryManager.IncreaseWeightLimit(ES3.Load<float>("InventoryMaxWeight", "GameSave.es3"));
 
             foreach (var upgrade in availableUpgrades)
             {

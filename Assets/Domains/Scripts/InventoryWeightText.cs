@@ -1,36 +1,54 @@
 using System.Globalization;
 using Domains.Items.Events;
+using Domains.Scene.Scripts;
 using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
 
-public class InventoryWeightText : MonoBehaviour, MMEventListener<InventoryEvent>
+namespace Domains.Scripts
 {
-    TMP_Text _text;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class InventoryWeightText : MonoBehaviour, MMEventListener<InventoryEvent>
     {
-        _text = GetComponent<TMP_Text>();
-    }
+        private TMP_Text _text;
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        private void Start()
+        {
+            _text = GetComponent<TMP_Text>();
+        }
+
+        // Update is called once per frame
+        private void Update()
+        {
+        }
 
 
-    void OnEnable()
-    {
-        this.MMEventStartListening();
-    }
+        private void OnEnable()
+        {
+            this.MMEventStartListening();
+        }
 
-    void OnDisable()
-    {
-        this.MMEventStopListening();
-    }
-    public void OnMMEvent(InventoryEvent eventType)
-    {
-        if (eventType.EventType == InventoryEventType.ContentChanged)
-            _text.text = eventType.Inventory.CurrentWeight().ToString(CultureInfo.InvariantCulture);
+        private void OnDisable()
+        {
+            this.MMEventStopListening();
+        }
+
+        public void OnMMEvent(InventoryEvent eventType)
+        {
+            if (eventType.EventType == InventoryEventType.ContentChanged)
+            {
+                var currentWeight = PlayerInventoryManager.GetCurrentWeight();
+                var maxWeight = PlayerInventoryManager.GetMaxWeight();
+                _text.text =
+                    $"{currentWeight.ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
+                // _text.text = eventType.Inventory.CurrentWeight().ToString(CultureInfo.InvariantCulture);
+            }
+            else if (eventType.EventType == InventoryEventType.UpgradedWeightLimit)
+            {
+                var maxWeight = PlayerInventoryManager.GetMaxWeight();
+                _text.text =
+                    $"{PlayerInventoryManager.GetCurrentWeight().ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
+            }
+        }
     }
 }

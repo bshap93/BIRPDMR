@@ -22,7 +22,7 @@ public class TrainConsole : MonoBehaviour
     public void TriggerSellAll()
     {
         sellAllFeedbacks?.PlayFeedbacks();
-        InventoryEvent.Trigger(InventoryEventType.SellAllItems, _inventory);
+        InventoryEvent.Trigger(InventoryEventType.SellAllItems, _inventory, 0);
     }
 
     public void TriggerOpenVendorUI()
