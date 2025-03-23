@@ -49,7 +49,8 @@ crashlytics-build.properties
 /[Aa]ssets/ThirdParty/PolygonSciFiWorlds/*
 /[Aa]ssets/ThirdParty/LowlyPoly/*
 /[Aa]ssets/GSpawn - Level Designer (PRO)/*
-
+/[Aa]ssets/ThirdParty/SineVFX/*
+/[Aa]ssets/ThirdParty/Audio/*
 
 /[Pp]ackages/MicroSplat-Core/*
 /[Pp]ackages/MicroSplat-CoreURP6/*
