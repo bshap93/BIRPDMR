@@ -13,14 +13,14 @@ namespace Domains.Player.Events
         private static PointedObjectEvent e;
 
         public PointedObjectEventType eventType;
-        public string name;
+        public PointedObjectInfo pointedObjectInfo;
 
 
-        public static void Trigger(PointedObjectEventType pointedObjectEventType,
-            string objName)
+        public static void Trigger(PointedObjectEventType pointedObjectEventType, PointedObjectInfo pointedObjectInfo)
         {
+            UnityEngine.Debug.Log("Name: " + pointedObjectInfo.name);
             e.eventType = pointedObjectEventType;
-            e.name = objName;
+            e.pointedObjectInfo = pointedObjectInfo;
             MMEventManager.TriggerEvent(e);
         }
     }

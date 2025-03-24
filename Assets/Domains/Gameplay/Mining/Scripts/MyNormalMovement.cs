@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Linq;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
@@ -14,7 +16,7 @@ namespace Domains.Gameplay.Mining.Scripts
 {
     [MMRequiresConstantRepaint]
     [AddComponentMenu("Character Controller Pro/Demo/Character/States/Normal Movement")]
-    public class MyNormalMovement : CharacterState
+    public class MyNormalMovement : CharacterState, MMEventListener<PointedObjectEvent>
     {
         public enum JumpResult
         {
@@ -23,6 +25,10 @@ namespace Domains.Gameplay.Mining.Scripts
             NotGrounded
         }
 
+
+        private PointedObjectInfo _currentPointedObjectInfo;
+
+
         [Space(10)] public PlanarMovementParameters planarMovementParameters = new();
 
         public VerticalMovementParameters verticalMovementParameters = new();
@@ -30,6 +36,9 @@ namespace Domains.Gameplay.Mining.Scripts
         public CrouchParameters crouchParameters = new();
 
         public LookingDirectionParameters lookingDirectionParameters = new();
+
+
+        public PlayerInteraction playerInteraction;
 
 
         [Header("Animation")] [SerializeField] protected string groundedParameter = "Grounded";
@@ -128,11 +137,13 @@ namespace Domains.Gameplay.Mining.Scripts
         protected virtual void OnDisable()
         {
             CharacterActor.OnTeleport -= OnTeleport;
+            this.MMEventStartListening();
         }
 
         protected virtual void OnValidate()
         {
             verticalMovementParameters.OnValidate();
+            this.MMEventStopListening();
         }
 
         public override string GetInfo()
@@ -155,8 +166,14 @@ namespace Domains.Gameplay.Mining.Scripts
 
         public override void CheckExitTransition()
         {
+            if (_currentPointedObjectInfo != null &&
+                playerInteraction.diggablePointedObjects.Contains(_currentPointedObjectInfo))
+                return;
             if (CustomInputBindings.IsMineMouseButtonPressed() && !PlayerStaminaManager.IsPlayerOutOfStamina())
+            {
+                UnityEngine.Debug.Log("Mining state");
                 CharacterStateController.EnqueueTransition<ShovelMiningState>();
+            }
         }
 
         public override void ExitBehaviour(float dt, CharacterState toState)
@@ -881,5 +898,11 @@ namespace Domains.Gameplay.Mining.Scripts
         }
 
         #endregion
+
+        public void OnMMEvent(PointedObjectEvent eventType)
+        {
+            if (eventType.eventType == PointedObjectEventType.PointedObjectChanged)
+                _currentPointedObjectInfo = eventType.pointedObjectInfo;
+        }
     }
 }

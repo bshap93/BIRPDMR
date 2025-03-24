@@ -6,7 +6,7 @@ TerrainLayer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: microsplat_layer_T_56_1_Terrain_Ground_basecolor_5
+  m_Name: Topsoil
   m_DiffuseTexture: {fileID: 2800000, guid: 0784f37db20973d4488b7e2a96330ee6, type: 3}
   m_NormalMapTexture: {fileID: 0}
   m_MaskMapTexture: {fileID: 0}
