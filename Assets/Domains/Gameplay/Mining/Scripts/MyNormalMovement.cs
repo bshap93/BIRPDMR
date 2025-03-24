@@ -120,6 +120,8 @@ namespace Domains.Gameplay.Mining.Scripts
             materialController = this.GetComponentInBranch<CharacterActor, MaterialController>();
 
             if (textureDetector == null) textureDetector = FindObjectOfType<TextureDetector>();
+            if (playerInteraction == null)
+                playerInteraction = FindObjectOfType<PlayerInteraction>();
         }
 
         protected override void Start()
@@ -173,27 +175,22 @@ namespace Domains.Gameplay.Mining.Scripts
             maxFallSpeed = 0f;
         }
 
+
         public override void CheckExitTransition()
         {
             if (CustomInputBindings.IsMineMouseButtonPressed() && !PlayerStaminaManager.IsPlayerOutOfStamina())
             {
-                CharacterStateController.EnqueueTransition<ShovelMiningState>();
-                return;
-                var textureIndex = -1;
-                if (textureDetector != null)
-                    textureIndex = TerrainManager.CurrentTextureIndex;
-                else
+                if (playerInteraction == null)
                     return;
 
-                var isDiggable = false;
-                if (playerInteraction != null)
-                    isDiggable = playerInteraction.diggableLayers[textureIndex];
-                else
+                var textureIndex = playerInteraction.currentTextureIndex;
+
+                if (textureIndex < 0 || textureIndex >= playerInteraction.diggableLayers.Length)
                     return;
 
-                if (isDiggable)
+                if (playerInteraction.diggableLayers[textureIndex])
                 {
-                    UnityEngine.Debug.Log("Mining state");
+                    UnityEngine.Debug.Log($"Mining state triggered on texture index {textureIndex}");
                     CharacterStateController.EnqueueTransition<ShovelMiningState>();
                 }
             }

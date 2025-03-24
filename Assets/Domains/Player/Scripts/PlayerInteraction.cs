@@ -83,9 +83,6 @@ namespace Domains.Player.Scripts
                     // Update our tracking variables
                     currentTextureName = name;
                     currentTextureIndex = index;
-
-                    // For debugging
-                    UnityEngine.Debug.Log($"Updated texture info: {currentTextureName} (index: {currentTextureIndex})");
                 }
         }
 

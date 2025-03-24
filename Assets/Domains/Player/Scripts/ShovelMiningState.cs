@@ -35,9 +35,11 @@ namespace Domains.Player.Scripts
         public float stalagmiteHeight = 10F;
 
         public bool editAsynchronously = true;
-        private DiggerMasterRuntime _diggerMasterRuntime;
 
         public ToolIteration toolIteration;
+        private DiggerMasterRuntime _diggerMasterRuntime;
+
+        private PlayerInteraction playerInteraction;
 
 
         protected override void Start()
@@ -51,6 +53,8 @@ namespace Domains.Player.Scripts
 
                 enabled = false;
             }
+
+            playerInteraction = FindFirstObjectByType<PlayerInteraction>();
         }
 
         // Write your transitions here
@@ -70,6 +74,18 @@ namespace Domains.Player.Scripts
 
         public void PerformMining()
         {
+            if (playerInteraction == null)
+                return;
+
+            var textureIndex = playerInteraction.currentTextureIndex;
+
+            if (textureIndex < 0 || textureIndex >= playerInteraction.diggableLayers.Length ||
+                !playerInteraction.diggableLayers[textureIndex])
+            {
+                CharacterStateController.EnqueueTransition<MyNormalMovement>();
+                return;
+            }
+
             RaycastHit hit;
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, miningRange))
             {
@@ -77,25 +93,22 @@ namespace Domains.Player.Scripts
                 if (interactable != null) interactable.Interact();
 
                 var strokeStart = hit.point;
-                var strokeDirection = cameraTransform.forward * 0.3f; // Moves strokes forward
-
-                var miningPerformed = false; // ✅ Track if mining actually happened
+                var strokeDirection = cameraTransform.forward * 0.3f;
 
                 for (var i = 0; i < strokeCount; i++)
                 {
                     var strokePosition = strokeStart + strokeDirection * i;
 
                     if (editAsynchronously)
-                        _diggerMasterRuntime.ModifyAsyncBuffured(strokePosition, brush, action, textureIndex, opacity,
-                            size, stalagmiteHeight);
+                        _diggerMasterRuntime.ModifyAsyncBuffured(
+                            strokePosition, brush, action, textureIndex, opacity, size, stalagmiteHeight);
                     else
-                        _diggerMasterRuntime.Modify(strokePosition, brush, action, textureIndex, opacity, size);
-
-                    miningPerformed = true; // ✅ Mark that mining actually occurred
+                        _diggerMasterRuntime.Modify(
+                            strokePosition, brush, action, textureIndex, opacity, size);
                 }
 
-                if (miningPerformed) // ✅ Play feedback ONLY ONCE
-                    StaminaEvent.Trigger(StaminaEventType.ConsumeStamina, staminaExpense);
+                StaminaEvent.Trigger(StaminaEventType.ConsumeStamina, staminaExpense);
+                miningBehavior?.PlayFeedbacks();
             }
         }
 
