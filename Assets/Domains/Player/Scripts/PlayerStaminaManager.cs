@@ -1,7 +1,5 @@
 ﻿using Domains.Player.Events;
 using Domains.Player.Scripts.ScriptableObjects;
-using Domains.UI;
-using Domains.UI_Global;
 using Domains.UI_Global.Events;
 using Gameplay.Character.Stamina;
 using MoreMountains.Tools;
@@ -29,14 +27,21 @@ namespace Domains.Player.Scripts
         // ReSharper disable once FieldCanBeMadeReadOnly.Global
         public static float InitialCharacterStamina;
         public StaminaBarUpdater staminaBarUpdater;
-        private CharacterStatProfile characterStatProfile;
 
 
         private string _savePath;
+        private CharacterStatProfile characterStatProfile;
 
 
         private void Awake()
         {
+            if (staminaBarUpdater == null)
+            {
+                staminaBarUpdater = FindFirstObjectByType<StaminaBarUpdater>();
+                if (staminaBarUpdater == null)
+                    UnityEngine.Debug.LogError("PlayerStaminaManager: No StaminaBarUpdater found in scene!");
+            }
+
             characterStatProfile =
                 Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
             if (characterStatProfile != null)
@@ -104,7 +109,7 @@ namespace Domains.Player.Scripts
             {
                 StaminaPoints = 0;
                 PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfStamina);
-                AlertEvent.Trigger(AlertType.OutOfStamina, "You are out of stamina!", "Out of Stamina", null);
+                AlertEvent.Trigger(AlertType.OutOfStamina, "You are out of stamina!", "Out of Stamina");
             }
             else
             {

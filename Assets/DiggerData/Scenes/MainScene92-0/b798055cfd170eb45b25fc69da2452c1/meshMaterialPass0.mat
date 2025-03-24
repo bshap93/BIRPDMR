@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal0:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: dc048730062ed41f3b91a5e85ad21a26, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal1:
@@ -44,8 +44,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Splat0:
-        m_Texture: {fileID: 2800000, guid: 0784f37db20973d4488b7e2a96330ee6, type: 3}
-        m_Scale: {x: 0.02, y: 0}
+        m_Texture: {fileID: 2800000, guid: b4da824f5b4b043c7bc921d2dea78c4e, type: 3}
+        m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     - _Splat1:
         m_Texture: {fileID: 2800000, guid: 187a9cbbdb313414a96fed488123c31c, type: 3}
@@ -82,8 +82,8 @@ Material:
     - _offset2y: 0
     - _offset3x: 0
     - _offset3y: 0
-    - _tiles0x: 0.02
-    - _tiles0y: 0
+    - _tiles0x: 0.5
+    - _tiles0y: 0.5
     - _tiles1x: 0.5
     - _tiles1y: 0.5
     - _tiles2x: 0.03

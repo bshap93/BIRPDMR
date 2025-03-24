@@ -1,8 +1,6 @@
 ﻿using Domains.Player.Events;
 using Domains.Player.Scripts.ScriptableObjects;
 using Domains.Scene.Scripts;
-using Domains.UI;
-using Domains.UI_Global;
 using Domains.UI_Global.Events;
 using Domains.UI_Global.UIUpdaters;
 using MoreMountains.Tools;
@@ -28,12 +26,19 @@ namespace Domains.Player.Scripts
         public static int InitialCurrencyAmount;
 
         public CurrencyBarUpdater currencyBarUpdater;
-        private CharacterStatProfile characterStatProfile;
 
         private string _savePath;
+        private CharacterStatProfile characterStatProfile;
 
         private void Awake()
         {
+            if (currencyBarUpdater == null)
+            {
+                currencyBarUpdater = FindFirstObjectByType<CurrencyBarUpdater>();
+                if (currencyBarUpdater == null)
+                    UnityEngine.Debug.LogError("PlayerCurrencyManager: No CurrencyBarUpdater found in scene!");
+            }
+
             characterStatProfile =
                 Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
             if (characterStatProfile != null)
@@ -111,7 +116,7 @@ namespace Domains.Player.Scripts
             {
                 CompanyCredits = 0;
                 AlertEvent.Trigger(AlertType.InsufficientFunds, "You don't have enough funds to complete this action.",
-                    "Insufficient Funds", null);
+                    "Insufficient Funds");
             }
             else
             {

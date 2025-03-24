@@ -1,11 +1,9 @@
-﻿using System;
-using System.Drawing;
-using Domains.Player.Events;
+﻿using Domains.Player.Events;
 using Domains.Player.Scripts;
 using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
-using Color = UnityEngine.Color;
+using PointedObjectInfo = Domains.Player.Events.PointedObjectInfo;
 
 namespace Domains.UI_Global.Scripts
 {
@@ -84,7 +82,7 @@ namespace Domains.UI_Global.Scripts
 
         public void OnMMEvent(PointedObjectEvent eventType)
         {
-            OnPointedObjectChanged(eventType.pointedObjectInfo);
+            OnPointedObjectChanged(eventType.PointedObjectInfo);
         }
 
         private string GetTextureName(int textureIndex)

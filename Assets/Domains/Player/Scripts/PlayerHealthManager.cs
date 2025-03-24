@@ -2,7 +2,6 @@ using Domains.Player.Events;
 using Domains.Player.Scripts.ScriptableObjects;
 using Domains.Scene.Scripts;
 using Domains.UI;
-using Domains.UI_Global;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
@@ -37,12 +36,19 @@ namespace Domains.Player.Scripts
 
         public bool immuneToDamage;
 
-        private string _savePath;
-
         private CharacterStatProfile _characterStatProfile;
+
+        private string _savePath;
 
         private void Awake()
         {
+            if (healthBarUpdater == null)
+            {
+                healthBarUpdater = FindFirstObjectByType<HealthBarUpdater>();
+                if (healthBarUpdater == null)
+                    UnityEngine.Debug.LogError("PlayerHealthManager: No HealthBarUpdater found in scene!");
+            }
+
             _characterStatProfile =
                 Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
             if (_characterStatProfile != null)
@@ -110,7 +116,7 @@ namespace Domains.Player.Scripts
             {
                 HealthPoints = 0;
                 PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfHealth);
-                AlertEvent.Trigger(AlertType.HealthHitZero, "You have run out of health!", "Out of Health", null);
+                AlertEvent.Trigger(AlertType.HealthHitZero, "You have run out of health!", "Out of Health");
                 deathFeedbacks?.PlayFeedbacks();
             }
             else

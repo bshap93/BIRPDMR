@@ -117,6 +117,8 @@ namespace Domains.Scene.Scripts
 
             var saveFilePath = GetSaveFilePath();
 
+            PlayerInventory = FindFirstObjectByType<Inventory>();
+
             if (PlayerInventory == null)
             {
                 UnityEngine.Debug.LogError("InventoryPersistenceManager: No Inventory Assigned!");

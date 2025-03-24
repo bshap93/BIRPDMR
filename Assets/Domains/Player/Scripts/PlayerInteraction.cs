@@ -1,62 +1,40 @@
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using Digger;
 using Digger.Demo;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Input.Scripts;
-using Domains.Player.Events;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Events;
-using Color = UnityEngine.Color;
-
-[Serializable]
-public enum PointedObjectType
-{
-    Terrain,
-    Interactable,
-    None
-}
 
 namespace Domains.Player.Scripts
 {
-    // Define a class to hold texture/object information for UI display
-    [Serializable]
-    public class PointedObjectInfo
-    {
-        public string name;
-        public PointedObjectType type; // "Terrain", "Interactable", etc.
-        public int textureIndex = -1;
-        public bool isInteractable;
-    }
-
-    // Event for sending pointed object information
-
-
     public class PlayerInteraction : MonoBehaviour
     {
-        public float interactionDistance = 2f;
-        public LayerMask interactableLayer;
-        public LayerMask terrainLayer;
-        public Camera playerCamera;
+        public float interactionDistance = 2f; // How far the player can interact
+        public LayerMask interactableLayer; // Only detect objects in this layer
+        public LayerMask terrainLayer; // Only detect objects in this layer
+        public Camera playerCamera; // Reference to the player’s camera
         public Image reticle;
         public Color defaultReticleColor = Color.white;
         public Color interactReticleColor = Color.green;
-        public Color terrainReticleColor = Color.blue; // Added color for when pointing at terrain
 
-        // Event that will be invoked when pointed object changes
+        public bool[] diggableLayers;
 
-        public List<PointedObjectInfo> diggablePointedObjects;
+        public string[] layerStrings;
 
+        [Header("Terrain Texture Information")] [Tooltip("The current texture index detected from terrain")]
+        public int currentTextureIndex = -1;
+
+        [Tooltip("The current texture layer name detected from terrain")]
+        public string currentTextureName = "";
 
         private RuntimeDig _digClass;
         private DiggerMaster _diggerMaster;
         private DiggerMasterRuntime _diggerMasterRuntime;
         private bool _interactablePrompt;
-        private PointedObjectInfo _currentPointedObject = new();
+        private TextureDetector _textureDetector; // Reference to the TextureDetector component
+
 
         private void Start()
         {
@@ -64,23 +42,27 @@ namespace Domains.Player.Scripts
             _diggerMasterRuntime = FindFirstObjectByType<DiggerMasterRuntime>();
             _digClass = GetComponent<RuntimeDig>();
 
-            // Initialize with empty info
-            _currentPointedObject.name = "";
-            _currentPointedObject.type = PointedObjectType.None;
-            _currentPointedObject.isInteractable = false;
+            // Find the TextureDetector in the scene
+            _textureDetector = FindFirstObjectByType<TextureDetector>();
+
+            if (_textureDetector == null)
+                UnityEngine.Debug.LogWarning(
+                    "TextureDetector not found in the scene. Cannot track texture information.");
         }
 
         private void Update()
         {
-            PerformRaycastCheck();
+            PerformRaycastCheck(); // ✅ Single raycast for both interactables and diggable terrain
 
-            if (CustomInputBindings.IsInteractPressed())
+            // Update texture information from TextureDetector if available
+            UpdateTextureInformation();
+
+            if (CustomInputBindings.IsInteractPressed()) // Press E to interact
                 PerformInteraction();
 
             if (CustomInputBindings.IsPersistanceKeyPressed())
                 _diggerMasterRuntime.PersistAll();
-            else if (CustomInputBindings.IsDeletionKeyPressed())
-                _diggerMasterRuntime.DeleteAllPersistedData();
+            else if (CustomInputBindings.IsDeletionKeyPressed()) _diggerMasterRuntime.DeleteAllPersistedData();
         }
 
         private void OnDrawGizmos()
@@ -90,6 +72,23 @@ namespace Domains.Player.Scripts
                 playerCamera.transform.position,
                 playerCamera.transform.TransformDirection(Vector3.forward) * interactionDistance);
         }
+
+        // New method to update texture information
+        private void UpdateTextureInformation()
+        {
+            if (_textureDetector != null && !string.IsNullOrEmpty(_textureDetector.texture))
+                // Extract name and index from TextureDetector's texture string
+                if (ExtractNameAndIndex(_textureDetector.texture, out var name, out var index))
+                {
+                    // Update our tracking variables
+                    currentTextureName = name;
+                    currentTextureIndex = index;
+
+                    // For debugging
+                    UnityEngine.Debug.Log($"Updated texture info: {currentTextureName} (index: {currentTextureIndex})");
+                }
+        }
+
 
         private void PerformRaycastCheck()
         {
@@ -102,154 +101,53 @@ namespace Domains.Player.Scripts
             var rayOrigin = playerCamera.transform.position;
             var rayDirection = playerCamera.transform.forward;
 
-            // Check for terrain
+            // First check if there's terrain blocking the view
             RaycastHit terrainHit;
-            var terrainHitSuccess = Physics.Raycast(
+            var terrainBlocking = Physics.Raycast(
                 rayOrigin, rayDirection, out terrainHit, interactionDistance, terrainLayer);
 
-            // Check for interactables
+            // Then check for interactables
             RaycastHit interactableHit;
             var hitInteractable = Physics.Raycast(
                 rayOrigin, rayDirection, out interactableHit, interactionDistance, interactableLayer);
 
-            // Reset current pointed object
-            var objectChanged = false;
-            var previousObject = new PointedObjectInfo
-            {
-                name = _currentPointedObject.name,
-                type = _currentPointedObject.type,
-                textureIndex = _currentPointedObject.textureIndex,
-                isInteractable = _currentPointedObject.isInteractable
-            };
-
-            // If we hit both, determine which is closer
-            if (terrainHitSuccess && hitInteractable)
-            {
+            // If we hit both, check if the terrain is in front of the interactable
+            if (terrainBlocking && hitInteractable)
+                // If terrain is closer than the interactable, it's blocking
                 if (terrainHit.distance < interactableHit.distance)
                 {
-                    // Terrain is closer
-                    HandleTerrainHit(terrainHit);
-                    objectChanged = !ComparePointedObjects(previousObject, _currentPointedObject);
-                }
-                else
-                {
-                    // Interactable is closer
-                    HandleInteractableHit(interactableHit);
-                    objectChanged = !ComparePointedObjects(previousObject, _currentPointedObject);
-                }
-            }
-            else if (terrainHitSuccess)
-            {
-                // Only hit terrain
-                HandleTerrainHit(terrainHit);
-                objectChanged = !ComparePointedObjects(previousObject, _currentPointedObject);
-            }
-            else if (hitInteractable)
-            {
-                // Only hit interactable
-                HandleInteractableHit(interactableHit);
-                objectChanged = !ComparePointedObjects(previousObject, _currentPointedObject);
-            }
-            else
-            {
-                // Hit nothing
-                reticle.color = defaultReticleColor;
-                if (_interactablePrompt)
-                {
-                    _interactablePrompt = false;
+                    // Terrain is blocking, reset reticle and hide prompts
+                    reticle.color = defaultReticleColor;
+                    if (_interactablePrompt)
+                        _interactablePrompt = false;
                     HideAllPrompts();
+                    return;
                 }
 
-                // Clear current pointed object
-                _currentPointedObject.name = "";
-                _currentPointedObject.type = PointedObjectType.None;
-                _currentPointedObject.textureIndex = -1;
-                _currentPointedObject.isInteractable = false;
-                objectChanged = !ComparePointedObjects(previousObject, _currentPointedObject);
-            }
-
-            // Trigger event if object changed
-            if (objectChanged)
-                PointedObjectEvent.Trigger(PointedObjectEventType.PointedObjectChanged, _currentPointedObject);
-        }
-
-        private void HandleTerrainHit(RaycastHit hit)
-        {
-            // Update reticle color for terrain
-            reticle.color = terrainReticleColor;
-
-            // Hide any interactable prompts
-            if (_interactablePrompt)
+            // If we reach here, either there's no terrain blocking, or the interactable is in front of terrain
+            if (hitInteractable)
             {
-                _interactablePrompt = false;
-                HideAllPrompts();
+                var interactable = interactableHit.collider.GetComponent<IInteractable>();
+                var button = interactableHit.collider.GetComponent<ButtonActivated>();
+
+                if (interactable != null)
+                {
+                    reticle.color = interactReticleColor;
+                    interactable.ShowInteractablePrompt();
+                    _interactablePrompt = true;
+
+                    // Show button prompt if applicable
+                    if (button != null) button.ShowInteractablePrompt();
+                    return;
+                }
             }
 
-            // Get terrain texture info
-            var textureIndex = TextureDetector.GetTextureIndex(hit, out var terrain);
-
-            // Update current pointed object
-            if (terrain != null && textureIndex >= 0 && textureIndex < terrain.terrainData.terrainLayers.Length)
-            {
-                _currentPointedObject.name = terrain.terrainData.terrainLayers[textureIndex].name;
-                _currentPointedObject.type = PointedObjectType.Terrain;
-                _currentPointedObject.textureIndex = textureIndex;
-                _currentPointedObject.isInteractable = false;
-            }
-            else
-            {
-                _currentPointedObject.name = "Unknown Terrain";
-                _currentPointedObject.type = PointedObjectType.Terrain;
-                _currentPointedObject.textureIndex = -1;
-                _currentPointedObject.isInteractable = false;
-            }
-        }
-
-        private void HandleInteractableHit(RaycastHit hit)
-        {
-            var interactable = hit.collider.GetComponent<IInteractable>();
-            var button = hit.collider.GetComponent<ButtonActivated>();
-
-            if (interactable != null)
-            {
-                reticle.color = interactReticleColor;
-                interactable.ShowInteractablePrompt();
-                _interactablePrompt = true;
-
-                // Show button prompt if applicable
-                if (button != null)
-                    button.ShowInteractablePrompt();
-
-                // Update current pointed object
-                _currentPointedObject.name = hit.collider.gameObject.name;
-                _currentPointedObject.type = PointedObjectType.Interactable;
-                _currentPointedObject.textureIndex = -1;
-                _currentPointedObject.isInteractable = true;
-
-                return;
-            }
-
-            // If we reach here, no interactable was found
+            // Reset if no interactable is found or if it's blocked
             reticle.color = defaultReticleColor;
             if (_interactablePrompt)
-            {
                 _interactablePrompt = false;
-                HideAllPrompts();
-            }
 
-            // Clear current pointed object
-            _currentPointedObject.name = hit.collider.gameObject.name;
-            _currentPointedObject.type = PointedObjectType.Interactable;
-            _currentPointedObject.textureIndex = -1;
-            _currentPointedObject.isInteractable = false;
-        }
-
-        private bool ComparePointedObjects(PointedObjectInfo obj1, PointedObjectInfo obj2)
-        {
-            return obj1.name == obj2.name &&
-                   obj1.type == obj2.type &&
-                   obj1.textureIndex == obj2.textureIndex &&
-                   obj1.isInteractable == obj2.isInteractable;
+            HideAllPrompts(); // Hide button prompts if nothing is targeted
         }
 
         private void HideAllPrompts()
@@ -257,6 +155,61 @@ namespace Domains.Player.Scripts
             foreach (var button in FindObjectsByType<ButtonActivated>(FindObjectsSortMode.None))
                 button.HideInteractablePrompt();
         }
+
+        /// <summary>
+        ///     Extracts name and index from a string in the format "name: Topsoil | index: 0"
+        /// </summary>
+        /// <param name="input">The formatted string to parse</param>
+        /// <param name="name">Output parameter that will contain the extracted name</param>
+        /// <param name="index">Output parameter that will contain the extracted index</param>
+        /// <returns>True if parsing was successful, false otherwise</returns>
+        public bool ExtractNameAndIndex(string input, out string name, out int index)
+        {
+            // Initialize output parameters with default values
+            name = string.Empty;
+            index = -1;
+
+            // Check if input is null or empty
+            if (string.IsNullOrEmpty(input))
+                return false;
+
+            try
+            {
+                // Split the input by the separator '|'
+                var parts = input.Split('|');
+
+                if (parts.Length < 2)
+                    return false;
+
+                // Extract name part and trim whitespace
+                var namePart = parts[0].Trim();
+
+                // Extract index part and trim whitespace
+                var indexPart = parts[1].Trim();
+
+                // Check if the parts start with expected prefixes
+                if (!namePart.StartsWith("name:") || !indexPart.StartsWith("index:"))
+                    return false;
+
+                // Extract the actual name (remove "name: " prefix and trim)
+                name = namePart.Substring(5).Trim();
+
+                // Extract the actual index (remove "index: " prefix and trim)
+                var indexValue = indexPart.Substring(6).Trim();
+
+                // Parse index to integer
+                if (!int.TryParse(indexValue, out index))
+                    return false;
+
+                return true;
+            }
+            catch (Exception)
+            {
+                // Return false in case of any exception
+                return false;
+            }
+        }
+
 
         private void PerformInteraction()
         {

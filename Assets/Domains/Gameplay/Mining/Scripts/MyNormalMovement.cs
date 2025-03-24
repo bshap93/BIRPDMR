@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Drawing;
-using System.Linq;
+using Digger.Demo;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
@@ -11,6 +10,7 @@ using Lightbug.Utilities;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
+using PointedObjectInfo = Domains.Player.Events.PointedObjectInfo;
 
 namespace Domains.Gameplay.Mining.Scripts
 {
@@ -26,9 +26,6 @@ namespace Domains.Gameplay.Mining.Scripts
         }
 
 
-        private PointedObjectInfo _currentPointedObjectInfo;
-
-
         [Space(10)] public PlanarMovementParameters planarMovementParameters = new();
 
         public VerticalMovementParameters verticalMovementParameters = new();
@@ -39,6 +36,7 @@ namespace Domains.Gameplay.Mining.Scripts
 
 
         public PlayerInteraction playerInteraction;
+        public TextureDetector textureDetector;
 
 
         [Header("Animation")] [SerializeField] protected string groundedParameter = "Grounded";
@@ -67,6 +65,9 @@ namespace Domains.Gameplay.Mining.Scripts
 
         [SerializeField] protected float minimumFallDamageSpeed = 10f;
         [SerializeField] protected float fallDamageMultiplier = 1f;
+
+
+        private PointedObjectInfo _currentPointedObjectInfo;
 
 
         protected PlanarMovementParameters.PlanarMovementProperties currentMotion;
@@ -117,6 +118,8 @@ namespace Domains.Gameplay.Mining.Scripts
             notGroundedJumpsLeft = verticalMovementParameters.availableNotGroundedJumps;
 
             materialController = this.GetComponentInBranch<CharacterActor, MaterialController>();
+
+            if (textureDetector == null) textureDetector = FindObjectOfType<TextureDetector>();
         }
 
         protected override void Start()
@@ -146,6 +149,12 @@ namespace Domains.Gameplay.Mining.Scripts
             this.MMEventStopListening();
         }
 
+        public void OnMMEvent(PointedObjectEvent eventType)
+        {
+            if (eventType.EventType == PointedObjectEventType.PointedObjectChanged)
+                _currentPointedObjectInfo = eventType.PointedObjectInfo;
+        }
+
         public override string GetInfo()
         {
             return
@@ -166,13 +175,27 @@ namespace Domains.Gameplay.Mining.Scripts
 
         public override void CheckExitTransition()
         {
-            if (_currentPointedObjectInfo != null &&
-                playerInteraction.diggablePointedObjects.Contains(_currentPointedObjectInfo))
-                return;
             if (CustomInputBindings.IsMineMouseButtonPressed() && !PlayerStaminaManager.IsPlayerOutOfStamina())
             {
-                UnityEngine.Debug.Log("Mining state");
                 CharacterStateController.EnqueueTransition<ShovelMiningState>();
+                return;
+                var textureIndex = -1;
+                if (textureDetector != null)
+                    textureIndex = TerrainManager.CurrentTextureIndex;
+                else
+                    return;
+
+                var isDiggable = false;
+                if (playerInteraction != null)
+                    isDiggable = playerInteraction.diggableLayers[textureIndex];
+                else
+                    return;
+
+                if (isDiggable)
+                {
+                    UnityEngine.Debug.Log("Mining state");
+                    CharacterStateController.EnqueueTransition<ShovelMiningState>();
+                }
             }
         }
 
@@ -272,7 +295,6 @@ namespace Domains.Gameplay.Mining.Scripts
                 }
             }
         }
-
 
         /// <summary>
         ///     Processes the lateral movement of the character (stable and unstable state), that is, walk, run, crouch, etc.
@@ -898,11 +920,5 @@ namespace Domains.Gameplay.Mining.Scripts
         }
 
         #endregion
-
-        public void OnMMEvent(PointedObjectEvent eventType)
-        {
-            if (eventType.eventType == PointedObjectEventType.PointedObjectChanged)
-                _currentPointedObjectInfo = eventType.pointedObjectInfo;
-        }
     }
 }

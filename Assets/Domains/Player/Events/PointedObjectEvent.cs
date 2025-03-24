@@ -1,27 +1,55 @@
-﻿using Domains.Player.Scripts;
+﻿using System;
+using JetBrains.Annotations;
 using MoreMountains.Tools;
 
 namespace Domains.Player.Events
 {
     public enum PointedObjectEventType
     {
-        PointedObjectChanged
+        PointedObjectChanged,
+        TerrainDetected
     }
+
+    public enum PointedObjectType
+    {
+        Terrain,
+        Interactable,
+        Other,
+        None
+    }
+
+    // Define a class to hold texture/object information for UI display
+    [Serializable]
+    public class PointedObjectInfo
+    {
+        public string name;
+        public PointedObjectType type; // "Terrain", "Interactable", etc.
+        public int textureIndex = -1;
+        public bool isInteractable;
+    }
+
 
     public struct PointedObjectEvent
     {
-        private static PointedObjectEvent e;
+        private static PointedObjectEvent _e;
 
-        public PointedObjectEventType eventType;
-        public PointedObjectInfo pointedObjectInfo;
+        public PointedObjectEventType EventType;
+        public string Name;
+        public PointedObjectInfo PointedObjectInfo;
 
 
-        public static void Trigger(PointedObjectEventType pointedObjectEventType, PointedObjectInfo pointedObjectInfo)
+        public static void Trigger(PointedObjectEventType pointedObjectEventType, string name,
+            PointedObjectInfo pointedObjectInfo = null)
         {
-            UnityEngine.Debug.Log("Name: " + pointedObjectInfo.name);
-            e.eventType = pointedObjectEventType;
-            e.pointedObjectInfo = pointedObjectInfo;
-            MMEventManager.TriggerEvent(e);
+            _e.EventType = pointedObjectEventType;
+            _e.Name = name;
+            if (pointedObjectInfo != null)
+            {
+                UnityEngine.Debug.Log("Name: " + pointedObjectInfo.name);
+                _e.PointedObjectInfo = pointedObjectInfo;
+            }
+
+            MMEventManager.TriggerEvent(_e);
         }
     }
 }

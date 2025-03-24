@@ -39,6 +39,7 @@ namespace Domains.Scripts
             {
                 var currentWeight = PlayerInventoryManager.GetCurrentWeight();
                 var maxWeight = PlayerInventoryManager.GetMaxWeight();
+                if (_text == null || _text.text == null) return;
                 _text.text =
                     $"{currentWeight.ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
                 // _text.text = eventType.Inventory.CurrentWeight().ToString(CultureInfo.InvariantCulture);
