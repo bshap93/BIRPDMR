@@ -4,6 +4,7 @@ using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Input.Scripts;
+using Domains.Player.Events;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +24,8 @@ namespace Domains.Player.Scripts
         private DiggerMaster _diggerMaster;
         private DiggerMasterRuntime _diggerMasterRuntime;
         private bool _interactablePrompt;
+
+        private string _currentPointedName;
 
 
         private void Start()
@@ -65,30 +68,30 @@ namespace Domains.Player.Scripts
             var rayOrigin = playerCamera.transform.position;
             var rayDirection = playerCamera.transform.forward;
 
-            // First check if there's terrain blocking the view
             RaycastHit terrainHit;
-            var terrainBlocking = Physics.Raycast(
-                rayOrigin, rayDirection, out terrainHit, interactionDistance, terrainLayer);
+            var terrainBlocking =
+                Physics.Raycast(rayOrigin, rayDirection, out terrainHit, interactionDistance, terrainLayer);
 
-            // Then check for interactables
             RaycastHit interactableHit;
-            var hitInteractable = Physics.Raycast(
-                rayOrigin, rayDirection, out interactableHit, interactionDistance, interactableLayer);
+            var hitInteractable = Physics.Raycast(rayOrigin, rayDirection, out interactableHit, interactionDistance,
+                interactableLayer);
 
-            // If we hit both, check if the terrain is in front of the interactable
-            if (terrainBlocking && hitInteractable)
-                // If terrain is closer than the interactable, it's blocking
-                if (terrainHit.distance < interactableHit.distance)
-                {
-                    // Terrain is blocking, reset reticle and hide prompts
-                    reticle.color = defaultReticleColor;
-                    if (_interactablePrompt)
-                        _interactablePrompt = false;
-                    HideAllPrompts();
-                    return;
-                }
+            if (terrainBlocking && hitInteractable && terrainHit.distance < interactableHit.distance)
+            {
+                // Terrain is blocking, show terrain texture name
+                reticle.color = defaultReticleColor;
+                if (_interactablePrompt)
+                    _interactablePrompt = false;
 
-            // If we reach here, either there's no terrain blocking, or the interactable is in front of terrain
+                HideAllPrompts();
+
+                // ✅ Detect texture and send name to UI
+                UnityEngine.Debug.Log("Detecting texture...");
+                var textureName = DetectTexture(terrainHit);
+                UpdatePointedName(textureName);
+                return;
+            }
+
             if (hitInteractable)
             {
                 var interactable = interactableHit.collider.GetComponent<IInteractable>();
@@ -100,19 +103,33 @@ namespace Domains.Player.Scripts
                     interactable.ShowInteractablePrompt();
                     _interactablePrompt = true;
 
-                    // Show button prompt if applicable
-                    if (button != null) button.ShowInteractablePrompt();
+                    if (button != null)
+                        button.ShowInteractablePrompt();
+
+                    // ✅ Set name for UI
+                    UpdatePointedName(interactableHit.collider.name);
                     return;
                 }
             }
 
-            // Reset if no interactable is found or if it's blocked
+            // Nothing hit
             reticle.color = defaultReticleColor;
             if (_interactablePrompt)
                 _interactablePrompt = false;
 
-            HideAllPrompts(); // Hide button prompts if nothing is targeted
+            HideAllPrompts();
+            UpdatePointedName(""); // Clear UI
         }
+
+        private void UpdatePointedName(string newName)
+        {
+            if (_currentPointedName != newName)
+            {
+                _currentPointedName = newName;
+                PointedObjectEvent.Trigger(PointedObjectEventType.PointedObjectChanged, newName);
+            }
+        }
+
 
         private void HideAllPrompts()
         {
@@ -121,14 +138,16 @@ namespace Domains.Player.Scripts
         }
 
 
-        private void DetectTexture(RaycastHit hit)
+        private string DetectTexture(RaycastHit hit)
         {
             var index = TextureDetector.GetTextureIndex(hit, out var terrain);
-            // if (terrain != null && index < terrain.terrainData.terrainLayers.Length)
-            //     Debug.Log($"Texture detected: {terrain.terrainData.terrainLayers[index].name}");
-            // else
-            //     Debug.Log("No texture detected or object is not a terrain.");
+            UnityEngine.Debug.Log("Texture index: " + index);
+            if (terrain != null && index < terrain.terrainData.terrainLayers.Length)
+                return terrain.terrainData.terrainLayers[index].name;
+
+            return "Unknown Terrain";
         }
+
 
         private void PerformInteraction()
         {

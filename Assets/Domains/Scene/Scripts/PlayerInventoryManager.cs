@@ -31,6 +31,9 @@ namespace Domains.Scene.Scripts
         public const string WeightLimitKey = "InventoryMaxWeight";
         public static Inventory PlayerInventory;
 
+        [FormerlySerializedAs("PlayerInventoryReference")] [SerializeField]
+        private Inventory playerInventoryReference;
+
         public static List<InventoryEntryData> InventoryContentData = new();
         private static float _weightLimit;
 
@@ -44,7 +47,10 @@ namespace Domains.Scene.Scripts
 
         private void Start()
         {
-            PlayerInventory = FindFirstObjectByType<Inventory>();
+            if (playerInventoryReference != null)
+                PlayerInventory = playerInventoryReference;
+            else
+                PlayerInventory = FindFirstObjectByType<Inventory>();
 
             if (PlayerInventory == null)
             {

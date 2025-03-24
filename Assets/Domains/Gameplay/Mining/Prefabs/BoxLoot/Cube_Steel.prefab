@@ -394,10 +394,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380f9b65545dc3b488923b80b2b83bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueID: faef8c34-18e4-4ae9-a850-783395487506
+  uniqueID: 76b8ac0d-6a2a-4de8-a2d7-d174bab85a2c
   itemType: {fileID: 11400000, guid: 0586b7fb6a837854d959dc2fbfcd8ba2, type: 2}
   quantity: 1
-  interactionHoldTime: 1
+  interactionHoldTime: 0.5
   pickedMmFeedbacks: {fileID: 6991868795587982878}
   soldMmFeedbacks: {fileID: 0}
   notPickable: 0
