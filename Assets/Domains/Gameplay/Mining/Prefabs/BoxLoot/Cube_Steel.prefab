@@ -284,6 +284,7 @@ GameObject:
   - component: {fileID: -6475825427056405351}
   - component: {fileID: -82563081381324768}
   - component: {fileID: 8421229855427537087}
+  - component: {fileID: 3954056325654008359}
   m_Layer: 6
   m_Name: Cube_Steel
   m_TagString: Untagged
@@ -394,10 +395,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380f9b65545dc3b488923b80b2b83bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueID: 76b8ac0d-6a2a-4de8-a2d7-d174bab85a2c
+  uniqueID: f350045f-ac74-4730-a8ed-ebe375f47431
   itemType: {fileID: 11400000, guid: 0586b7fb6a837854d959dc2fbfcd8ba2, type: 2}
   quantity: 1
-  interactionHoldTime: 0.5
+  interactionHoldTime: 0.01
   pickedMmFeedbacks: {fileID: 6991868795587982878}
   soldMmFeedbacks: {fileID: 0}
   notPickable: 0
@@ -442,3 +443,30 @@ MonoBehaviour:
   promptTransformOffset: {x: 0, y: 1, z: 0}
   promptRotationOffset: {x: 0, y: 0, z: 0}
   activationFeedback: {fileID: 0}
+--- !u!54 &3954056325654008359
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8879301513546030910}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

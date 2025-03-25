@@ -35,7 +35,7 @@ Transform:
   m_LocalScale: {x: 0.44969368, y: 0.44969353, z: 0.44969356}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 2566957955025209727}
+  - {fileID: 1888530913902999266}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 38.836, y: 245.13, z: 1.31}
 --- !u!33 &3391996992992220987
@@ -129,7 +129,7 @@ MonoBehaviour:
   itemType: {fileID: 11400000, guid: dad5d6fc21478914290421293e4d0469, type: 2}
   quantity: 1
   interactionHoldTime: 0.5
-  pickedMmFeedbacks: {fileID: 0}
+  pickedMmFeedbacks: {fileID: 3787347073430419853}
   soldMmFeedbacks: {fileID: 0}
   notPickable: 0
   interactablePrompt: {fileID: 0}
@@ -173,7 +173,7 @@ MonoBehaviour:
   promptTransformOffset: {x: 0, y: 1, z: 0}
   promptRotationOffset: {x: 0, y: 0, z: 0}
   activationFeedback: {fileID: 0}
---- !u!1 &6659599222123646440
+--- !u!1 &6290324489845991227
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -181,37 +181,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2566957955025209727}
-  - component: {fileID: 7457751595020093978}
+  - component: {fileID: 1888530913902999266}
+  - component: {fileID: 3787347073430419853}
   m_Layer: 6
-  m_Name: PickedSteelFB
+  m_Name: PickedMicrochipFB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2566957955025209727
+--- !u!4 &1888530913902999266
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6659599222123646440}
+  m_GameObject: {fileID: 6290324489845991227}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.6795856, y: -0.40182403, z: -0.5585492, w: 0.25440863}
-  m_LocalPosition: {x: -3.0342531, y: 4.656623, z: -4.354639}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.5298492, y: -0.12674223, z: 0.80122524, w: 0.24745564}
+  m_LocalPosition: {x: -3.7476256, y: 1.5170505, z: -11.094863}
+  m_LocalScale: {x: 1.1118683, y: 1.1118684, z: 1.1118681}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 315261524557567125}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7457751595020093978
+--- !u!114 &3787347073430419853
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6659599222123646440}
+  m_GameObject: {fileID: 6290324489845991227}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6da43522623d4704e979466dc7650b65, type: 3}
@@ -389,9 +389,9 @@ MonoBehaviour:
         RemapRangeFalloff: {x: 0, y: 1}
         AutomaticShakerSetupButton:
           ButtonText: Automatic Shaker Setup
-        Owner: {fileID: 7457751595020093978}
+        Owner: {fileID: 3787347073430419853}
         DebugActive: 0
-        Sfx: {fileID: 8300000, guid: 2da0579099f3ff749a53c3d8ac116f76, type: 3}
+        Sfx: {fileID: 8300000, guid: 629d2e94b85ddd840819c3dfb6a7ce23, type: 3}
         RandomSfx: []
         TestPlayButton:
           ButtonText: Debug Play Sound
