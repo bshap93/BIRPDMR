@@ -180,10 +180,11 @@ namespace Domains.Gameplay.Mining.Scripts
         {
             if (CustomInputBindings.IsMineMouseButtonPressed() && !PlayerStaminaManager.IsPlayerOutOfStamina())
             {
+                CharacterStateController.EnqueueTransition<ShovelMiningState>();
                 if (playerInteraction == null)
                     return;
 
-                var textureIndex = playerInteraction.currentTextureIndex;
+                var textureIndex = textureDetector.textureIndex;
 
                 if (textureIndex < 0 || textureIndex >= playerInteraction.diggableLayers.Length)
                     return;

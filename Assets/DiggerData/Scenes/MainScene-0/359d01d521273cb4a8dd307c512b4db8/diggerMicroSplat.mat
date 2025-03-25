@@ -76,6 +76,7 @@ Material:
     - _Contrast: 0.4
     - _HybridHeightBlendDistance: 300
     - _TriplanarContrast: 4
+    - _TriplanarFaceBlend: 0
     m_Colors:
     - _TriplanarUVScale: {r: 1, g: 1, b: 0, a: 0}
     - _UVScale: {r: 45, g: 45, b: 0, a: 0}

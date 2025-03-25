@@ -30,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3425872484700846920}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -156,9 +156,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pieces: {fileID: 8035905410015936460, guid: 357724277cc6bb140bdddeeac30b8f99, type: 3}
   refinedPickup: {fileID: 8849736900048983242, guid: 33f5bfba364d8d14e8fe3013e9d0414b, type: 3}
-  dropOnHit: 1
-  hitsToDestroy: 4
-  dropOnDestroy: 4
+  dropOnHit: 0
+  hitsToDestroy: 3
+  dropOnDestroy: 3
   knockAngle: {x: 0, y: 0, z: 10}
   knockCurve:
     serializedVersion: 2
@@ -194,6 +194,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   knockDuration: 0.25
+  oreHitFeedback: {fileID: 0}
+  oreDestroyFeedback: {fileID: 0}
 --- !u!114 &4375252831640017369
 MonoBehaviour:
   m_ObjectHideFlags: 0

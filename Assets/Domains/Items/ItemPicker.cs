@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using Domains.Gameplay.Mining.Scripts;
+using Domains.Input.Scripts;
 using Domains.Player.Scripts;
 using Gameplay.Events;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Domains.Input.Scripts; // Added for CustomInputBindings
+
+// Added for CustomInputBindings
 
 namespace Domains.Items
 {
@@ -26,6 +28,9 @@ namespace Domains.Items
         public MMFeedbacks soldMmFeedbacks; // Feedbacks to play when the item is sold
 
         [FormerlySerializedAs("NotPickable")] public bool notPickable; // If true, the item cannot be picked up
+        public GameObject interactablePrompt;
+        private bool _interactionComplete;
+        private float _interactionTimer;
 #pragma warning disable CS0414 // Field is assigned but its value is never used
         private bool _isBeingDestroyed;
 #pragma warning restore CS0414 // Field is assigned but its value is never used
@@ -34,13 +39,10 @@ namespace Domains.Items
         private bool _isInRange;
 #pragma warning restore CS0414 // Field is assigned but its value is never used
 
-        private Inventory _targetInventory;
-        public GameObject interactablePrompt;
-
         // Track interaction state
-        private bool _isInteracting = false;
-        private float _interactionTimer = 0f;
-        private bool _interactionComplete = false;
+        private bool _isInteracting;
+
+        private Inventory _targetInventory;
 
         private void Awake()
         {
@@ -63,39 +65,8 @@ namespace Domains.Items
             if (pickedMmFeedbacks != null) pickedMmFeedbacks.Initialization(gameObject);
         }
 
-        private IEnumerator InitializeAfterPickableManager()
-        {
-            // Wait a frame to ensure PickableManager has initialized
-            yield return null;
-
-            // Now check if this item should be destroyed
-            if (PickableManager.IsItemPicked(uniqueID)) Destroy(gameObject);
-        }
-
         private void Update()
         {
-            // Track interaction progress only when interacting
-            if (_isInteracting)
-            {
-                // If interaction key is still held
-                if (CustomInputBindings.IsInteractPressed())
-                {
-                    _interactionTimer += Time.deltaTime;
-
-
-                    // Check if we've reached the required hold time
-                    if (_interactionTimer >= interactionHoldTime && !_interactionComplete)
-                    {
-                        PickItem();
-                        _interactionComplete = true;
-                    }
-                }
-                else
-                {
-                    // Reset if key released before completion
-                    ResetInteraction();
-                }
-            }
         }
 
         private void OnDestroy()
@@ -118,19 +89,8 @@ namespace Domains.Items
 
         public void Interact()
         {
-            UnityEngine.Debug.Log("Interacting with item");
-            // Start the interaction timer instead of immediately picking
-            if (!_isInteracting && !_interactionComplete)
-            {
-                _isInteracting = true;
-                _interactionTimer = 0f;
-            }
-        }
-
-        private void ResetInteraction()
-        {
-            _isInteracting = false;
-            _interactionTimer = 0f;
+            // If interaction key is still held
+            if (CustomInputBindings.IsInteractPressed()) PickItem();
         }
 
         public void ShowInteractablePrompt()
@@ -141,6 +101,21 @@ namespace Domains.Items
         public void HideInteractablePrompt()
         {
             if (interactablePrompt != null) interactablePrompt.SetActive(false);
+        }
+
+        private IEnumerator InitializeAfterPickableManager()
+        {
+            // Wait a frame to ensure PickableManager has initialized
+            yield return null;
+
+            // Now check if this item should be destroyed
+            if (PickableManager.IsItemPicked(uniqueID)) Destroy(gameObject);
+        }
+
+        private void ResetInteraction()
+        {
+            _isInteracting = false;
+            _interactionTimer = 0f;
         }
 
         public void PickItem()

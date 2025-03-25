@@ -7,6 +7,7 @@ namespace Domains.Gameplay.Mining.Scripts
     {
         private OreNode _oreNode;
 
+
         private void OnEnable()
         {
             var myGameObject = gameObject;
@@ -21,12 +22,10 @@ namespace Domains.Gameplay.Mining.Scripts
 
         public void ShowInteractablePrompt()
         {
-            UnityEngine.Debug.Log("ShowInteractablePrompt");
         }
 
         public void HideInteractablePrompt()
         {
-            UnityEngine.Debug.Log("HideInteractablePrompt");
         }
     }
 }

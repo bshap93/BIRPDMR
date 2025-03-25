@@ -12,6 +12,8 @@ namespace Digger.Demo
         [Header("Targeted texture (will be filled with the name of the texture you are targetting in Play mode)")]
         public string texture = "";
 
+        public int textureIndex = -1;
+
         private DiggerMaster diggerMaster;
 
         protected void Start()
@@ -26,11 +28,47 @@ namespace Digger.Demo
                 Debug.DrawLine(transform.position, hit.point, Color.green);
                 var index = GetTextureIndex(hit, out var terrain);
 
-                if (terrain != null) // Check if we actually hit a terrain or chunk
-                    texture = $"name: {terrain.terrainData.terrainLayers[index].name} | index: {index}";
+                if (terrain != null && index >= 0)
+                {
+                    var layers = terrain.terrainData.terrainLayers;
+                    if (index < layers.Length)
+                    {
+                        texture = $"name: {layers[index].name} | index: {index}";
+                        textureIndex = index;
+                    }
+                    else
+                    {
+                        texture = "Invalid texture index";
+                        textureIndex = -1;
+                    }
+                }
+                else if (hit.collider.GetComponent<ChunkObject>() != null)
+                {
+                    texture = "Chunk hit — no texture index (fallback)";
+                    textureIndex = 1; // or a default value like 0
+                }
                 else
+                {
                     texture = "No terrain or chunk hit";
+                    textureIndex = -1;
+                }
             }
+        }
+
+        private static bool TryGetTexcoord(Mesh mesh, int baseVertexIndex, int channel, out float4 coord)
+        {
+            uvs.Clear();
+            mesh.GetUVs(channel, uvs);
+
+            if (baseVertexIndex < 0 || baseVertexIndex >= uvs.Count)
+            {
+                Debug.LogWarning($"Invalid UV index: {baseVertexIndex} for channel {channel}. UV count: {uvs.Count}");
+                coord = float4.zero;
+                return false;
+            }
+
+            coord = uvs[baseVertexIndex];
+            return true;
         }
 
         /// <summary>
@@ -46,31 +84,46 @@ namespace Digger.Demo
             {
                 terrain = chunk.Terrain;
                 var diggerColliderMesh = chunk.Mesh;
-                var baseVertexIndex = diggerColliderMesh.triangles[hit.triangleIndex * 3];
+                var triangles = diggerColliderMesh.triangles;
+                var triArrayIndex = hit.triangleIndex * 3;
 
-                if (chunk.Digger.MaterialType == TerrainMaterialType.URP)
-                    return GetMeshTextureIndex(new[]
-                    {
-                        GetTexcoord(diggerColliderMesh, baseVertexIndex, 1),
-                        GetTexcoord(diggerColliderMesh, baseVertexIndex, 2),
-                        GetTexcoord(diggerColliderMesh, baseVertexIndex, 3),
-                        GetTexcoord(diggerColliderMesh, baseVertexIndex, 4)
-                    });
-
-                if (chunk.Digger.MaterialType == TerrainMaterialType.HDRP)
-                    return GetMeshTextureIndex(new[]
-                    {
-                        GetTexcoord(diggerColliderMesh, baseVertexIndex, 2),
-                        GetTexcoord(diggerColliderMesh, baseVertexIndex, 3)
-                    });
-
-                return GetMeshTextureIndex(new float4[]
+                if (triArrayIndex < 0 || triArrayIndex + 2 >= triangles.Length)
                 {
-                    GetTexcoord(diggerColliderMesh, baseVertexIndex, 1),
-                    GetTexcoord(diggerColliderMesh, baseVertexIndex, 2),
-                    GetTexcoord(diggerColliderMesh, baseVertexIndex, 3),
-                    diggerColliderMesh.tangents[baseVertexIndex]
-                });
+                    Debug.LogWarning(
+                        $"Triangle index {hit.triangleIndex} out of range for mesh {diggerColliderMesh.name}.");
+                    terrain = null;
+                    return -1;
+                }
+
+                var baseVertexIndex = triangles[triArrayIndex];
+
+
+                // return GetMeshTextureIndex(new float4[]
+                // {
+                //     GetTexcoord(diggerColliderMesh, baseVertexIndex, 1),
+                //     GetTexcoord(diggerColliderMesh, baseVertexIndex, 2),
+                //     GetTexcoord(diggerColliderMesh, baseVertexIndex, 3),
+                //     diggerColliderMesh.tangents[baseVertexIndex]
+                // });
+                var texcoords = new float4[4];
+                var valid =
+                    TryGetTexcoord(diggerColliderMesh, baseVertexIndex, 1, out texcoords[0]) &
+                    TryGetTexcoord(diggerColliderMesh, baseVertexIndex, 2, out texcoords[1]) &
+                    TryGetTexcoord(diggerColliderMesh, baseVertexIndex, 3, out texcoords[2]);
+
+                if (baseVertexIndex < 0 || baseVertexIndex >= diggerColliderMesh.tangents.Length)
+                {
+                    terrain = null;
+                    return -1;
+                }
+
+                texcoords[3] = diggerColliderMesh.tangents[baseVertexIndex];
+
+                if (!valid)
+                {
+                    terrain = null;
+                    return -1;
+                }
             }
 
             terrain = hit.collider.GetComponent<Terrain>();
@@ -81,10 +134,34 @@ namespace Digger.Demo
             return -1; // Return -1 or another value to indicate "no texture"
         }
 
+        private static bool HasValidUVs(Mesh mesh, int baseVertexIndex, int[] channels)
+        {
+            foreach (var channel in channels)
+            {
+                uvs.Clear();
+                mesh.GetUVs(channel, uvs);
+                if (baseVertexIndex < 0 || baseVertexIndex >= uvs.Count)
+                {
+                    Debug.LogWarning(
+                        $"UV channel {channel} is invalid at index {baseVertexIndex} (UV count: {uvs.Count})");
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         private static float4 GetTexcoord(Mesh mesh, int baseVertexIndex, int channel)
         {
             uvs.Clear();
             mesh.GetUVs(channel, uvs);
+
+            if (baseVertexIndex < 0 || baseVertexIndex >= uvs.Count)
+            {
+                Debug.LogWarning($"Invalid UV index: {baseVertexIndex} for channel {channel}. UV count: {uvs.Count}");
+                return float4.zero; // or a sensible default
+            }
+
             return uvs[baseVertexIndex];
         }
 
@@ -135,11 +212,14 @@ namespace Digger.Demo
             {
                 var test = controls[dc];
                 for (var df = 0; df < 4; df++)
+                {
+                    if (df >= 4) continue; // Shouldn't happen, but safe guard
                     if (test[df] > max)
                     {
                         max = test[df];
                         index = dc * 4 + df;
                     }
+                }
             }
 
             return index;
