@@ -8,6 +8,7 @@ namespace Domains.Input.Scripts
         private static readonly KeyCode interactKey = KeyCode.E;
         private static readonly KeyCode crouchKey = KeyCode.LeftControl;
         private static readonly KeyCode runKey = KeyCode.LeftShift;
+        private static KeyCode alpha1Key = KeyCode.Alpha1;
         private static readonly KeyCode changePerspectiveKey = KeyCode.V;
         private static readonly KeyCode persistanceKey = KeyCode.P;
         private static readonly KeyCode deletionKey = KeyCode.Alpha0;
@@ -16,7 +17,7 @@ namespace Domains.Input.Scripts
         // Methods to check input (abstraction layer)
         public static bool IsInteractPressed()
         {
-            return UnityEngine.Input.GetKey(interactKey);
+            return UnityEngine.Input.GetKeyDown(interactKey);
         }
 
 
