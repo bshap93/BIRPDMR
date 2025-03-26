@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Domains.Items.Events;
 using Domains.Player.Events;
 using Domains.Scene.Scripts;
@@ -14,6 +15,36 @@ namespace Domains.Items
         public List<InventoryEntry> Content;
 
         public MMFeedbacks InventoryFullFeedbacks;
+
+        // New method to get grouped items
+        public List<GroupedItem> GetGroupedItems()
+        {
+            var groupedItems = new List<GroupedItem>();
+            var itemGroups = Content
+                .GroupBy(item => item.BaseItem.ItemID)
+                .Select(group => new
+                {
+                    ItemID = group.Key,
+                    Items = group.ToList()
+                });
+
+            foreach (var group in itemGroups)
+                if (group.Items.Count > 0)
+                {
+                    // Use the first item's BaseItem as the template
+                    var baseItem = group.Items[0].BaseItem;
+                    // Collect all unique IDs for this group
+                    var uniqueIDs = group.Items.Select(item => item.UniqueID).ToList();
+
+                    groupedItems.Add(new GroupedItem(
+                        baseItem,
+                        group.Items.Count,
+                        uniqueIDs
+                    ));
+                }
+
+            return groupedItems;
+        }
 
 
         public virtual bool AddItem(InventoryEntry item)
@@ -107,6 +138,22 @@ namespace Domains.Items
 
             CurrencyEvent.Trigger(CurrencyEventType.AddCurrency, totalValue);
             EmptyInventory();
+        }
+
+        // Add this new class to represent grouped items
+        [Serializable]
+        public class GroupedItem
+        {
+            public BaseItem Item;
+            public int Quantity;
+            public List<string> UniqueIDs;
+
+            public GroupedItem(BaseItem item, int quantity, List<string> uniqueIDs)
+            {
+                Item = item;
+                Quantity = quantity;
+                UniqueIDs = uniqueIDs;
+            }
         }
 
         [Serializable]
