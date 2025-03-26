@@ -39,6 +39,7 @@ Shader "Terrain"
 
 
       _TriplanarContrast("Triplanar Contrast", Range(1.0, 8)) = 4
+     _TriplanarFaceBlend("Triplanar Face Blend", Range(0,1)) = 0
       _TriplanarUVScale("Triplanar UV Scale", Vector) = (1, 1, 0, 0)
 
 
@@ -82,7 +83,7 @@ Shader "Terrain"
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
-      #define _MSRENDERLOOP_SURFACESHADER 1
+      #define _TRIPLANARUSEFACENORMALS 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -987,6 +988,7 @@ Shader "Terrain"
       #endif
       float _TriplanarContrast;
       float4 _TriplanarUVScale;
+      half _TriplanarFaceBlend;
 
 
                
@@ -5083,7 +5085,7 @@ float3 GetTessFactors ()
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
-      #define _MSRENDERLOOP_SURFACESHADER 1
+      #define _TRIPLANARUSEFACENORMALS 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -5980,6 +5982,7 @@ float3 GetTessFactors ()
       #endif
       float _TriplanarContrast;
       float4 _TriplanarUVScale;
+      half _TriplanarFaceBlend;
 
 
                
@@ -10012,7 +10015,7 @@ float3 GetTessFactors ()
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
-      #define _MSRENDERLOOP_SURFACESHADER 1
+      #define _TRIPLANARUSEFACENORMALS 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -10915,6 +10918,7 @@ float3 GetTessFactors ()
       #endif
       float _TriplanarContrast;
       float4 _TriplanarUVScale;
+      half _TriplanarFaceBlend;
 
 
                
@@ -15029,7 +15033,7 @@ float3 GetTessFactors ()
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
-      #define _MSRENDERLOOP_SURFACESHADER 1
+      #define _TRIPLANARUSEFACENORMALS 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -15907,6 +15911,7 @@ float3 GetTessFactors ()
       #endif
       float _TriplanarContrast;
       float4 _TriplanarUVScale;
+      half _TriplanarFaceBlend;
 
 
                
@@ -19851,7 +19856,7 @@ float3 GetTessFactors ()
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
-      #define _MSRENDERLOOP_SURFACESHADER 1
+      #define _TRIPLANARUSEFACENORMALS 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -20746,6 +20751,7 @@ float3 GetTessFactors ()
       #endif
       float _TriplanarContrast;
       float4 _TriplanarUVScale;
+      half _TriplanarFaceBlend;
 
 
                
@@ -24679,7 +24685,7 @@ float3 GetTessFactors ()
       UsePass "Hidden/Nature/Terrain/Utilities/SELECTION"
 
    }
-   Dependency "BaseMapShader" =  "Hidden/Terrain_Base-1799119219"
-   Fallback "Hidden/Terrain_Base-1799119219"
+   Dependency "BaseMapShader" =  "Hidden/Terrain_Base-645886353"
+   Fallback "Hidden/Terrain_Base-645886353"
    CustomEditor "MicroSplatShaderGUI"
 }
