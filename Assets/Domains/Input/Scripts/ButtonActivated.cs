@@ -56,7 +56,6 @@ namespace Domains.Input.Scripts
 
         public void TriggerSave()
         {
-            UnityEngine.Debug.LogError("Triggering save");
             SaveLoadEvent.Trigger(SaveLoadEventType.Save);
         }
     }

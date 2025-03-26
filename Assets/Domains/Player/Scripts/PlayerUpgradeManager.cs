@@ -28,24 +28,6 @@ namespace Domains.Player.Scripts
 
         [SerializeField] private float fuelCapacity = 100f; // Default fuel capacity
 
-
-        private void ApplyToolChangeUpgrade(string toolId)
-        {
-            if (string.IsNullOrEmpty(toolId))
-            {
-                UnityEngine.Debug.LogWarning("Tool ID is empty; skipping tool change upgrade.");
-                return;
-            }
-
-            UnityEngine.Debug.Log($"Changing tool to {toolId}");
-
-            // Store the tool ID
-            currentToolId = toolId;
-
-            // Save it
-            ES3.Save("CurrentToolID", currentToolId, "UpgradeSave.es3");
-        }
-
         private void Awake()
         {
             if (Instance == null)
@@ -56,7 +38,6 @@ namespace Domains.Player.Scripts
             {
                 UnityEngine.Debug.LogWarning("Duplicate PlayerUpgradeManager detected. Destroying the extra instance.");
                 Destroy(gameObject);
-                return;
             }
         }
 
@@ -64,9 +45,6 @@ namespace Domains.Player.Scripts
         private void Start()
         {
             LoadUpgrades();
-
-            // Instance.myInventory = PlayerInventoryManager.PlayerInventory;
-
 
             Instance.miningToolSize = shovelMiningState.size;
         }
@@ -88,6 +66,24 @@ namespace Domains.Player.Scripts
             // {
             //     BuyUpgrade(eventType.UpgradeData.upgradeTypeName);
             // }
+        }
+
+
+        private void ApplyToolChangeUpgrade(string toolId)
+        {
+            if (string.IsNullOrEmpty(toolId))
+            {
+                UnityEngine.Debug.LogWarning("Tool ID is empty; skipping tool change upgrade.");
+                return;
+            }
+
+            UnityEngine.Debug.Log($"Changing tool to {toolId}");
+
+            // Store the tool ID
+            currentToolId = toolId;
+
+            // Save it
+            ES3.Save("CurrentToolID", currentToolId, "UpgradeSave.es3");
         }
 
         public void BuyUpgrade(string upgradeTypeName)
@@ -141,7 +137,7 @@ namespace Domains.Player.Scripts
             else
             {
                 UpgradeEvent.Trigger(upgradeType, UpgradeEventType.UpgradeFailed, upgrade,
-                    UpgradeLevels[upgradeTypeName], UpgradeEffectType.None, 0, null);
+                    UpgradeLevels[upgradeTypeName], UpgradeEffectType.None, 0);
                 UnityEngine.Debug.Log("Not enough credits!");
             }
         }
@@ -273,9 +269,13 @@ namespace Domains.Player.Scripts
             if (ES3.KeyExists("MaxFuelCapacity", "UpgradeSave.es3"))
                 fuelCapacity = ES3.Load<float>("MaxFuelCapacity", "UpgradeSave.es3");
 
+
             // Load inventory size
             if (ES3.KeyExists("InventoryMaxWeight", "GameSave.es3"))
-                PlayerInventoryManager.IncreaseWeightLimit(ES3.Load<float>("InventoryMaxWeight", "GameSave.es3"));
+            {
+                var savedWeight = ES3.Load<float>("InventoryMaxWeight", "GameSave.es3");
+                PlayerInventoryManager.SetWeightLimit(savedWeight); // You’ll need to implement this
+            }
 
             foreach (var upgrade in availableUpgrades)
             {

@@ -43,7 +43,6 @@ namespace Domains.Scene.Scripts
 
         [CanBeNull] public InventoryBarUpdater inventoryBarUpdater;
 
-        [SerializeField] private float weightLimit;
 
         private string _savePath;
 
@@ -69,20 +68,15 @@ namespace Domains.Scene.Scripts
                 SaveInventory();
             }
 
-            var weightLimit = ES3.Load<float>("InventoryMaxWeight", _savePath);
 
-            if (weightLimit > 0)
-                _weightLimit = weightLimit;
-            else
-                _weightLimit = PlayerInfoSheet.WeightLimit;
+            var weightLimit = ES3.KeyExists(WeightLimitKey, _savePath)
+                ? ES3.Load<float>(WeightLimitKey, _savePath)
+                : PlayerInfoSheet.WeightLimit;
+
+            SetWeightLimit(weightLimit);
 
 
             LoadInventory();
-        }
-
-        private void Update()
-        {
-            weightLimit = _weightLimit;
         }
 
 
@@ -216,6 +210,7 @@ namespace Domains.Scene.Scripts
 
         public static void IncreaseWeightLimit(float getMaxWeight)
         {
+            if (float.IsInfinity(_weightLimit) || float.IsNaN(getMaxWeight)) return;
             _weightLimit += getMaxWeight;
             SaveInventory();
         }
@@ -237,6 +232,12 @@ namespace Domains.Scene.Scripts
         public static float GetWeightLimit()
         {
             return _weightLimit;
+        }
+
+        public static void SetWeightLimit(float savedWeight)
+        {
+            _weightLimit = savedWeight;
+            SaveInventory(); // Optional if you want to persist the change immediately
         }
 
         [Serializable]
