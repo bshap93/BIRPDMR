@@ -77,14 +77,14 @@ namespace Domains.Player.Scripts
             if (playerInteraction == null)
                 return;
 
-            var textureIndex = playerInteraction.currentTextureIndex;
-
-            if (textureIndex < 0 || textureIndex >= playerInteraction.diggableLayers.Length ||
-                !playerInteraction.diggableLayers[textureIndex])
-            {
-                CharacterStateController.EnqueueTransition<MyNormalMovement>();
-                return;
-            }
+            // var textureIndex = playerInteraction.currentTextureIndex;
+            //
+            // if (textureIndex < 0 || textureIndex >= playerInteraction.diggableLayers.Length ||
+            //     !playerInteraction.diggableLayers[textureIndex])
+            // {
+            //     CharacterStateController.EnqueueTransition<MyNormalMovement>();
+            //     return;
+            // }
 
             RaycastHit hit;
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, miningRange))

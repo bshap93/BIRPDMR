@@ -180,7 +180,8 @@ namespace Domains.Gameplay.Mining.Scripts
         {
             if (CustomInputBindings.IsMineMouseButtonPressed() && !PlayerStaminaManager.IsPlayerOutOfStamina())
             {
-                CharacterStateController.EnqueueTransition<ShovelMiningState>();
+                // CharacterStateController.EnqueueTransition<ShovelMiningState>();
+                // return;
                 if (playerInteraction == null)
                     return;
 
