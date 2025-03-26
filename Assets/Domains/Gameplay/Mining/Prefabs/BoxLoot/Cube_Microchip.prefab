@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7766865002928204329}
   - component: {fileID: 6632990286270142339}
   - component: {fileID: 7818288917156838686}
+  - component: {fileID: 5466988977404356217}
   m_Layer: 6
   m_Name: Cube_Microchip
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.16984907, y: 0.7968364, z: -0.2859738, w: -0.50440276}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.44969368, y: 0.44969353, z: 0.44969356}
+  m_LocalScale: {x: 0.44969362, y: 0.44969353, z: 0.44969356}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1888530913902999266}
@@ -125,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380f9b65545dc3b488923b80b2b83bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueID: 
+  uniqueID: 8f11d30d-e2cc-4a7c-a3f5-a33e255d6ad3
   itemType: {fileID: 11400000, guid: dad5d6fc21478914290421293e4d0469, type: 2}
   quantity: 1
   interactionHoldTime: 0.5
@@ -173,6 +174,33 @@ MonoBehaviour:
   promptTransformOffset: {x: 0, y: 1, z: 0}
   promptRotationOffset: {x: 0, y: 0, z: 0}
   activationFeedback: {fileID: 0}
+--- !u!54 &5466988977404356217
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4366156061288189102}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6290324489845991227
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,7 +419,7 @@ MonoBehaviour:
           ButtonText: Automatic Shaker Setup
         Owner: {fileID: 3787347073430419853}
         DebugActive: 0
-        Sfx: {fileID: 8300000, guid: 629d2e94b85ddd840819c3dfb6a7ce23, type: 3}
+        Sfx: {fileID: 8300000, guid: fc94c093f53424bdeadca3ac3b347fe8, type: 3}
         RandomSfx: []
         TestPlayButton:
           ButtonText: Debug Play Sound
