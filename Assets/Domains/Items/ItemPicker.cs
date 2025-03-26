@@ -30,7 +30,6 @@ namespace Domains.Items
         [FormerlySerializedAs("NotPickable")] public bool notPickable; // If true, the item cannot be picked up
         public GameObject interactablePrompt;
         private bool _interactionComplete;
-        private float _interactionTimer;
 #pragma warning disable CS0414 // Field is assigned but its value is never used
         private bool _isBeingDestroyed;
 #pragma warning restore CS0414 // Field is assigned but its value is never used
@@ -40,7 +39,6 @@ namespace Domains.Items
 #pragma warning restore CS0414 // Field is assigned but its value is never used
 
         // Track interaction state
-        private bool _isInteracting;
 
         private Inventory _targetInventory;
 
@@ -110,12 +108,6 @@ namespace Domains.Items
 
             // Now check if this item should be destroyed
             if (PickableManager.IsItemPicked(uniqueID)) Destroy(gameObject);
-        }
-
-        private void ResetInteraction()
-        {
-            _isInteracting = false;
-            _interactionTimer = 0f;
         }
 
         public void PickItem()

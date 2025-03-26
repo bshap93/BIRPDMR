@@ -1,7 +1,5 @@
-using System;
 using Domains.Gameplay.Mining.Events;
 using MoreMountains.Tools;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -21,25 +19,19 @@ public class ToolObjectController : MonoBehaviour, MMEventListener<ToolEvent>
     public UnityEvent OnToolUseAction;
 
 
-    private void OnEnable()
-    {
-        this.MMEventStartListening<ToolEvent>();
-    }
-
-    private void OnDisable()
-    {
-        this.MMEventStopListening<ToolEvent>();
-    }
-
-
     public ToolType toolType;
 
     public ToolIteration toolIteration;
 
 
-    public void OnToolUse()
+    private void OnEnable()
     {
-        Debug.Log("Tool used");
+        this.MMEventStartListening();
+    }
+
+    private void OnDisable()
+    {
+        this.MMEventStopListening();
     }
 
     public void OnMMEvent(ToolEvent eventType)
@@ -55,5 +47,11 @@ public class ToolObjectController : MonoBehaviour, MMEventListener<ToolEvent>
                     OnToolUseAction.Invoke();
                     break;
             }
+    }
+
+
+    public void OnToolUse()
+    {
+        Debug.Log("Tool used");
     }
 }

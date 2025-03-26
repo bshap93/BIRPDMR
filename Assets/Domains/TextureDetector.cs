@@ -18,7 +18,7 @@ namespace Digger.Demo
 
         protected void Start()
         {
-            diggerMaster = FindObjectOfType<DiggerMaster>();
+            diggerMaster = FindFirstObjectByType<DiggerMaster>();
         }
 
         protected void Update()

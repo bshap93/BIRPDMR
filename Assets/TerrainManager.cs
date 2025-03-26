@@ -8,7 +8,7 @@ public class TerrainManager : MonoBehaviour
 
     private void Awake()
     {
-        textureDetector = FindObjectOfType<TextureDetector>();
+        textureDetector = FindFirstObjectByType<TextureDetector>();
         CurrentTextureIndex = -1;
     }
 }

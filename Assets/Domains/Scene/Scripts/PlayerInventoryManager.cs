@@ -32,7 +32,7 @@ namespace Domains.Scene.Scripts
         public static Inventory PlayerInventory;
 
         public static List<InventoryEntryData> InventoryContentData = new();
-        private static float _weightLimit;
+        [SerializeField] private static float _weightLimit;
 
         [FormerlySerializedAs("PlayerInventoryReference")] [SerializeField]
         private Inventory playerInventoryReference;
@@ -42,6 +42,8 @@ namespace Domains.Scene.Scripts
         private List<InventoryEntryData> currentInventoryItems = new();
 
         [CanBeNull] public InventoryBarUpdater inventoryBarUpdater;
+
+        [SerializeField] private float weightLimit;
 
         private string _savePath;
 
@@ -76,6 +78,11 @@ namespace Domains.Scene.Scripts
 
 
             LoadInventory();
+        }
+
+        private void Update()
+        {
+            weightLimit = _weightLimit;
         }
 
 

@@ -1,10 +1,10 @@
 ﻿#if UNITY_EDITOR
+using System;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEditor;
-using System.Collections.Generic;
-using System;
-using Unity.VisualScripting;
+using Object = UnityEngine.Object;
 
 namespace GSpawn_Pro
 {
@@ -12,93 +12,91 @@ namespace GSpawn_Pro
     {
         // Note: Used to avoid calling GetComponent<T>. GetComponents<T> is much faster
         //       because it seems to avoid allocating memory.
-        private static List<Camera>                 _cameraBuffer               = new List<Camera>();
-        private static List<SpriteRenderer>         _spriteRendererBuffer       = new List<SpriteRenderer>();
-        private static List<MeshFilter>             _meshFilterBuffer           = new List<MeshFilter>();
-        private static List<Terrain>                _terrainBuffer              = new List<Terrain>();
-        private static List<TerrainCollider>        _terrainColliderBuffer      = new List<TerrainCollider>();
-        private static List<MeshRenderer>           _meshRendererBuffer         = new List<MeshRenderer>();
-        private static List<SkinnedMeshRenderer>    _skinnedMeshRendererBuffer  = new List<SkinnedMeshRenderer>();
-        private static List<LODGroup>               _lodGroupBuffer             = new List<LODGroup>();
-        private static List<Rigidbody>              _rigidBodyBuffer            = new List<Rigidbody>();
-        private static List<Rigidbody2D>            _rigidBody2DBuffer          = new List<Rigidbody2D>();
-        private static List<Collider>               _colliderBuffer             = new List<Collider>();
-        private static List<Collider2D>             _collider2DBuffer           = new List<Collider2D>();
-        private static List<Light>                  _lightBuffer                = new List<Light>();
-        private static List<ParticleSystem>         _particleSystemBuffer       = new List<ParticleSystem>();
-        private static List<Tree>                   _treeBuffer                 = new List<Tree>();
-        private static List<GSpawn>                 _pluginBuffer               = new List<GSpawn>();
+        private static readonly List<Camera> _cameraBuffer = new();
+        private static readonly List<SpriteRenderer> _spriteRendererBuffer = new();
+        private static readonly List<MeshFilter> _meshFilterBuffer = new();
+        private static readonly List<Terrain> _terrainBuffer = new();
+        private static readonly List<TerrainCollider> _terrainColliderBuffer = new();
+        private static readonly List<MeshRenderer> _meshRendererBuffer = new();
+        private static readonly List<SkinnedMeshRenderer> _skinnedMeshRendererBuffer = new();
+        private static readonly List<LODGroup> _lodGroupBuffer = new();
+        private static readonly List<Rigidbody> _rigidBodyBuffer = new();
+        private static readonly List<Rigidbody2D> _rigidBody2DBuffer = new();
+        private static readonly List<Collider> _colliderBuffer = new();
+        private static readonly List<Collider2D> _collider2DBuffer = new();
+        private static readonly List<Light> _lightBuffer = new();
+        private static readonly List<ParticleSystem> _particleSystemBuffer = new();
+        private static readonly List<Tree> _treeBuffer = new();
+        private static readonly List<GSpawn> _pluginBuffer = new();
 
-        private static List<GameObject>             _parentObjectBuffer         = new List<GameObject>();
-        private static List<GameObject>             _prefabInstanceBuffer       = new List<GameObject>();
-        private static List<GameObject>             _allChildrenAndSelfBuffer   = new List<GameObject>();
-        private static List<Transform>              _childTransformBuffer       = new List<Transform>();
-        private static HashSet<GameObject>          _prefabInstanceRootSet      = new HashSet<GameObject>();
+        private static readonly List<GameObject> _parentObjectBuffer = new();
+        private static readonly List<GameObject> _prefabInstanceBuffer = new();
+        private static readonly List<GameObject> _allChildrenAndSelfBuffer = new();
+        private static readonly List<Transform> _childTransformBuffer = new();
+        private static readonly HashSet<GameObject> _prefabInstanceRootSet = new();
+
+        private static readonly List<GameObject> _firstIntersectBuffer = new();
+        private static List<GameObject> _secondIntersectBuffer = new();
 
         public static bool obbIntersectsMeshTriangles(this GameObject gameObject, OBB obb)
         {
-            PluginMesh pluginMesh = PluginMeshDb.instance.getPluginMesh(gameObject.getMesh());
+            var pluginMesh = PluginMeshDb.instance.getPluginMesh(gameObject.getMesh());
             if (pluginMesh == null) return false;
 
             return pluginMesh.trianglesOverlapBox(obb, gameObject.transform);
         }
 
-        private static List<GameObject> _firstIntersectBuffer   = new List<GameObject>();
-        private static List<GameObject> _secondIntersectBuffer  = new List<GameObject>();
-        public static bool meshHierarchyIntersectsMeshTriangles(this GameObject gameObject, GameObject other, float hierarchyMeshInflate)
+        public static bool meshHierarchyIntersectsMeshTriangles(this GameObject gameObject, GameObject other,
+            float hierarchyMeshInflate)
         {
-            PluginMesh otherPluginMesh = PluginMeshDb.instance.getPluginMesh(other.getMesh());
+            var otherPluginMesh = PluginMeshDb.instance.getPluginMesh(other.getMesh());
             if (otherPluginMesh == null) return false;
 
             gameObject.getAllChildrenAndSelf(false, false, _firstIntersectBuffer);
 
-            int numObjects = _firstIntersectBuffer.Count;
-            for (int i = 0; i < numObjects; ++i)
+            var numObjects = _firstIntersectBuffer.Count;
+            for (var i = 0; i < numObjects; ++i)
             {
-                PluginMesh pluginMesh = PluginMeshDb.instance.getPluginMesh(_firstIntersectBuffer[i].getMesh());
+                var pluginMesh = PluginMeshDb.instance.getPluginMesh(_firstIntersectBuffer[i].getMesh());
                 if (pluginMesh == null) continue;
 
-                if (pluginMesh.trianglesIntersectTriangles(_firstIntersectBuffer[i].transform, hierarchyMeshInflate, otherPluginMesh, other.transform)) return true;
+                if (pluginMesh.trianglesIntersectTriangles(_firstIntersectBuffer[i].transform, hierarchyMeshInflate,
+                        otherPluginMesh, other.transform)) return true;
             }
 
             return false;
         }
 
-        public static void collectMeshObjects(List<GameObject> gameObjects, bool includeInactive, bool includeInvisible, List<GameObject> meshObjects)
+        public static void collectMeshObjects(List<GameObject> gameObjects, bool includeInactive, bool includeInvisible,
+            List<GameObject> meshObjects)
         {
             meshObjects.Clear();
 
-            GameObjectEx.getParents(gameObjects, _parentObjectBuffer);
+            getParents(gameObjects, _parentObjectBuffer);
             foreach (var parent in _parentObjectBuffer)
             {
                 parent.getAllChildrenAndSelf(includeInactive, includeInvisible, _allChildrenAndSelfBuffer);
                 foreach (var child in _allChildrenAndSelfBuffer)
-                {
                     if (child.getMesh() != null)
                         meshObjects.Add(child);
-                }
             }
         }
 
         public static bool hasDirectChild(this GameObject gameObject, string childName, bool lowerCase)
         {
-            int childCount = gameObject.transform.childCount;
+            var childCount = gameObject.transform.childCount;
             if (lowerCase)
             {
                 childName = childName.ToLower();
-                for (int i = 0; i < childCount; ++i)
-                {
+                for (var i = 0; i < childCount; ++i)
                     if (gameObject.transform.GetChild(i).name.ToLower() == childName)
                         return true;
-                }
             }
             else
             {
-                for (int i = 0; i < childCount; ++i)
-                {
+                for (var i = 0; i < childCount; ++i)
                     if (gameObject.transform.GetChild(i).name == childName)
                         return true;
-                }
             }
 
             return false;
@@ -114,8 +112,8 @@ namespace GSpawn_Pro
         // it returns an incomplete string (may have to do with prefab instances and nesting)
         public static string getObjectPath(this GameObject gameObject)
         {
-            string path = "/" + gameObject.name;
-            Transform parent = gameObject.transform.parent;
+            var path = "/" + gameObject.name;
+            var parent = gameObject.transform.parent;
             while (parent != null)
             {
                 path = "/" + parent.gameObject.name + path;
@@ -125,39 +123,39 @@ namespace GSpawn_Pro
             return path;
         }
 
-        public static T findObjectOfType<T>() where T : UnityEngine.Object
+        public static T findObjectOfType<T>() where T : Object
         {
-            #if UNITY_6000_0_OR_NEWER
-            return GameObject.FindFirstObjectByType<T>();
-            #else
+#if UNITY_6000_0_OR_NEWER
+            return Object.FindFirstObjectByType<T>();
+#else
             return GameObject.FindObjectOfType<T>();
-            #endif
+#endif
         }
 
-        public static T[] findObjectsOfType<T>() where T : UnityEngine.Object
+        public static T[] findObjectsOfType<T>() where T : Object
         {
-            #if UNITY_6000_0_OR_NEWER
-            return GameObject.FindObjectsByType<T>(FindObjectsSortMode.None);
-            #else
+#if UNITY_6000_0_OR_NEWER
+            return Object.FindObjectsByType<T>(FindObjectsSortMode.None);
+#else
             return GameObject.FindObjectsOfType<T>();
-            #endif
+#endif
         }
 
-        public static T[] findObjectsOfType<T>(bool includeInactive) where T : UnityEngine.Object
+        public static T[] findObjectsOfType<T>(bool includeInactive) where T : Object
         {
-            #if UNITY_6000_0_OR_NEWER
-            return GameObject.FindObjectsByType<T>(includeInactive ? FindObjectsInactive.Include : FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-            #else
+#if UNITY_6000_0_OR_NEWER
+            return Object.FindObjectsByType<T>(
+                includeInactive ? FindObjectsInactive.Include : FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+#else
             return GameObject.FindObjectsOfType<T>(includeInactive);
-            #endif
+#endif
         }
 
         public static GameObject findObjectWithPath(List<GameObject> gameObjects, string path)
         {
             foreach (var go in gameObjects)
-            {
-                if (go.getObjectPath() == path) return go;
-            }
+                if (go.getObjectPath() == path)
+                    return go;
 
             return null;
         }
@@ -165,9 +163,8 @@ namespace GSpawn_Pro
         public static GameObject findObjectWithName(List<GameObject> gameObjects, string name)
         {
             foreach (var go in gameObjects)
-            {
-                if (go.name == name) return go;
-            }
+                if (go.name == name)
+                    return go;
 
             return null;
         }
@@ -179,7 +176,7 @@ namespace GSpawn_Pro
 
         public static bool isObjectModularWallPiece(this GameObject gameObject)
         {
-            GameObject prefabAsset = gameObject.getOutermostPrefabAsset();
+            var prefabAsset = gameObject.getOutermostPrefabAsset();
             if (prefabAsset == null) return false;
 
             return ModularWallPrefabProfileDb.instance.containsWallPiecePrefabAsset(prefabAsset);
@@ -187,7 +184,7 @@ namespace GSpawn_Pro
 
         public static bool isObjectModularWallPillar(this GameObject gameObject)
         {
-            GameObject prefabAsset = gameObject.getOutermostPrefabAsset();
+            var prefabAsset = gameObject.getOutermostPrefabAsset();
             if (prefabAsset == null) return false;
 
             return ModularWallPrefabProfileDb.instance.containsPillarPrefabAsset(prefabAsset);
@@ -195,11 +192,9 @@ namespace GSpawn_Pro
 
         public static void setMeshPivotPoint(this GameObject gameObject, Mesh mesh, Vector3 pivotPoint)
         {
-            Vector3[] vertexPositions = mesh.vertices;
-            for (int vIndex = 0; vIndex < vertexPositions.Length; ++vIndex)
-            {
+            var vertexPositions = mesh.vertices;
+            for (var vIndex = 0; vIndex < vertexPositions.Length; ++vIndex)
                 vertexPositions[vIndex] = vertexPositions[vIndex] - pivotPoint;
-            }
             mesh.vertices = vertexPositions;
             mesh.RecalculateBounds();
 
@@ -215,13 +210,12 @@ namespace GSpawn_Pro
             if (lodGroup == null) return false;
 
             var lods = lodGroup.GetLODs();
-            foreach(var lod in lods)
+            foreach (var lod in lods)
             {
                 var renderers = lod.renderers;
                 foreach (var r in renderers)
-                {
-                    if (r != null && r.gameObject == gameObject) return true;
-                }              
+                    if (r != null && r.gameObject == gameObject)
+                        return true;
             }
 
             return false;
@@ -234,16 +228,14 @@ namespace GSpawn_Pro
             if (lodGroup == null) return;
 
             var lods = lodGroup.GetLODs();
-            int numLODs = lods.Length;
+            var numLODs = lods.Length;
             if (lodIndex >= numLODs) return;
 
             var renderers = lods[lodIndex].renderers;
             foreach (var r in renderers)
-            {
                 // Note: It seems that this can be null sometimes.
                 if (r != null)
                     lodObjects.Add(r.gameObject);
-            }
         }
 
         public static int findLODIndexAndMeshRenderer(this GameObject gameObject, out MeshRenderer renderer)
@@ -257,8 +249,8 @@ namespace GSpawn_Pro
             if (lodGroup == null) return -1;
 
             var lods = lodGroup.GetLODs();
-            int numLODs = lods.Length;
-            for (int i = 0; i < numLODs; ++i)
+            var numLODs = lods.Length;
+            for (var i = 0; i < numLODs; ++i)
             {
                 var renderers = lods[i].renderers;
                 foreach (var r in renderers)
@@ -305,18 +297,19 @@ namespace GSpawn_Pro
             gameObject.tag = "Untagged";
         }
 
-        public static ObjectRayHit raycastUnityTerrain(this GameObject gameObject, Ray ray, TerrainRaycastConfig raycastConfig)
+        public static ObjectRayHit raycastUnityTerrain(this GameObject gameObject, Ray ray,
+            TerrainRaycastConfig raycastConfig)
         {
-            TerrainCollider terrainCollider = gameObject.getTerrainCollider();
+            var terrainCollider = gameObject.getTerrainCollider();
             if (terrainCollider == null) return null;
-;
+            ;
             RaycastHit raycastHit;
             if (terrainCollider.Raycast(ray, out raycastHit, float.MaxValue))
             {
-                Vector3 hitNormal = raycastHit.normal;
+                var hitNormal = raycastHit.normal;
                 if (raycastConfig.useInterpolatedNormal)
                 {
-                    Terrain terrain = terrainCollider.gameObject.getTerrain();
+                    var terrain = terrainCollider.gameObject.getTerrain();
                     if (terrain != null) hitNormal = terrain.getInterpolatedNormal(raycastHit.point);
                 }
 
@@ -328,10 +321,10 @@ namespace GSpawn_Pro
 
         public static ObjectRayHit raycastMesh(this GameObject gameObject, Ray ray, MeshRaycastConfig raycastConfig)
         {
-            Mesh mesh = gameObject.getMesh();
+            var mesh = gameObject.getMesh();
             if (mesh == null) return null;
 
-            PluginMesh pluginMesh = PluginMeshDb.instance.getPluginMesh(mesh);
+            var pluginMesh = PluginMeshDb.instance.getPluginMesh(mesh);
             if (pluginMesh == null) return null;
 
             MeshRayHit meshRayHit;
@@ -343,15 +336,17 @@ namespace GSpawn_Pro
 
         public static ObjectRayHit raycastSprite(this GameObject gameObject, Ray ray)
         {
-            OBB worldOBB = ObjectBounds.calcSpriteWorldOBB(gameObject);
+            var worldOBB = ObjectBounds.calcSpriteWorldOBB(gameObject);
             if (worldOBB.isValid)
             {
                 float t;
                 if (worldOBB.raycast(ray, out t))
                 {
-                    Vector3 hitPt = ray.GetPoint(t);
-                    Box3DFace faceClosestToPt = Box3D.findFaceClosestToPoint(hitPt, worldOBB.center, worldOBB.size, worldOBB.rotation);
-                    Vector3 faceNormal = Box3D.calcFaceNormal(worldOBB.center, worldOBB.size, worldOBB.rotation, faceClosestToPt);
+                    var hitPt = ray.GetPoint(t);
+                    var faceClosestToPt =
+                        Box3D.findFaceClosestToPoint(hitPt, worldOBB.center, worldOBB.size, worldOBB.rotation);
+                    var faceNormal = Box3D.calcFaceNormal(worldOBB.center, worldOBB.size, worldOBB.rotation,
+                        faceClosestToPt);
 
                     return new ObjectRayHit(ray, gameObject, faceNormal, t);
                 }
@@ -362,7 +357,7 @@ namespace GSpawn_Pro
 
         public static bool isTerrain(this GameObject gameObject)
         {
-            GameObjectType objectType = GameObjectDataDb.instance.getGameObjectType(gameObject);
+            var objectType = GameObjectDataDb.instance.getGameObjectType(gameObject);
 
             if (objectType == GameObjectType.Terrain) return true;
             if (objectType == GameObjectType.Mesh && gameObject.isTerrainMesh()) return true;
@@ -390,7 +385,8 @@ namespace GSpawn_Pro
             _prefabInstanceBuffer.Clear();
             PluginScene.instance.findPrefabInstances(prefab, _prefabInstanceBuffer);
             foreach (var prefabInstance in _prefabInstanceBuffer)
-                PrefabUtility.UnpackPrefabInstance(prefabInstance, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                PrefabUtility.UnpackPrefabInstance(prefabInstance, PrefabUnpackMode.Completely,
+                    InteractionMode.AutomatedAction);
         }
 
         public static GameObject getPrefabAsset(this GameObject gameObject)
@@ -420,7 +416,8 @@ namespace GSpawn_Pro
             return PrefabUtility.InstantiatePrefab(prefab) as GameObject;
         }
 
-        public static GameObject instantiatePrefab(this GameObject prefab, Vector3 pos, Quaternion rotation, Vector3 scale)
+        public static GameObject instantiatePrefab(this GameObject prefab, Vector3 pos, Quaternion rotation,
+            Vector3 scale)
         {
             var go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
 
@@ -457,12 +454,12 @@ namespace GSpawn_Pro
 
         public static void placeInFrontOfCamera(this GameObject gameObject, Camera camera)
         {
-            OBB worldOBB = ObjectBounds.calcHierarchyWorldOBB(gameObject, ObjectBounds.QueryConfig.defaultConfig);
+            var worldOBB = ObjectBounds.calcHierarchyWorldOBB(gameObject, ObjectBounds.QueryConfig.defaultConfig);
             if (worldOBB.isValid)
             {
-                Sphere sphere = new Sphere(worldOBB);
-                Vector3 targetPos = camera.calcSphereCenterInFrontOfCamera(sphere);
-                gameObject.transform.position += (targetPos - sphere.center);
+                var sphere = new Sphere(worldOBB);
+                var targetPos = camera.calcSphereCenterInFrontOfCamera(sphere);
+                gameObject.transform.position += targetPos - sphere.center;
             }
         }
 
@@ -492,7 +489,7 @@ namespace GSpawn_Pro
 
         public static bool hasVolume(this GameObject gameObject)
         {
-            GameObjectType gameObjectType = GameObjectDataDb.instance.getGameObjectType(gameObject);
+            var gameObjectType = GameObjectDataDb.instance.getGameObjectType(gameObject);
             if (gameObjectType == GameObjectType.Mesh) return true;
             if (gameObjectType == GameObjectType.Sprite) return true;
             if (gameObjectType == GameObjectType.Terrain) return true;
@@ -502,17 +499,20 @@ namespace GSpawn_Pro
 
         public static bool isVisible(this GameObject gameObject)
         {
-            GameObjectType objectType = GameObjectDataDb.instance.getGameObjectType(gameObject);
+            var objectType = GameObjectDataDb.instance.getGameObjectType(gameObject);
             if (objectType == GameObjectType.Mesh) return gameObject.isMeshOrSkinnedMeshRendererEnabled();
-            else if (objectType == GameObjectType.Sprite) return gameObject.isSpriteRendererEnabled();
-            else if (objectType == GameObjectType.Terrain) return gameObject.isTerrainEnabled();
+            if (objectType == GameObjectType.Sprite) return gameObject.isSpriteRendererEnabled();
+            if (objectType == GameObjectType.Terrain) return gameObject.isTerrainEnabled();
 
             return true;
         }
 
         public static void setStatic(this GameObject gameObject, bool isStatic, bool affectChildren)
         {
-            if (!affectChildren) gameObject.isStatic = isStatic;
+            if (!affectChildren)
+            {
+                gameObject.isStatic = isStatic;
+            }
             else
             {
                 gameObject.getAllChildrenAndSelf(true, true, _allChildrenAndSelfBuffer);
@@ -524,9 +524,8 @@ namespace GSpawn_Pro
         {
             root.getAllChildrenAndSelf(includeInactive, includeInvisible, _allChildrenAndSelfBuffer);
             foreach (var gameObj in _allChildrenAndSelfBuffer)
-            {
-                if (gameObj.getMesh() != null) return true;
-            }
+                if (gameObj.getMesh() != null)
+                    return true;
 
             return false;
         }
@@ -535,9 +534,8 @@ namespace GSpawn_Pro
         {
             root.getAllChildrenAndSelf(includeInactive, includeInvisible, _allChildrenAndSelfBuffer);
             foreach (var gameObj in _allChildrenAndSelfBuffer)
-            {
-                if (gameObj.getSprite() != null) return true;
-            }
+                if (gameObj.getSprite() != null)
+                    return true;
 
             return false;
         }
@@ -546,9 +544,8 @@ namespace GSpawn_Pro
         {
             root.getAllChildrenAndSelf(includeInactive, includeInvisible, _allChildrenAndSelfBuffer);
             foreach (var gameObj in _allChildrenAndSelfBuffer)
-            {
-                if (gameObj.getTerrain() != null) return true;
-            }
+                if (gameObj.getTerrain() != null)
+                    return true;
 
             return false;
         }
@@ -557,18 +554,19 @@ namespace GSpawn_Pro
         {
             root.getAllChildrenAndSelf(includeInactive, includeInvisible, _allChildrenAndSelfBuffer);
             foreach (var gameObj in _allChildrenAndSelfBuffer)
-            {
                 if (gameObj.getMesh() != null ||
-                    gameObj.getSprite() != null) return true;
-            }
+                    gameObj.getSprite() != null)
+                    return true;
 
             return false;
         }
 
-        public static bool hierarchiesHaveMeshesOrSprites(List<GameObject> roots, bool includeInactive, bool includeInvisible)
+        public static bool hierarchiesHaveMeshesOrSprites(List<GameObject> roots, bool includeInactive,
+            bool includeInvisible)
         {
             foreach (var root in roots)
-                if (root.hierarchyHasMeshOrSprite(includeInactive, includeInvisible)) return true;
+                if (root.hierarchyHasMeshOrSprite(includeInactive, includeInvisible))
+                    return true;
 
             return false;
         }
@@ -576,17 +574,19 @@ namespace GSpawn_Pro
         public static bool hierarchiesHaveMeshes(List<GameObject> roots, bool includeInactive, bool includeInvisible)
         {
             foreach (var root in roots)
-                if (root.hierarchyHasMesh(includeInactive, includeInvisible)) return true;
+                if (root.hierarchyHasMesh(includeInactive, includeInvisible))
+                    return true;
 
             return false;
         }
 
-        public static bool hierarchyHasObjectsOfType(this GameObject root, GameObjectType typeFlags, bool includeInactive, bool includeInvisible)
+        public static bool hierarchyHasObjectsOfType(this GameObject root, GameObjectType typeFlags,
+            bool includeInactive, bool includeInvisible)
         {
             root.getAllChildrenAndSelf(includeInactive, includeInvisible, _allChildrenAndSelfBuffer);
             foreach (var gameObj in _allChildrenAndSelfBuffer)
             {
-                GameObjectType objectType = GameObjectDataDb.instance.getGameObjectType(gameObj);
+                var objectType = GameObjectDataDb.instance.getGameObjectType(gameObj);
                 if ((typeFlags & objectType) != 0) return true;
             }
 
@@ -598,7 +598,7 @@ namespace GSpawn_Pro
             root.getAllChildrenAndSelf(includeInactive, includeInvisible, _allChildrenAndSelfBuffer);
             foreach (var gameObj in _allChildrenAndSelfBuffer)
             {
-                GameObjectType objectType = GameObjectDataDb.instance.getGameObjectType(gameObj);
+                var objectType = GameObjectDataDb.instance.getGameObjectType(gameObj);
                 if (objectType != GameObjectType.Sprite) return false;
             }
 
@@ -610,36 +610,35 @@ namespace GSpawn_Pro
             root.getAllChildrenAndSelf(includeInactive, includeInvisible, _allChildrenAndSelfBuffer);
             foreach (var go in _allChildrenAndSelfBuffer)
             {
-                Tree tree = go.getTree();
+                var tree = go.getTree();
                 if (tree != null) return true;
             }
 
             return false;
         }
 
-        public static void getMeshObjectsInHierarchy(this GameObject root, bool includeInactive, bool includeInvisible, List<GameObject> meshObjects)
+        public static void getMeshObjectsInHierarchy(this GameObject root, bool includeInactive, bool includeInvisible,
+            List<GameObject> meshObjects)
         {
             meshObjects.Clear();
             root.getAllChildrenAndSelf(includeInactive, includeInvisible, _allChildrenAndSelfBuffer);
             foreach (var gameObj in _allChildrenAndSelfBuffer)
-            {
                 if (gameObj.getMesh() != null)
                     meshObjects.Add(gameObj);
-            }
         }
 
-        public static void getSpriteObjectsInHierarchy(this GameObject root, bool includeInactive, bool includeInvisible, List<GameObject> spriteObjects)
+        public static void getSpriteObjectsInHierarchy(this GameObject root, bool includeInactive,
+            bool includeInvisible, List<GameObject> spriteObjects)
         {
             spriteObjects.Clear();
             root.getAllChildrenAndSelf(includeInactive, includeInvisible, _allChildrenAndSelfBuffer);
             foreach (var gameObj in _allChildrenAndSelfBuffer)
-            {
                 if (gameObj.getSprite() != null)
                     spriteObjects.Add(gameObj);
-            }
         }
 
-        public static void getAllObjectsInHierarchies(IEnumerable<GameObject> roots, bool includeInactive, bool includeInvisible, List<GameObject> allObjects)
+        public static void getAllObjectsInHierarchies(IEnumerable<GameObject> roots, bool includeInactive,
+            bool includeInvisible, List<GameObject> allObjects)
         {
             allObjects.Clear();
             foreach (var root in roots)
@@ -649,73 +648,74 @@ namespace GSpawn_Pro
             }
         }
 
-        public static void getDirectChildren(this GameObject gameObject, bool includeInactive, bool includeInvisible, List<GameObject> children)
+        public static void getDirectChildren(this GameObject gameObject, bool includeInactive, bool includeInvisible,
+            List<GameObject> children)
         {
             children.Clear();
-            Transform transform = gameObject.transform;
+            var transform = gameObject.transform;
 
-            for (int childIndex = 0; childIndex < transform.childCount; ++childIndex)
+            for (var childIndex = 0; childIndex < transform.childCount; ++childIndex)
             {
                 var child = transform.GetChild(childIndex).gameObject;
-                if ((includeInactive || child.activeSelf) && (includeInvisible || child.gameObject.isVisible())) children.Add(child);
+                if ((includeInactive || child.activeSelf) && (includeInvisible || child.gameObject.isVisible()))
+                    children.Add(child);
             }
         }
 
-        public static void getAllChildren(this GameObject gameObject, bool includeInactive, bool includeInvisible, List<GameObject> children)
+        public static void getAllChildren(this GameObject gameObject, bool includeInactive, bool includeInvisible,
+            List<GameObject> children)
         {
             children.Clear();
-            gameObject.GetComponentsInChildren<Transform>(includeInactive, _childTransformBuffer);
-
-            if (includeInvisible)
-            {
-                foreach (var child in _childTransformBuffer)
-                {
-                    if (child.gameObject != gameObject) children.Add(child.gameObject);
-                }
-            }
-            else
-            {
-                foreach (var child in _childTransformBuffer)
-                {
-                    if (child.gameObject != gameObject && 
-                        child.gameObject.isVisible()) children.Add(child.gameObject);
-                }
-            }
-        }
-
-        public static void getAllChildrenAndSelf(this GameObject gameObject, bool includeInactive, bool includeInvisible, List<GameObject> childrenAndSelf)
-        {
-            childrenAndSelf.Clear();
             gameObject.GetComponentsInChildren(includeInactive, _childTransformBuffer);
 
             if (includeInvisible)
             {
                 foreach (var child in _childTransformBuffer)
-                    childrenAndSelf.Add(child.gameObject);
+                    if (child.gameObject != gameObject)
+                        children.Add(child.gameObject);
             }
             else
             {
                 foreach (var child in _childTransformBuffer)
-                    if (!child.gameObject.hasVolume() || child.gameObject.isVisible()) childrenAndSelf.Add(child.gameObject);
+                    if (child.gameObject != gameObject &&
+                        child.gameObject.isVisible())
+                        children.Add(child.gameObject);
             }
+        }
+
+        public static void getAllChildrenAndSelf(this GameObject gameObject, bool includeInactive,
+            bool includeInvisible, List<GameObject> childrenAndSelf)
+        {
+            childrenAndSelf.Clear();
+            gameObject.GetComponentsInChildren(includeInactive, _childTransformBuffer);
+
+            if (includeInvisible)
+                foreach (var child in _childTransformBuffer)
+                    childrenAndSelf.Add(child.gameObject);
+            else
+                foreach (var child in _childTransformBuffer)
+                    if (!child.gameObject.hasVolume() || child.gameObject.isVisible())
+                        childrenAndSelf.Add(child.gameObject);
         }
 
         public static Mesh getMesh(this GameObject gameObject)
         {
             _meshFilterBuffer.Clear();
             gameObject.GetComponents(_meshFilterBuffer);
-            if (_meshFilterBuffer.Count != 0 && _meshFilterBuffer[0].sharedMesh != null) return _meshFilterBuffer[0].sharedMesh;
+            if (_meshFilterBuffer.Count != 0 && _meshFilterBuffer[0].sharedMesh != null)
+                return _meshFilterBuffer[0].sharedMesh;
 
             _skinnedMeshRendererBuffer.Clear();
             gameObject.GetComponents(_skinnedMeshRendererBuffer);
-            if (_skinnedMeshRendererBuffer.Count != 0 && _skinnedMeshRendererBuffer[0].sharedMesh != null) return _skinnedMeshRendererBuffer[0].sharedMesh;
+            if (_skinnedMeshRendererBuffer.Count != 0 && _skinnedMeshRendererBuffer[0].sharedMesh != null)
+                return _skinnedMeshRendererBuffer[0].sharedMesh;
 
             return null;
         }
 
         public static bool isTerrainEnabled(this GameObject gameObject)
         {
-            Terrain terrain = gameObject.getTerrain();
+            var terrain = gameObject.getTerrain();
             if (terrain != null) return terrain.enabled;
 
             return false;
@@ -820,10 +820,10 @@ namespace GSpawn_Pro
 
         public static bool isMeshOrSkinnedMeshRendererEnabled(this GameObject gameObject)
         {
-            MeshRenderer meshRenderer = gameObject.getMeshRenderer();
+            var meshRenderer = gameObject.getMeshRenderer();
             if (meshRenderer != null) return meshRenderer.enabled;
 
-            SkinnedMeshRenderer skinnedRenderer = gameObject.getSkinnedMeshRenderer();
+            var skinnedRenderer = gameObject.getSkinnedMeshRenderer();
             if (skinnedRenderer != null) return skinnedRenderer.enabled;
 
             return false;
@@ -831,7 +831,7 @@ namespace GSpawn_Pro
 
         public static bool isSpriteRendererEnabled(this GameObject gameObject)
         {
-            SpriteRenderer spriteRenderer = gameObject.getSpriteRenderer();
+            var spriteRenderer = gameObject.getSpriteRenderer();
             if (spriteRenderer != null) return spriteRenderer.enabled;
 
             return false;
@@ -920,10 +920,10 @@ namespace GSpawn_Pro
             if (gameObjects == null) return;
 
             roots.Clear();
-            HashSet<GameObject> rootHash = new HashSet<GameObject>();
+            var rootHash = new HashSet<GameObject>();
             foreach (var gameObject in gameObjects)
             {
-                GameObject root = gameObject.transform.root.gameObject;
+                var root = gameObject.transform.root.gameObject;
                 if (!rootHash.Contains(root))
                 {
                     rootHash.Add(root);
@@ -941,26 +941,24 @@ namespace GSpawn_Pro
             parents.Clear();
             foreach (var gameObject in gameObjects)
             {
-                bool foundParent = false;
-                Transform objectTransform = gameObject.transform;
+                var foundParent = false;
+                var objectTransform = gameObject.transform;
 
                 foreach (var possibleParent in gameObjects)
-                {
                     if (possibleParent != gameObject)
-                    {
                         if (objectTransform.IsChildOf(possibleParent.transform))
                         {
                             foundParent = true;
                             break;
                         }
-                    }
-                }
 
                 if (!foundParent) parents.Add(gameObject);
             }
         }
 
-        public static void getOutermostPrefabInstanceRoots(IEnumerable<GameObject> gameObjects, List<GameObject> prefabAssets, List<GameObject> prefabInstances, Func<GameObject, bool> prefabInstanceFilter)
+        public static void getOutermostPrefabInstanceRoots(IEnumerable<GameObject> gameObjects,
+            List<GameObject> prefabAssets, List<GameObject> prefabInstances,
+            Func<GameObject, bool> prefabInstanceFilter)
         {
             prefabInstances.Clear();
             _prefabInstanceRootSet.Clear();
@@ -971,18 +969,17 @@ namespace GSpawn_Pro
                 {
                     var prefab = prefabInstanceRoot.getPrefabAsset();
                     if (prefab != null && prefabAssets.Contains(prefab))
-                    {
                         if (prefabInstanceFilter == null || prefabInstanceFilter(prefabInstanceRoot))
                         {
                             _prefabInstanceRootSet.Add(prefabInstanceRoot);
                             prefabInstances.Add(prefabInstanceRoot);
                         }
-                    }
                 }
             }
         }
 
-        public static void getOutermostPrefabInstanceRoots(IEnumerable<GameObject> gameObjects, GameObject prefabAsset, List<GameObject> prefabInstances, Func<GameObject, bool> prefabInstanceFilter)
+        public static void getOutermostPrefabInstanceRoots(IEnumerable<GameObject> gameObjects, GameObject prefabAsset,
+            List<GameObject> prefabInstances, Func<GameObject, bool> prefabInstanceFilter)
         {
             prefabInstances.Clear();
             _prefabInstanceRootSet.Clear();
@@ -993,18 +990,17 @@ namespace GSpawn_Pro
                 {
                     var prefab = prefabInstanceRoot.getPrefabAsset();
                     if (prefab != null && prefabAsset == prefab)
-                    {
                         if (prefabInstanceFilter == null || prefabInstanceFilter(prefabInstanceRoot))
                         {
                             _prefabInstanceRootSet.Add(prefabInstanceRoot);
                             prefabInstances.Add(prefabInstanceRoot);
                         }
-                    }
                 }
             }
         }
 
-        public static void getOutermostPrefabInstanceRoots(IEnumerable<GameObject> gameObjects, List<GameObject> prefabInstances, Func<GameObject, bool> prefabInstanceFilter)
+        public static void getOutermostPrefabInstanceRoots(IEnumerable<GameObject> gameObjects,
+            List<GameObject> prefabInstances, Func<GameObject, bool> prefabInstanceFilter)
         {
             prefabInstances.Clear();
             _prefabInstanceRootSet.Clear();
@@ -1015,27 +1011,28 @@ namespace GSpawn_Pro
                 {
                     var prefab = prefabInstanceRoot.getPrefabAsset();
                     if (prefab != null)
-                    {
                         if (prefabInstanceFilter == null || prefabInstanceFilter(prefabInstanceRoot))
                         {
                             _prefabInstanceRootSet.Add(prefabInstanceRoot);
                             prefabInstances.Add(prefabInstanceRoot);
                         }
-                    }
                 }
             }
         }
 
-        public static void getPrefabInstancesAndNonInstances(IEnumerable<GameObject> gameObjects, List<GameObject> destinationBuffer)
+        public static void getPrefabInstancesAndNonInstances(IEnumerable<GameObject> gameObjects,
+            List<GameObject> destinationBuffer)
         {
             destinationBuffer.Clear();
             _prefabInstanceRootSet.Clear();
             foreach (var gameObject in gameObjects)
             {
                 var prefabInstanceRoot = gameObject.getOutermostPrefabInstanceRoot();
-                if (prefabInstanceRoot == null) destinationBuffer.Add(gameObject);
-                else
-                if (prefabInstanceRoot != null && !_prefabInstanceRootSet.Contains(prefabInstanceRoot))
+                if (prefabInstanceRoot == null)
+                {
+                    destinationBuffer.Add(gameObject);
+                }
+                else if (prefabInstanceRoot != null && !_prefabInstanceRootSet.Contains(prefabInstanceRoot))
                 {
                     var prefab = prefabInstanceRoot.getPrefabAsset();
                     if (prefab != null)

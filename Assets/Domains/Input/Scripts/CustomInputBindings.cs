@@ -5,45 +5,44 @@ namespace Domains.Input.Scripts
     public class CustomInputBindings
     {
         // Define keybindings in one place
-        private static readonly KeyCode interactKey = KeyCode.E;
-        private static readonly KeyCode crouchKey = KeyCode.LeftControl;
-        private static readonly KeyCode runKey = KeyCode.LeftShift;
-        private static KeyCode alpha1Key = KeyCode.Alpha1;
-        private static readonly KeyCode changePerspectiveKey = KeyCode.V;
-        private static readonly KeyCode persistanceKey = KeyCode.P;
-        private static readonly KeyCode deletionKey = KeyCode.Alpha0;
-        private static readonly int mineMouseButton = 0;
+        private const KeyCode InteractKey = KeyCode.E;
+        private const KeyCode CrouchKey = KeyCode.LeftControl;
+        private const KeyCode RunKey = KeyCode.LeftShift;
+        private const KeyCode ChangePerspectiveKey = KeyCode.V;
+        private const KeyCode PersistanceKey = KeyCode.P;
+        private const KeyCode DeletionKey = KeyCode.Alpha0;
+        private const int MineMouseButton = 0;
 
         // Methods to check input (abstraction layer)
         public static bool IsInteractPressed()
         {
-            return UnityEngine.Input.GetKeyDown(interactKey);
+            return UnityEngine.Input.GetKeyDown(InteractKey);
         }
 
 
         public static bool IsCrouchPressed()
         {
-            return UnityEngine.Input.GetKey(crouchKey);
+            return UnityEngine.Input.GetKey(CrouchKey);
         }
 
         public static bool IsRunHeld()
         {
-            return UnityEngine.Input.GetKey(runKey);
+            return UnityEngine.Input.GetKey(RunKey);
         }
 
         public static bool IsChangePerspectivePressed()
         {
-            return UnityEngine.Input.GetKeyDown(changePerspectiveKey);
+            return UnityEngine.Input.GetKeyDown(ChangePerspectiveKey);
         }
 
         public static bool IsPersistanceKeyPressed()
         {
-            return UnityEngine.Input.GetKeyDown(persistanceKey);
+            return UnityEngine.Input.GetKeyDown(PersistanceKey);
         }
 
         public static bool IsDeletionKeyPressed()
         {
-            return UnityEngine.Input.GetKeyDown(deletionKey);
+            return UnityEngine.Input.GetKeyDown(DeletionKey);
         }
 
         public static int GetPressedNumberKey()
@@ -59,7 +58,7 @@ namespace Domains.Input.Scripts
 
         public static bool IsMineMouseButtonPressed()
         {
-            return UnityEngine.Input.GetMouseButton(mineMouseButton);
+            return UnityEngine.Input.GetMouseButton(MineMouseButton);
         }
     }
 }

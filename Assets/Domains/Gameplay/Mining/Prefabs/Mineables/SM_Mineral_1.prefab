@@ -416,7 +416,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -6059305054536168161, guid: 58f43b265bc1245419671cc60af57310, type: 3}
+  m_Mesh: {fileID: -6059305054536168161, guid: 046770de7812cb746b9402880e1e7c66, type: 3}
 --- !u!114 &5775791482648714589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -472,6 +472,7 @@ MonoBehaviour:
   oreHitFeedback: {fileID: 8640104945982745857}
   oreDestroyFeedback: {fileID: 2687134068422912147}
   OreHitBehavior: {fileID: 1052840361668016853}
+  UniqueID: 6734bec0-a82a-45cc-a616-fcba311fa998
 --- !u!114 &-5264020533336785524
 MonoBehaviour:
   m_ObjectHideFlags: 0

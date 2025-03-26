@@ -119,9 +119,9 @@ namespace Domains.Gameplay.Mining.Scripts
 
             materialController = this.GetComponentInBranch<CharacterActor, MaterialController>();
 
-            if (textureDetector == null) textureDetector = FindObjectOfType<TextureDetector>();
+            if (textureDetector == null) textureDetector = FindFirstObjectByType<TextureDetector>();
             if (playerInteraction == null)
-                playerInteraction = FindObjectOfType<PlayerInteraction>();
+                playerInteraction = FindFirstObjectByType<PlayerInteraction>();
         }
 
         protected override void Start()
