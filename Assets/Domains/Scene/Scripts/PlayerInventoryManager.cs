@@ -31,11 +31,11 @@ namespace Domains.Scene.Scripts
         public const string WeightLimitKey = "InventoryMaxWeight";
         public static Inventory PlayerInventory;
 
-        [FormerlySerializedAs("PlayerInventoryReference")] [SerializeField]
-        private Inventory playerInventoryReference;
-
         public static List<InventoryEntryData> InventoryContentData = new();
         private static float _weightLimit;
+
+        [FormerlySerializedAs("PlayerInventoryReference")] [SerializeField]
+        private Inventory playerInventoryReference;
 
         // Add this to PlayerInventoryManager
         [FormerlySerializedAs("_currentInventoryItems")] [SerializeField]
@@ -193,25 +193,18 @@ namespace Domains.Scene.Scripts
                     ES3.DeleteKey(InventoryKey, saveFilePath);
                     UnityEngine.Debug.Log($"Deleted inventory data from {saveFilePath}");
                 }
+
+                if (ES3.FileExists(saveFilePath) && ES3.KeyExists(WeightLimitKey, saveFilePath))
+                {
+                    ES3.DeleteKey(WeightLimitKey, saveFilePath);
+                    UnityEngine.Debug.Log($"Deleted weight limit data from {saveFilePath}");
+                }
             }
         }
 
         private static BaseItem GetItemByID(string itemID)
         {
             return Resources.LoadAll<BaseItem>(ResourcesPath).FirstOrDefault(i => i.ItemID == itemID);
-        }
-
-        [Serializable]
-        public class InventoryEntryData
-        {
-            public string UniqueID;
-            public string ItemID;
-
-            public InventoryEntryData(string itemUniqueID, string baseItemItemID)
-            {
-                UniqueID = itemUniqueID;
-                ItemID = baseItemItemID;
-            }
         }
 
         public static void IncreaseWeightLimit(float getMaxWeight)
@@ -237,6 +230,19 @@ namespace Domains.Scene.Scripts
         public static float GetWeightLimit()
         {
             return _weightLimit;
+        }
+
+        [Serializable]
+        public class InventoryEntryData
+        {
+            public string UniqueID;
+            public string ItemID;
+
+            public InventoryEntryData(string itemUniqueID, string baseItemItemID)
+            {
+                UniqueID = itemUniqueID;
+                ItemID = baseItemItemID;
+            }
         }
     }
 }
