@@ -15,7 +15,9 @@ GameObject:
   - component: {fileID: 1924054286163008180}
   - component: {fileID: 3875507139607545923}
   - component: {fileID: 8304212223528344926}
-  m_Layer: 0
+  - component: {fileID: 8451303503274263009}
+  - component: {fileID: -7470943540961149045}
+  m_Layer: 6
   m_Name: RefinedMineral_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +241,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 315305511933059022}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: decd76bfa8e4822419710696db249742, type: 3}
   m_Name: 
@@ -285,13 +287,59 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uniqueID: 
-  itemType: {fileID: 11400000, guid: 067dac50920fe314b8317efa0019d531, type: 2}
+  itemType: {fileID: 11400000, guid: 651fb09ed9fe93e4a92c7e4a005b91ab, type: 2}
   quantity: 1
   interactionHoldTime: 0.01
   pickedMmFeedbacks: {fileID: 4886972799331788902}
   soldMmFeedbacks: {fileID: 0}
   notPickable: 0
   interactablePrompt: {fileID: 0}
+--- !u!114 &8451303503274263009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315305511933059022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fb951817f3fd9e429e459b99f83a2ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnActivation:
+    m_PersistentCalls:
+      m_Calls: []
+  ButtonPromptPrefab: {fileID: 8627712031620381495, guid: 97c08a61fbf75d4489bb726815194a1a, type: 3}
+  promptTransformOffset: {x: 0, y: 1, z: 0}
+  promptRotationOffset: {x: 0, y: 0, z: 0}
+  activationFeedback: {fileID: 0}
+--- !u!54 &-7470943540961149045
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315305511933059022}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6973451112972547065
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,7 +558,7 @@ MonoBehaviour:
           ButtonText: Automatic Shaker Setup
         Owner: {fileID: 4886972799331788902}
         DebugActive: 0
-        Sfx: {fileID: 8300000, guid: bf7b336d89d704f4e8ecae19ab492bad, type: 3}
+        Sfx: {fileID: 8300000, guid: 1259ad85f5d4ea04a8871f2a8f80bebd, type: 3}
         RandomSfx: []
         TestPlayButton:
           ButtonText: Debug Play Sound
@@ -572,6 +620,10 @@ PrefabInstance:
     - target: {fileID: 7870726743665412337, guid: b9aa677b1a75171449086be551318abd, type: 3}
       propertyPath: m_Name
       value: PFX_Sparkle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7870726743665412337, guid: b9aa677b1a75171449086be551318abd, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8362608110537613069, guid: b9aa677b1a75171449086be551318abd, type: 3}
       propertyPath: m_RootOrder
@@ -682,6 +734,10 @@ PrefabInstance:
     - target: {fileID: 4915262749889565103, guid: 7843a38939285bc4e8cf8521d931e4e6, type: 3}
       propertyPath: m_Name
       value: PFX_GlowLines
+      objectReference: {fileID: 0}
+    - target: {fileID: 4915262749889565103, guid: 7843a38939285bc4e8cf8521d931e4e6, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

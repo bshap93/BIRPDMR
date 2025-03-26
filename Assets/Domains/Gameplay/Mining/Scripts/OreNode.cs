@@ -29,13 +29,13 @@ namespace Domains.Gameplay.Mining.Scripts
         private void OnMouseDown()
         {
             if (!PlayerStaminaManager.IsPlayerOutOfStamina())
-               OreHitBehavior?.PlayFeedbacks(); 
+                OreHitBehavior?.PlayFeedbacks();
         }
 
         // Sets number of pickups to spawn.
         public void oreHit()
         {
-            StaminaEvent.Trigger(StaminaEventType.ConsumeStamina, 5);
+            StaminaEvent.Trigger(StaminaEventType.ConsumeStamina, 2f);
             hitIndex++;
             if (hitIndex < hitsToDestroy)
                 dropIndex = dropOnHit;

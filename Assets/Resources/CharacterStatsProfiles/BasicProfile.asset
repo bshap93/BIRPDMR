@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dabfd78b899b6a54ab5d823863f737a6, type: 3}
   m_Name: BasicProfile
   m_EditorClassIdentifier: 
-  InitialMaxStamina: 100
+  InitialMaxStamina: 200
   InitialMaxHealth: 20
   InitialEnduranceLevel: 1
   InitialEnduranceExperiencePoints: 0
   InitialWeightLimit: 10
   InitialCurrency: 400
+  InitialUpgradeState: 0

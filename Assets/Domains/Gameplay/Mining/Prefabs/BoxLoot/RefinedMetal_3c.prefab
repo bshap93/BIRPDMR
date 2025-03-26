@@ -285,7 +285,8 @@ GameObject:
   - component: {fileID: 7657575816193114378}
   - component: {fileID: 8411026107220466431}
   - component: {fileID: -4061664199757022274}
-  m_Layer: 0
+  - component: {fileID: -2290751886586889473}
+  m_Layer: 6
   m_Name: RefinedMetal_3c
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -507,7 +508,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3895437934998590342}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: decd76bfa8e4822419710696db249742, type: 3}
   m_Name: 
@@ -553,7 +554,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uniqueID: 
-  itemType: {fileID: 11400000, guid: 067dac50920fe314b8317efa0019d531, type: 2}
+  itemType: {fileID: 11400000, guid: a719b9f4b542db34abd5856a06fd8f15, type: 2}
   quantity: 1
   interactionHoldTime: 0.01
   pickedMmFeedbacks: {fileID: 5199052493657640101}
@@ -579,6 +580,33 @@ MonoBehaviour:
   promptTransformOffset: {x: 0, y: 1, z: 0}
   promptRotationOffset: {x: 0, y: 0, z: 0}
   activationFeedback: {fileID: 0}
+--- !u!54 &-2290751886586889473
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3895437934998590342}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &6454356825866939584
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -635,6 +663,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PFX_GlowLines
       objectReference: {fileID: 0}
+    - target: {fileID: 4915262749889565103, guid: 8204f85f040465649903e12f6217e473, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5309685689194970419, guid: 8204f85f040465649903e12f6217e473, type: 3}
       propertyPath: ShapeModule.m_Scale.x
       value: 0.14
@@ -672,6 +704,10 @@ PrefabInstance:
     - target: {fileID: 7870726743665412337, guid: 37962700362f6ea47a29968a2d3d9c31, type: 3}
       propertyPath: m_Name
       value: PFX_Sparkle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7870726743665412337, guid: 37962700362f6ea47a29968a2d3d9c31, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8281924629798770041, guid: 37962700362f6ea47a29968a2d3d9c31, type: 3}
       propertyPath: ShapeModule.radius.value

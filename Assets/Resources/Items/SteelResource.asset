@@ -17,4 +17,4 @@ MonoBehaviour:
   ItemDescription: A bundle of raw space grade steel.
   ItemIcon: {fileID: 0}
   ItemWeight: 2
-  ItemValue: 100
+  ItemValue: 400
