@@ -100,13 +100,13 @@ MonoBehaviour:
   sourceTextures:
   - terrainLayer: {fileID: 0}
     diffuse: {fileID: 2800000, guid: 63888ece6d264da4f8c5525f3aaf30e5, type: 3}
-    height: {fileID: 0}
+    height: {fileID: 2800000, guid: d564330f4069cae4db1581539f9bc488, type: 3}
     heightChannel: 1
     normal: {fileID: 2800000, guid: e9aa952ddcaa08849ab6169ca8706f02, type: 3}
     smoothness: {fileID: 0}
     smoothnessChannel: 1
     isRoughness: 0
-    ao: {fileID: 0}
+    ao: {fileID: 2800000, guid: 133c04d721ab10746b2502b29acc5c29, type: 3}
     aoChannel: 1
     emis: {fileID: 0}
     metal: {fileID: 0}
@@ -129,13 +129,13 @@ MonoBehaviour:
     splat: {fileID: 0}
   - terrainLayer: {fileID: 0}
     diffuse: {fileID: 2800000, guid: 6737d43f0ef244049af2c6615ca77a5a, type: 3}
-    height: {fileID: 0}
+    height: {fileID: 2800000, guid: 2bc99477d4381ec42a30ac048409c80b, type: 3}
     heightChannel: 1
     normal: {fileID: 2800000, guid: bd5fe1e31b03a4b43b8ded77c4807a2b, type: 3}
     smoothness: {fileID: 0}
     smoothnessChannel: 1
     isRoughness: 0
-    ao: {fileID: 0}
+    ao: {fileID: 2800000, guid: 46fe1d95cd6a9da4babc1ab6684f7fab, type: 3}
     aoChannel: 1
     emis: {fileID: 0}
     metal: {fileID: 0}
