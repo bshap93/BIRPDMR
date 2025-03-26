@@ -281,7 +281,11 @@ namespace Domains.Player.Scripts
             {
                 var level = GetUpgradeLevel(upgrade.upgradeTypeName);
                 for (var i = 0; i < level; i++) // Apply all past levels
+                {
+                    if (upgrade.upgradeTypeName == "Inventory") continue;
                     ApplyUpgradeEffect(upgrade, i);
+                    UnityEngine.Debug.Log($"Applying upgrade {upgrade.upgradeTypeName} level {i}");
+                }
             }
         }
 
