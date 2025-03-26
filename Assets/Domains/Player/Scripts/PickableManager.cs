@@ -87,11 +87,7 @@ namespace Domains.Player.Scripts
                     var loadedItems = ES3.Load<HashSet<string>>("PickedItems", _savePath);
                     PickedItems.Clear();
 
-                    foreach (var item in loadedItems)
-                    {
-                        PickedItems.Add(item);
-                        UnityEngine.Debug.Log("Loaded picked item: " + item);
-                    }
+                    foreach (var item in loadedItems) PickedItems.Add(item);
                 }
                 else
                 {

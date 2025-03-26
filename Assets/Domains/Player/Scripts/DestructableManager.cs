@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Domains.Player.Events;
 using Domains.Scene.Scripts;
 using MoreMountains.Tools;
@@ -21,7 +20,7 @@ namespace Domains.Player.Scripts
 #endif
     public class DestructableManager : MonoBehaviour, MMEventListener<DestructableEvent>
     {
-        public static HashSet<string> DestroyedOreNodes = new();
+        public static HashSet<string> DestructablesDestroyed = new();
 
         private Dictionary<string, bool> _destroyedOreNodeWasDestroyed;
 
@@ -53,10 +52,19 @@ namespace Domains.Player.Scripts
 
         public void OnMMEvent(DestructableEvent eventType)
         {
-            throw new NotImplementedException();
+            if (eventType.EventType == DestructableEventType.Destroyed)
+            {
+                UnityEngine.Debug.Log($"Destructable {eventType.UniqueID} was destroyed");
+                AddDestructable(eventType.UniqueID, true);
+            }
         }
 
-        private void LoadDestructables()
+        public static bool IsDestuctableDestroyed(string uniqueId)
+        {
+            return DestructablesDestroyed.Contains(uniqueId);
+        }
+
+        public void LoadDestructables()
         {
             if (_savePath == null) _savePath = GetSaveFilePath();
 
@@ -65,11 +73,11 @@ namespace Domains.Player.Scripts
                 if (ES3.KeyExists("Destructables", _savePath))
                 {
                     var loadedDestructables = ES3.Load<HashSet<string>>("Destructables", _savePath);
-                    DestroyedOreNodes.Clear();
+                    DestructablesDestroyed.Clear();
 
                     foreach (var destructable in loadedDestructables)
                     {
-                        DestroyedOreNodes.Add(destructable);
+                        DestructablesDestroyed.Add(destructable);
                         UnityEngine.Debug.Log($"Loaded destructable: {destructable}");
                     }
                 }
@@ -79,28 +87,38 @@ namespace Domains.Player.Scripts
                     foreach (var key in keys)
                         if (ES3.KeyExists(key, _savePath) && ES3.Load<bool>(key, _savePath))
                         {
-                            DestroyedOreNodes.Add(key);
+                            DestructablesDestroyed.Add(key);
                             UnityEngine.Debug.Log($"Loaded destructable: {key}");
                         }
                 }
             }
         }
 
+        public static void AddDestructable(string uniqueID, bool b)
+        {
+            if (b)
+                DestructablesDestroyed.Add(uniqueID);
+
+            UnityEngine.Debug.Log($"Item {uniqueID} marked as destroyed: {b}");
+
+            SaveAllDestructables();
+        }
+
         public static void SaveAllDestructables()
         {
             var saveFilePath = GetSaveFilePath();
 
-            ES3.Save("Destructables", DestroyedOreNodes, saveFilePath);
+            ES3.Save("Destructables", DestructablesDestroyed, saveFilePath);
 
-            foreach (var uniqueId in DestroyedOreNodes) ES3.Save(uniqueId, true, saveFilePath);
+            foreach (var uniqueId in DestructablesDestroyed) ES3.Save(uniqueId, true, saveFilePath);
         }
 
         public static void ResetDestructables()
         {
-            DestroyedOreNodes = new HashSet<string>();
+            DestructablesDestroyed = new HashSet<string>();
         }
 
-        private bool HasSavedData()
+        public bool HasSavedData()
         {
             return ES3.FileExists(_savePath);
         }

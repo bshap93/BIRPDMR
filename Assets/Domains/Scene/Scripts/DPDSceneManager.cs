@@ -1,4 +1,7 @@
-﻿using Lightbug.CharacterControllerPro.Core;
+﻿using System;
+using Domains.Player.Events;
+using Domains.Player.Scripts;
+using Lightbug.CharacterControllerPro.Core;
 using Lightbug.CharacterControllerPro.Demo;
 using MoreMountains.Tools;
 using UnityEngine;
@@ -6,7 +9,7 @@ using UnityEngine.Serialization;
 
 namespace Domains.Scene.Scripts
 {
-    public class DpdSceneManager : MonoBehaviour
+    public class DpdSceneManager : MonoBehaviour, MMEventListener<PlayerStatusEvent>
     {
         [Header("Character")] [SerializeField] private CharacterActor characterActor;
 
@@ -34,6 +37,7 @@ namespace Domains.Scene.Scripts
 
         private MMSceneRestarter sceneRestarter;
 
+
         private void Awake()
         {
             if (characterActor != null)
@@ -58,6 +62,28 @@ namespace Domains.Scene.Scripts
 
             Cursor.visible = !hideAndConfineCursor;
             Cursor.lockState = hideAndConfineCursor ? CursorLockMode.Locked : CursorLockMode.None;
+        }
+
+
+        private void OnEnable()
+        {
+            this.MMEventStartListening();
+        }
+
+        private void OnDisable()
+        {
+            this.MMEventStopListening();
+        }
+
+        public void OnMMEvent(PlayerStatusEvent eventType)
+        {
+            switch (eventType.EventType)
+            {
+                case PlayerStatusEventType.OutOfHealth:
+                    OnApplicationReset(ResetReason.OutOfHealth);
+
+                    break;
+            }
         }
 
 
@@ -109,11 +135,28 @@ namespace Domains.Scene.Scripts
         }
 
         // On App Quit
-        public void OnApplicationReset()
+        public void OnApplicationReset(ResetReason resetReason)
         {
             var saveManager = FindFirstObjectByType<SaveManager>();
             saveManager.CallSaveThenWait();
+            switch (resetReason)
+            {
+                case ResetReason.OutOfHealth:
+                    HealthEvent.Trigger(HealthEventType.RecoverHealth, 20);
+                    break;
+                case ResetReason.OutOfStamina:
+                    StaminaEvent.Trigger(StaminaEventType.RecoverStamina, 100);
+                    break;
+            }
+
             sceneRestarter.RestartScene();
         }
+    }
+
+    [Serializable]
+    public enum ResetReason
+    {
+        OutOfHealth,
+        OutOfStamina
     }
 }

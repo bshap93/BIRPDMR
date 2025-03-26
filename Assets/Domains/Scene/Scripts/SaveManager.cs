@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Domains.Debug;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
-using Domains.Player.Scripts.ScriptableObjects;
 using Domains.SaveLoad;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
@@ -41,10 +39,12 @@ namespace Domains.Scene.Scripts
 
         public PlayerUpgradeManager playerUpgradeManager;
 
-
-        public static SaveManager Instance { get; private set; }
+        public DestructableManager destructableManager;
 
         public bool freshStart;
+
+
+        public static SaveManager Instance { get; private set; }
 
         private void Awake()
         {
@@ -108,6 +108,13 @@ namespace Domains.Scene.Scripts
             this.MMEventStopListening();
         }
 
+
+        // On App Quit
+        private void OnApplicationQuit()
+        {
+            StartCoroutine(SaveAllThenWait());
+        }
+
         public void OnMMEvent(SaveLoadEvent eventType)
         {
             if (eventType.EventType == SaveLoadEventType.Save)
@@ -129,6 +136,7 @@ namespace Domains.Scene.Scripts
             PlayerCurrencyManager.SavePlayerCurrency();
             PlayerUpgradeManager.SaveUpgrades();
             PickableManager.SaveAllPickedItems();
+            DestructableManager.SaveAllDestructables();
             DiggerEvent.Trigger(DiggerEventType.Persist);
             UnityEngine.Debug.Log("All data saved");
         }
@@ -141,6 +149,7 @@ namespace Domains.Scene.Scripts
             var currencyLoaded = playerCurrencyManager != null && playerCurrencyManager.HasSavedData();
             var upgradesLoaded = playerUpgradeManager != null && playerUpgradeManager.HasSavedData();
             var pickablesLoaded = pickableManager != null && pickableManager.HasSavedData();
+            var destructablesLoaded = destructableManager != null && destructableManager.HasSavedData();
 
             // Digger has no Load method
 
@@ -151,21 +160,15 @@ namespace Domains.Scene.Scripts
             if (currencyLoaded) playerCurrencyManager.LoadPlayerCurrency();
             if (upgradesLoaded) playerUpgradeManager.LoadUpgrades();
             if (pickablesLoaded) pickableManager.LoadPickedItems();
+            if (destructablesLoaded) destructableManager.LoadDestructables();
 
 
             return staminaLoaded ||
                    healthLoaded || inventoryLoaded || currencyLoaded ||
-                   upgradesLoaded;
+                   upgradesLoaded || pickablesLoaded || destructablesLoaded;
         }
 
         public void CallSaveThenWait()
-        {
-            StartCoroutine(SaveAllThenWait());
-        }
-
-
-        // On App Quit
-        private void OnApplicationQuit()
         {
             StartCoroutine(SaveAllThenWait());
         }

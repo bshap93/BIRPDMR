@@ -3,6 +3,7 @@ using Domains.Player.Events;
 using Domains.Player.Scripts;
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Domains.Gameplay.Mining.Scripts
 
@@ -27,12 +28,26 @@ namespace Domains.Gameplay.Mining.Scripts
         private int dropIndex;
         private int hitIndex;
 
+        private void Start()
+        {
+            StartCoroutine(InitializeAfterDestructableManager());
+        }
+
 
         // On click trigger.
         private void OnMouseDown()
         {
             if (!PlayerStaminaManager.IsPlayerOutOfStamina())
                 OreHitBehavior?.PlayFeedbacks();
+        }
+
+        private IEnumerator InitializeAfterDestructableManager()
+        {
+            // Wait a frame to ensure PickableManager has initialized
+            yield return null;
+
+            // Now check if this item should be destroyed
+            if (DestructableManager.IsDestuctableDestroyed(UniqueID)) Destroy(gameObject);
         }
 
         // Sets number of pickups to spawn.
@@ -71,10 +86,11 @@ namespace Domains.Gameplay.Mining.Scripts
             {
                 //Spawn pieces and destroy.
                 oreDestroyFeedback?.PlayFeedbacks();
-                DestructableEvent.Trigger(DestructableEventType.Destroyed, UniqueID);
                 var position = transform.position;
                 var rotation = transform.rotation;
                 Instantiate(pieces, position, rotation);
+                DestructableEvent.Trigger(DestructableEventType.Destroyed, UniqueID);
+
                 Destroy(gameObject);
             }
         }

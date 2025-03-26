@@ -39,6 +39,9 @@ namespace Domains.Debug
             PickableManager.ResetPickedItems();
             PickableManager.SaveAllPickedItems();
 
+            DestructableManager.ResetDestructables();
+            DestructableManager.SaveAllDestructables();
+
             // Reset upgrades
             PlayerUpgradeManager.ResetPlayerUpgrades();
             PlayerUpgradeManager.SaveUpgrades();

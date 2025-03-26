@@ -130,12 +130,14 @@ namespace Domains.Player.Scripts
         {
             if (HealthPoints == 0 && amount > 0) PlayerStatusEvent.Trigger(PlayerStatusEventType.RegainedHealth);
             HealthPoints += amount;
+            SavePlayerHealth();
         }
 
         public static void FullyRecoverHealth()
         {
             HealthPoints = MaxHealthPoints;
             PlayerStatusEvent.Trigger(PlayerStatusEventType.RegainedHealth);
+            SavePlayerHealth();
         }
 
         public static void IncreaseMaximumHealth(float amount)
