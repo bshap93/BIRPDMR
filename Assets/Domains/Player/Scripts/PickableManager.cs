@@ -24,9 +24,9 @@ namespace Domains.Player.Scripts
     {
         public static HashSet<string> PickedItems = new();
 
-        private string _savePath;
-
         private Dictionary<string, bool> _pickedItemIdWasPicked;
+
+        private string _savePath;
 
 
         private void Start()
@@ -42,11 +42,11 @@ namespace Domains.Player.Scripts
             LoadPickedItems();
         }
 
-        private void Update()
-        {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.F5)) // Press F5 to force save
-                AddPickedItem("test", true);
-        }
+        // private void Update()
+        // {
+        //     if (UnityEngine.Input.GetKeyDown(KeyCode.F5)) // Press F5 to force save
+        //         AddPickedItem("test", true);
+        // }
 
 
         private void OnEnable()

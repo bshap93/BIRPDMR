@@ -21,6 +21,9 @@ namespace Domains.Gameplay.Mining.Scripts
         [SerializeField] private MMFeedbacks oreHitFeedback;
         [SerializeField] private MMFeedbacks oreDestroyFeedback;
         public MMFeedbacks OreHitBehavior;
+
+        // Unique ID for the ore node.
+        public string UniqueID;
         private int dropIndex;
         private int hitIndex;
 
@@ -68,6 +71,7 @@ namespace Domains.Gameplay.Mining.Scripts
             {
                 //Spawn pieces and destroy.
                 oreDestroyFeedback?.PlayFeedbacks();
+                DestructableEvent.Trigger(DestructableEventType.Destroyed, UniqueID);
                 var position = transform.position;
                 var rotation = transform.rotation;
                 Instantiate(pieces, position, rotation);
