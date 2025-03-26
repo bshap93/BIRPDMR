@@ -60,6 +60,9 @@ namespace Domains.Items
 
             Content.Add(item); // Always add as a new entry, even if identical items exist
             InventoryEvent.Trigger(InventoryEventType.ContentChanged, this, 0);
+            PlayerInventoryManager.InventoryContentData.Add(
+                new PlayerInventoryManager.InventoryEntryData(item.UniqueID, item.BaseItem.ItemID));
+            SaveInventory();
             return true;
         }
 
@@ -72,7 +75,12 @@ namespace Domains.Items
                 return false;
             }
 
-            return Content.Remove(item);
+            var result = Content.Remove(item);
+            if (result)
+            {
+            }
+
+            return true;
         }
 
         public virtual bool RemoveItem(string uniqueID)

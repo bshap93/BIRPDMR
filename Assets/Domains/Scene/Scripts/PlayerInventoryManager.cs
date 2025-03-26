@@ -5,6 +5,7 @@ using Domains.Items;
 using Domains.Items.Events;
 using Domains.Scripts;
 using Domains.UI;
+using Gameplay.Events;
 using JetBrains.Annotations;
 using MoreMountains.Tools;
 using UnityEditor;
@@ -24,7 +25,7 @@ namespace Domains.Scene.Scripts
     }
 #endif
 
-    public class PlayerInventoryManager : MonoBehaviour, MMEventListener<InventoryEvent>
+    public class PlayerInventoryManager : MonoBehaviour, MMEventListener<InventoryEvent>, MMEventListener<ItemEvent>
     {
         private const string InventoryKey = "InventoryContentData";
         private const string ResourcesPath = "Items";
@@ -79,15 +80,23 @@ namespace Domains.Scene.Scripts
             LoadInventory();
         }
 
+        private void Update()
+        {
+            currentInventoryItems = InventoryContentData;
+            UnityEngine.Debug.Log("Current Inventory Items: " + currentInventoryItems.Count);
+        }
+
 
         private void OnEnable()
         {
-            this.MMEventStartListening();
+            this.MMEventStartListening<ItemEvent>();
+            this.MMEventStartListening<InventoryEvent>();
         }
 
         private void OnDisable()
         {
-            this.MMEventStopListening();
+            this.MMEventStopListening<ItemEvent>();
+            this.MMEventStopListening<InventoryEvent>();
         }
 
         public void OnMMEvent(InventoryEvent eventType)
@@ -95,10 +104,27 @@ namespace Domains.Scene.Scripts
             if (eventType.EventType == InventoryEventType.ContentChanged) SaveInventory();
 
 
-            if (eventType.EventType == InventoryEventType.SellAllItems) PlayerInventory.SellAllItems();
+            if (eventType.EventType == InventoryEventType.SellAllItems)
+            {
+                PlayerInventory.SellAllItems();
+                InventoryContentData.Clear();
+                SaveInventory();
+            }
 
             if (eventType.EventType == InventoryEventType.UpgradedWeightLimit)
                 IncreaseWeightLimit(eventType.WeightLimitIncrease);
+        }
+
+        public void OnMMEvent(ItemEvent eventType)
+        {
+            if (eventType.EventType == ItemEventType.Picked)
+            {
+                UnityEngine.Debug.Log("Item added to inventory: " + eventType.Item.BaseItem.ItemName);
+                InventoryContentData.Add(
+                    new InventoryEntryData(eventType.Item.UniqueID, eventType.Item.BaseItem.ItemID));
+
+                SaveInventory();
+            }
         }
 
 

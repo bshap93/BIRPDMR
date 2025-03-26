@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using Domains.Items;
 using Domains.Items.Events;
-using Domains.Scene.Scripts;
 using MoreMountains.Tools;
 using UnityEngine;
 
@@ -9,6 +9,7 @@ public class ItemListHUD : MonoBehaviour, MMEventListener<InventoryEvent>
     public GameObject list;
     public GameObject itemElementPrefab;
     public List<GameObject> itemElements = new();
+    public Inventory mainInventory;
 
     private void Start()
     {
@@ -37,7 +38,7 @@ public class ItemListHUD : MonoBehaviour, MMEventListener<InventoryEvent>
         itemElements.Clear();
 
         // Get grouped items directly from the inventory
-        var groupedItems = PlayerInventoryManager.PlayerInventory.GetGroupedItems();
+        var groupedItems = mainInventory.GetGroupedItems();
 
         // Create UI elements for each group
         foreach (var group in groupedItems)
