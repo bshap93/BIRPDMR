@@ -115,7 +115,7 @@ namespace Domains.Items
 
         public virtual void SaveInventory()
         {
-            throw new NotImplementedException();
+            PlayerInventoryManager.SaveInventory();
         }
 
         public void EmptyInventory()

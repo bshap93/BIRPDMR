@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Input.Scripts;
+using Domains.Items.Events;
 using Domains.Player.Scripts;
 using Gameplay.Events;
 using MoreMountains.Feedbacks;
@@ -132,6 +133,7 @@ namespace Domains.Items
 
                     // Trigger event
                     ItemEvent.Trigger(ItemEventType.Picked, entry, transform);
+                    InventoryEvent.Trigger(InventoryEventType.ContentChanged, _targetInventory, 0);
 
                     // Destroy
                     Destroy(gameObject);

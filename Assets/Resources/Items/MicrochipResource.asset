@@ -15,6 +15,6 @@ MonoBehaviour:
   ItemID: MicroChipResource
   ItemName: Micro Chips
   ItemDescription: A bundle of semiconductor raw material.
-  ItemIcon: {fileID: 0}
+  ItemIcon: {fileID: 21300000, guid: d7a3441cff5b1df45a8a6cd3811790ad, type: 3}
   ItemWeight: 1
   ItemValue: 200

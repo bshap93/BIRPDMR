@@ -191,10 +191,7 @@ namespace Domains.Gameplay.Mining.Scripts
                     return;
 
                 if (playerInteraction.diggableLayers[textureIndex])
-                {
-                    UnityEngine.Debug.Log($"Mining state triggered on texture index {textureIndex}");
                     CharacterStateController.EnqueueTransition<ShovelMiningState>();
-                }
             }
         }
 

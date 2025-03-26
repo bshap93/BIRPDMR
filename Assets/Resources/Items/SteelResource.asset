@@ -15,6 +15,6 @@ MonoBehaviour:
   ItemID: SteelResource
   ItemName: Steel
   ItemDescription: A bundle of raw space grade steel.
-  ItemIcon: {fileID: 0}
+  ItemIcon: {fileID: 21300000, guid: 696277c1fbc17c943ba37c4b71d17146, type: 3}
   ItemWeight: 2
   ItemValue: 400

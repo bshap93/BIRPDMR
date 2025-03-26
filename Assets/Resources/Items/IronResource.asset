@@ -15,6 +15,6 @@ MonoBehaviour:
   ItemID: IronResource
   ItemName: Iron
   ItemDescription: A common metal used for construction and tools.
-  ItemIcon: {fileID: 0}
+  ItemIcon: {fileID: 21300000, guid: ec9a33db07289b84a8c8d83e9ab5de8d, type: 3}
   ItemWeight: 1
   ItemValue: 400

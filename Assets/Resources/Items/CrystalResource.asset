@@ -15,6 +15,6 @@ MonoBehaviour:
   ItemID: CrystalResource
   ItemName: Crystal
   ItemDescription: A volcanic dark stone found near the surface.
-  ItemIcon: {fileID: 0}
+  ItemIcon: {fileID: 21300000, guid: 4f4326c0fbf854a44830304b7f660d3e, type: 3}
   ItemWeight: 1
   ItemValue: 400

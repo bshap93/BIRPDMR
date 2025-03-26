@@ -15,6 +15,6 @@ MonoBehaviour:
   ItemID: AluminumResource
   ItemName: Aluminum
   ItemDescription: A bundle of aluminum foil and raw metal.
-  ItemIcon: {fileID: 0}
+  ItemIcon: {fileID: 21300000, guid: cb4a9526afe722b478da5e51b8934796, type: 3}
   ItemWeight: 1
   ItemValue: 50

@@ -92,7 +92,7 @@ namespace Domains.Scene.Scripts
 
         public void OnMMEvent(InventoryEvent eventType)
         {
-            UnityEngine.Debug.Log($"Inventory event received: {eventType.EventType}");
+            if (eventType.EventType == InventoryEventType.ContentChanged) SaveInventory();
 
 
             if (eventType.EventType == InventoryEventType.SellAllItems) PlayerInventory.SellAllItems();

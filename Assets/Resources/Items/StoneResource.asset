@@ -15,6 +15,6 @@ MonoBehaviour:
   ItemID: StoneResource
   ItemName: Stone
   ItemDescription: A volcanic dark stone found near the surface.
-  ItemIcon: {fileID: 0}
+  ItemIcon: {fileID: 21300000, guid: 7e5c16b164789b14c8b54e15fe42e0fd, type: 3}
   ItemWeight: 1
   ItemValue: 100
