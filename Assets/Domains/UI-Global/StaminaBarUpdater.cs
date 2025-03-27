@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Gameplay.Character.Stamina
+namespace Domains.UI_Global
 {
     public class StaminaBarUpdater : MonoBehaviour, MMEventListener<StaminaEvent>
 
@@ -70,7 +70,7 @@ namespace Gameplay.Character.Stamina
                     case StaminaEventType.SetMaxStamina:
                         _maxStamina = eventType.ByValue;
                         textPlaceholderMaxStamina.text = _maxStamina.ToString();
-                        Debug.Log($"Updated Max Stamina to {_maxStamina}"); // Debugging
+                        UnityEngine.Debug.Log($"Updated Max Stamina to {_maxStamina}"); // Debugging
                         if (_bar != null)
                             _bar.UpdateBar(_currentStamina, 0, _maxStamina);
                         break;

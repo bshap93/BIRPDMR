@@ -1,7 +1,7 @@
 ﻿using Domains.Player.Events;
 using Domains.Player.Scripts.ScriptableObjects;
+using Domains.UI_Global;
 using Domains.UI_Global.Events;
-using Gameplay.Character.Stamina;
 using MoreMountains.Tools;
 using UnityEditor;
 using UnityEngine;
