@@ -32,7 +32,7 @@ namespace Domains.Scene.Scripts
         public static PlayerInventoryManager Instance { get; private set; }
 
         // Direct reference to the inventory
-        public Inventory PlayerInventory { get; private set; }
+        public Inventory PlayerInventory;
 
         private void Awake()
         {
