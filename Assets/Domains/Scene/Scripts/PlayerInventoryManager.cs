@@ -26,13 +26,14 @@ namespace Domains.Scene.Scripts
         // UI updater reference
         [CanBeNull] public InventoryBarUpdater inventoryBarUpdater;
 
+        // Direct reference to the inventory
+        [FormerlySerializedAs("PlayerInventory")]
+        public Inventory playerInventory;
+
         private string _savePath;
 
         // Single instance for easy access
         public static PlayerInventoryManager Instance { get; private set; }
-
-        // Direct reference to the inventory
-        public Inventory PlayerInventory { get; private set; }
 
         private void Awake()
         {
@@ -45,9 +46,9 @@ namespace Domains.Scene.Scripts
         private void Start()
         {
             // Find the inventory
-            PlayerInventory = FindFirstObjectByType<Inventory>();
+            playerInventory = FindFirstObjectByType<Inventory>();
 
-            if (PlayerInventory == null)
+            if (playerInventory == null)
             {
                 UnityEngine.Debug.LogError("Failed to find Inventory component in scene!");
                 return;
@@ -113,7 +114,7 @@ namespace Domains.Scene.Scripts
                     break;
 
                 case InventoryEventType.SellAllItems:
-                    PlayerInventory.SellAllItems();
+                    playerInventory.SellAllItems();
                     SaveInventory();
                     break;
 
@@ -141,44 +142,44 @@ namespace Domains.Scene.Scripts
             // Check weight limit
             if (GetCurrentWeight() + item.BaseItem.ItemWeight > weightLimit)
             {
-                PlayerInventory.inventoryFullFeedbacks?.PlayFeedbacks();
+                playerInventory.inventoryFullFeedbacks?.PlayFeedbacks();
                 UnityEngine.Debug.LogWarning("Inventory is full (weight limit reached)");
                 return false;
             }
 
             // Add to inventory
-            PlayerInventory.content.Add(item);
+            playerInventory.content.Add(item);
 
             // Trigger event
-            InventoryEvent.Trigger(InventoryEventType.ContentChanged, PlayerInventory, 0);
+            InventoryEvent.Trigger(InventoryEventType.ContentChanged, playerInventory, 0);
 
             return true;
         }
 
         public bool RemoveItem(string uniqueID)
         {
-            var item = PlayerInventory.content.Find(i => i.uniqueID == uniqueID);
+            var item = playerInventory.content.Find(i => i.uniqueID == uniqueID);
             if (item == null)
             {
                 UnityEngine.Debug.LogWarning($"Item with ID {uniqueID} not found in inventory");
                 return false;
             }
 
-            PlayerInventory.content.Remove(item);
-            InventoryEvent.Trigger(InventoryEventType.ContentChanged, PlayerInventory, 0);
+            playerInventory.content.Remove(item);
+            InventoryEvent.Trigger(InventoryEventType.ContentChanged, playerInventory, 0);
 
             return true;
         }
 
         public Inventory.InventoryEntry GetItem(string uniqueID)
         {
-            return PlayerInventory.content.Find(i => i.uniqueID == uniqueID);
+            return playerInventory.content.Find(i => i.uniqueID == uniqueID);
         }
 
         public void ClearInventory()
         {
-            PlayerInventory.content.Clear();
-            InventoryEvent.Trigger(InventoryEventType.ContentChanged, PlayerInventory, 0);
+            playerInventory.content.Clear();
+            InventoryEvent.Trigger(InventoryEventType.ContentChanged, playerInventory, 0);
         }
 
         #endregion
@@ -194,7 +195,7 @@ namespace Domains.Scene.Scripts
             }
 
             // Save inventory entries
-            var inventoryData = PlayerInventory.content.Select(entry =>
+            var inventoryData = playerInventory.content.Select(entry =>
                 new InventoryEntryData(entry.uniqueID, entry.BaseItem.ItemID)).ToList();
 
             ES3.Save(InventoryKey, inventoryData, _savePath);
@@ -218,7 +219,7 @@ namespace Domains.Scene.Scripts
                     var inventoryData = ES3.Load<List<InventoryEntryData>>(InventoryKey, _savePath);
 
                     // Clear current inventory
-                    PlayerInventory.content.Clear();
+                    playerInventory.content.Clear();
 
                     // Populate inventory
                     foreach (var itemData in inventoryData)
@@ -227,7 +228,7 @@ namespace Domains.Scene.Scripts
                         if (baseItem != null)
                         {
                             var entry = new Inventory.InventoryEntry(itemData.uniqueID, baseItem);
-                            PlayerInventory.content.Add(entry);
+                            playerInventory.content.Add(entry);
                         }
                         else
                         {
@@ -236,7 +237,7 @@ namespace Domains.Scene.Scripts
                     }
 
                     // Update UI
-                    InventoryEvent.Trigger(InventoryEventType.ContentChanged, PlayerInventory, weightLimit);
+                    InventoryEvent.Trigger(InventoryEventType.ContentChanged, playerInventory, weightLimit);
 
                     UnityEngine.Debug.Log($"✅ Loaded inventory data from {_savePath}");
                 }
@@ -244,7 +245,7 @@ namespace Domains.Scene.Scripts
             else
             {
                 UnityEngine.Debug.Log($"No saved inventory data found at {_savePath}. Using defaults.");
-                PlayerInventory.content.Clear();
+                playerInventory.content.Clear();
                 weightLimit = PlayerInfoSheet.WeightLimit;
             }
         }
@@ -289,7 +290,7 @@ namespace Domains.Scene.Scripts
 
         public float GetCurrentWeight()
         {
-            return PlayerInventory.content.Sum(entry => entry.BaseItem.ItemWeight);
+            return playerInventory.content.Sum(entry => entry.BaseItem.ItemWeight);
         }
 
         public void IncreaseWeightLimit(float amount)
@@ -300,7 +301,7 @@ namespace Domains.Scene.Scripts
             weightLimit += amount;
             SaveInventory();
 
-            InventoryEvent.Trigger(InventoryEventType.ContentChanged, PlayerInventory, weightLimit);
+            InventoryEvent.Trigger(InventoryEventType.ContentChanged, playerInventory, weightLimit);
         }
 
         public void SetWeightLimit(float newLimit)

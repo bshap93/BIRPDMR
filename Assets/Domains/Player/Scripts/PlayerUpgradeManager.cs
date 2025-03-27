@@ -186,7 +186,7 @@ namespace Domains.Player.Scripts
                 if (inventoryManager != null)
                 {
                     inventoryManager.IncreaseWeightLimit(addition);
-                    InventoryEvent.Trigger(InventoryEventType.UpgradedWeightLimit, inventoryManager.PlayerInventory,
+                    InventoryEvent.Trigger(InventoryEventType.UpgradedWeightLimit, inventoryManager.playerInventory,
                         addition);
                 }
             }
