@@ -16,6 +16,10 @@ namespace Domains.Player.Scripts
         public Animator toolAnimator;
         public Transform cameraTransform;
         public int strokeCount = 1;
+        
+        [SerializeField] private GameObject dirtParticlePrefab;
+
+
 
         [FormerlySerializedAs("miningBehabior")]
         public MMFeedbacks miningBehavior;
