@@ -44,7 +44,6 @@ namespace Domains.Player.Scripts
         {
             LoadUpgrades();
 
-            _instance.miningToolSize = shovelMiningState.size;
         }
 
 
