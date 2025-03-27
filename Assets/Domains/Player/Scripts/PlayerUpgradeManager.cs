@@ -37,13 +37,21 @@ namespace Domains.Player.Scripts
                 UnityEngine.Debug.LogWarning("Duplicate PlayerUpgradeManager detected. Destroying the extra instance.");
                 Destroy(gameObject);
             }
+
+            // Find ShovelMiningState if not assigned
+            if (shovelMiningState == null)
+            {
+                shovelMiningState = FindFirstObjectByType<ShovelMiningState>();
+                if (shovelMiningState == null)
+                    UnityEngine.Debug.LogWarning(
+                        "ShovelMiningState not found. Mining upgrades may not apply correctly.");
+            }
         }
 
 
         private void Start()
         {
             LoadUpgrades();
-
         }
 
 
@@ -59,10 +67,11 @@ namespace Domains.Player.Scripts
 
         public void OnMMEvent(UpgradeEvent eventType)
         {
-            // if (eventType.EventType == UpgradeEventType.UpgradePurchased)
-            // {
-            //     BuyUpgrade(eventType.UpgradeData.upgradeTypeName);
-            // }
+            if (eventType.EventType == UpgradeEventType.UpgradePurchased)
+                // We don't need to call BuyUpgrade again here since it would cause a loop
+                // The event is just to notify other components that an upgrade was purchased
+                // Instead, maybe log the event
+                UnityEngine.Debug.Log($"Received UpgradePurchased event for {eventType.UpgradeData.upgradeTypeName}");
         }
 
 
@@ -173,6 +182,8 @@ namespace Domains.Player.Scripts
             else if (upgradeType == "Mining") // Example: Multiply mining speed
             {
                 shovelMiningState.size *= multiplier;
+                miningToolSize = shovelMiningState.size; // Update the local variable too
+                ES3.Save("MiningToolSize", miningToolSize, "UpgradeSave.es3"); // Save immediately
             }
         }
 
@@ -249,6 +260,7 @@ namespace Domains.Player.Scripts
 
         public void LoadUpgrades()
         {
+            UnityEngine.Debug.Log("Loading upgrades...");
             foreach (var upgrade in availableUpgrades)
                 if (ES3.KeyExists(upgrade.upgradeTypeName, "UpgradeSave.es3"))
                     UpgradeLevels[upgrade.upgradeTypeName] = ES3.Load<int>(upgrade.upgradeTypeName, "UpgradeSave.es3");
@@ -259,9 +271,25 @@ namespace Domains.Player.Scripts
             if (ES3.KeyExists("MiningToolSize", "UpgradeSave.es3"))
                 miningToolSize = ES3.Load<float>("MiningToolSize", "UpgradeSave.es3");
 
-            // Load current tool
-            if (ES3.KeyExists("CurrentToolID", "UpgradeSave.es3"))
-                currentToolId = ES3.Load<string>("CurrentToolID", "UpgradeSave.es3");
+            // Load mining tool size
+            if (ES3.KeyExists("MiningToolSize", "UpgradeSave.es3"))
+            {
+                miningToolSize = ES3.Load<float>("MiningToolSize", "UpgradeSave.es3");
+
+                // Directly update the ShovelMiningState if possible
+                if (shovelMiningState != null)
+                {
+                    shovelMiningState.SetMiningSize(miningToolSize);
+                    UnityEngine.Debug.Log($"Setting shovel mining size to {miningToolSize}");
+                }
+                else
+                {
+                    UnityEngine.Debug.LogWarning("ShovelMiningState reference is null during LoadUpgrades");
+                }
+            }
+
+            // After loading mining tool size
+            UnityEngine.Debug.Log($"Loaded mining tool size: {miningToolSize}");
 
             // Load stamina
             if (ES3.KeyExists("MaxStamina", "UpgradeSave.es3"))
@@ -289,6 +317,9 @@ namespace Domains.Player.Scripts
                     UnityEngine.Debug.Log($"Applying upgrade {upgrade.upgradeTypeName} level {i}");
                 }
             }
+
+            // After applying all upgrades
+            UnityEngine.Debug.Log("Finished applying all upgrades");
         }
 
 

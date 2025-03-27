@@ -125,5 +125,10 @@ namespace Domains.Player.Scripts
             if (!CustomInputBindings.IsMineMouseButtonPressed())
                 CharacterStateController.EnqueueTransition<MyNormalMovement>();
         }
+
+        public void SetMiningSize(float newSize)
+        {
+            size = newSize;
+        }
     }
 }
