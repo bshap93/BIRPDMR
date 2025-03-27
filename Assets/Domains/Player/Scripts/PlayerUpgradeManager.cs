@@ -43,8 +43,6 @@ namespace Domains.Player.Scripts
         private void Start()
         {
             LoadUpgrades();
-
-            _instance.miningToolSize = shovelMiningState.size;
         }
 
 
@@ -174,6 +172,7 @@ namespace Domains.Player.Scripts
             else if (upgradeType == "Mining") // Example: Multiply mining speed
             {
                 shovelMiningState.size *= multiplier;
+                miningToolSize = shovelMiningState.size;
             }
         }
 
@@ -258,7 +257,12 @@ namespace Domains.Player.Scripts
 
             // Load mining tool size
             if (ES3.KeyExists("MiningToolSize", "UpgradeSave.es3"))
+            {
                 miningToolSize = ES3.Load<float>("MiningToolSize", "UpgradeSave.es3");
+                // Add this line to update the actual mining size in ShovelMiningState
+                if (shovelMiningState != null)
+                    shovelMiningState.size = miningToolSize;
+            }
 
             // Load current tool
             if (ES3.KeyExists("CurrentToolID", "UpgradeSave.es3"))
