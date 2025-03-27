@@ -90,14 +90,29 @@ namespace Domains.Player.Scripts
                 // This is the exact spot you're looking at/targeting
                 var impactPoint = hit.point;
         
-                // Spawn dirt particle effect at the impact point
+// In your PerformMining method, modify the particle instantiation code:
+
+// Spawn dirt particle effect at the impact point
                 if (dirtParticlePrefab != null)
                 {
-                    GameObject effect = Instantiate(dirtParticlePrefab, impactPoint, Quaternion.identity);
+                    // Offset the position slightly away from the surface to prevent clipping
+                    var spawnPosition = impactPoint + hit.normal * 0.05f;
+    
+                    GameObject effect = Instantiate(dirtParticlePrefab, spawnPosition, Quaternion.identity);
+    
                     // Orient particles to face outward from the surface
-                    effect.transform.forward = hit.normal;
+                    // Change this to ensure particles emit away from the surface, not toward the camera
+                    effect.transform.rotation = Quaternion.LookRotation(hit.normal);
+    
+                    // Check if particle system exists and isn't auto-playing
                     ParticleSystem system = effect.GetComponent<ParticleSystem>();
-                    system.Play();
+                    if (system != null && !system.main.playOnAwake)
+                    {
+                        system.Play();
+                    }
+    
+                    // Debug log to see where particles are spawning
+                    UnityEngine.Debug.Log($"Spawning particles at {spawnPosition}, normal: {hit.normal}, camera pos: {cameraTransform.position}");
                 }
 
                 // Continue with existing digging code

@@ -71864,16 +71864,16 @@ MonoBehaviour:
   toolAnimator: {fileID: 3727000250081658045}
   cameraTransform: {fileID: 3599682744793896751}
   strokeCount: 1
-  dirtParticlePrefab: {fileID: 778448100855144, guid: 3bb9fe5fc5744404f90de761e890b48e, type: 3}
+  dirtParticlePrefab: {fileID: 0}
   miningBehavior: {fileID: 650263231}
   staminaExpense: 5
   playerIsOutOfStaminaFB: {fileID: 140157921}
-  size: 0.3
+  size: 0.4
   opacity: 150
   brush: 0
   action: 0
   brushScale: {x: 1.5, y: 0.5, z: 0.5}
-  textureIndex: 1
+  textureIndex: 2
   stalagmiteHeight: 10
   editAsynchronously: 1
   toolIteration: 0
