@@ -358,6 +358,18 @@ namespace Domains.Player.Scripts
                 var upgradeKeys = new List<string>(UpgradeLevels.Keys);
                 foreach (var key in upgradeKeys) UpgradeLevels[key] = characterStatProfile.InitialUpgradeState;
             }
+    
+            // Reset mining tool size to default value
+            if (_instance != null)
+            {
+                _instance.miningToolSize = 0.2f; // Use your default value here
+        
+                // Also update the shovel mining state if available
+                if (_instance.shovelMiningState != null)
+                {
+                    _instance.shovelMiningState.SetMiningSize(_instance.miningToolSize);
+                }
+            }
         }
     }
 }

@@ -81,21 +81,26 @@ namespace Domains.Player.Scripts
             if (playerInteraction == null)
                 return;
 
-            // var textureIndex = playerInteraction.currentTextureIndex;
-            //
-            // if (textureIndex < 0 || textureIndex >= playerInteraction.diggableLayers.Length ||
-            //     !playerInteraction.diggableLayers[textureIndex])
-            // {
-            //     CharacterStateController.EnqueueTransition<MyNormalMovement>();
-            //     return;
-            // }
-
             RaycastHit hit;
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, miningRange))
             {
                 var interactable = hit.collider.GetComponent<IInteractable>();
                 if (interactable != null) interactable.Interact();
 
+                // This is the exact spot you're looking at/targeting
+                var impactPoint = hit.point;
+        
+                // Spawn dirt particle effect at the impact point
+                if (dirtParticlePrefab != null)
+                {
+                    GameObject effect = Instantiate(dirtParticlePrefab, impactPoint, Quaternion.identity);
+                    // Orient particles to face outward from the surface
+                    effect.transform.forward = hit.normal;
+                    ParticleSystem system = effect.GetComponent<ParticleSystem>();
+                    system.Play();
+                }
+
+                // Continue with existing digging code
                 var strokeStart = hit.point;
                 var strokeDirection = cameraTransform.forward * 0.3f;
 
