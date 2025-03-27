@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Input.Scripts;
-using Domains.Items.Events;
 using Domains.Player.Scripts;
+using Domains.Scene.Scripts;
 using Gameplay.Events;
 using MoreMountains.Feedbacks;
 using UnityEngine;
@@ -64,9 +64,6 @@ namespace Domains.Items
             if (pickedMmFeedbacks != null) pickedMmFeedbacks.Initialization(gameObject);
         }
 
-        private void Update()
-        {
-        }
 
         private void OnDestroy()
         {
@@ -111,19 +108,21 @@ namespace Domains.Items
             if (PickableManager.IsItemPicked(uniqueID)) Destroy(gameObject);
         }
 
+        // In the PickItem method of ItemPicker.cs
         public void PickItem()
         {
-            if (_targetInventory != null)
+            var inventoryManager = PlayerInventoryManager.Instance;
+            if (inventoryManager != null)
             {
-                // Only add if not already in inventory
-                if (_targetInventory.GetItem(uniqueID) != null)
+                // Check if item is already in inventory
+                if (inventoryManager.GetItem(uniqueID) != null)
                 {
                     UnityEngine.Debug.LogWarning("Item already in inventory! Skipping pickup.");
                     return;
                 }
 
                 var entry = new Inventory.InventoryEntry(uniqueID, itemType);
-                if (_targetInventory.AddItem(entry))
+                if (inventoryManager.AddItem(entry))
                 {
                     // Play feedback
                     pickedMmFeedbacks?.PlayFeedbacks();
@@ -131,11 +130,10 @@ namespace Domains.Items
                     // Save item as picked
                     PickableManager.AddPickedItem(uniqueID, true);
 
-                    // Trigger event
+                    // Trigger item picked event
                     ItemEvent.Trigger(ItemEventType.Picked, entry, transform);
-                    InventoryEvent.Trigger(InventoryEventType.ContentChanged, _targetInventory, 0);
 
-                    // Destroy
+                    // Destroy game object
                     Destroy(gameObject);
                 }
                 else

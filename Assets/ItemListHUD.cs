@@ -47,15 +47,15 @@ public class ItemListHUD : MonoBehaviour, MMEventListener<InventoryEvent>
             var elementComponent = itemElement.GetComponent<ItemElement>();
 
             // Set the image
-            elementComponent.ItemImage.sprite = group.Item.ItemIcon;
+            elementComponent.ItemImage.sprite = group.item.ItemIcon;
 
             // Set the quantity text
-            elementComponent.ItemQuantity.text = group.Quantity.ToString();
+            elementComponent.ItemQuantity.text = group.quantity.ToString();
 
             // You can also attach the item data for use in click handlers, etc.
             var elementData = itemElement.AddComponent<ItemElementData>();
-            elementData.ItemID = group.Item.ItemID;
-            elementData.UniqueIDs = group.UniqueIDs;
+            elementData.ItemID = group.item.ItemID;
+            elementData.UniqueIDs = group.uniqueIDs;
 
             itemElements.Add(itemElement);
         }

@@ -17,11 +17,6 @@ namespace Domains.Scripts
             _text = GetComponent<TMP_Text>();
         }
 
-        // Update is called once per frame
-        private void Update()
-        {
-        }
-
 
         private void OnEnable()
         {
@@ -37,8 +32,8 @@ namespace Domains.Scripts
         {
             if (eventType.EventType == InventoryEventType.ContentChanged)
             {
-                var currentWeight = PlayerInventoryManager.GetCurrentWeight();
-                var maxWeight = PlayerInventoryManager.GetMaxWeight();
+                var currentWeight = PlayerInventoryManager.Instance.GetCurrentWeight();
+                var maxWeight = PlayerInventoryManager.Instance.GetMaxWeight();
                 if (_text == null || _text.text == null) return;
                 _text.text =
                     $"{currentWeight.ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
@@ -46,9 +41,9 @@ namespace Domains.Scripts
             }
             else if (eventType.EventType == InventoryEventType.UpgradedWeightLimit)
             {
-                var maxWeight = PlayerInventoryManager.GetMaxWeight();
+                var maxWeight = PlayerInventoryManager.Instance.GetMaxWeight();
                 _text.text =
-                    $"{PlayerInventoryManager.GetCurrentWeight().ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
+                    $"{PlayerInventoryManager.Instance.GetCurrentWeight().ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
             }
         }
     }

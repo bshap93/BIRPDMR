@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Domains.Items;
 using Domains.Items.Events;
 using Domains.Player.Events;
 using Domains.Player.Scripts.ScriptableObjects;
@@ -12,9 +11,8 @@ namespace Domains.Player.Scripts
 {
     public class PlayerUpgradeManager : MonoBehaviour, MMEventListener<UpgradeEvent>
     {
-        public static PlayerUpgradeManager Instance;
+        private static PlayerUpgradeManager _instance;
         private static readonly Dictionary<string, int> UpgradeLevels = new();
-        private static Dictionary<string, string> _upgradeNames = new();
         [SerializeField] private List<UpgradeData> availableUpgrades;
         [SerializeField] private ShovelMiningState shovelMiningState;
 
@@ -30,11 +28,11 @@ namespace Domains.Player.Scripts
 
         private void Awake()
         {
-            if (Instance == null)
+            if (_instance == null)
             {
-                Instance = this;
+                _instance = this;
             }
-            else if (Instance != this)
+            else if (_instance != this)
             {
                 UnityEngine.Debug.LogWarning("Duplicate PlayerUpgradeManager detected. Destroying the extra instance.");
                 Destroy(gameObject);
@@ -46,7 +44,7 @@ namespace Domains.Player.Scripts
         {
             LoadUpgrades();
 
-            Instance.miningToolSize = shovelMiningState.size;
+            _instance.miningToolSize = shovelMiningState.size;
         }
 
 
@@ -185,8 +183,13 @@ namespace Domains.Player.Scripts
 
             if (upgradeType == "Inventory")
             {
-                var inventory = FindFirstObjectByType<Inventory>();
-                InventoryEvent.Trigger(InventoryEventType.UpgradedWeightLimit, inventory, addition);
+                var inventoryManager = PlayerInventoryManager.Instance;
+                if (inventoryManager != null)
+                {
+                    inventoryManager.IncreaseWeightLimit(addition);
+                    InventoryEvent.Trigger(InventoryEventType.UpgradedWeightLimit, inventoryManager.PlayerInventory,
+                        addition);
+                }
             }
             else if (upgradeType == "Endurance")
             {
@@ -209,7 +212,7 @@ namespace Domains.Player.Scripts
 
         public static void SaveUpgrades()
         {
-            if (Instance == null)
+            if (_instance == null)
             {
                 UnityEngine.Debug.LogWarning("PlayerUpgradeManager.Instance is null. Skipping SaveUpgrades.");
                 return;
@@ -219,18 +222,18 @@ namespace Domains.Player.Scripts
                 ES3.Save(upgrade.Key, upgrade.Value, "UpgradeSave.es3");
 
             // Save mining tool size
-            ES3.Save("MiningToolSize", Instance.miningToolSize, "UpgradeSave.es3");
+            ES3.Save("MiningToolSize", _instance.miningToolSize, "UpgradeSave.es3");
 
             // Save current tool ID
-            ES3.Save("CurrentToolID", Instance.currentToolId, "UpgradeSave.es3");
+            ES3.Save("CurrentToolID", _instance.currentToolId, "UpgradeSave.es3");
 
             // Save stamina
             ES3.Save("MaxStamina", PlayerStaminaManager.MaxStaminaPoints, "UpgradeSave.es3");
 
             // Save fuel capacity
-            ES3.Save("MaxFuelCapacity", Instance.fuelCapacity, "UpgradeSave.es3");
+            ES3.Save("MaxFuelCapacity", _instance.fuelCapacity, "UpgradeSave.es3");
 
-            ES3.Save("InventoryMaxWeight", PlayerInventoryManager.GetMaxWeight(), "GameSave.es3");
+            ES3.Save("InventoryMaxWeight", PlayerInventoryManager.Instance.GetMaxWeight(), "GameSave.es3");
         }
 
 
@@ -274,7 +277,7 @@ namespace Domains.Player.Scripts
             if (ES3.KeyExists("InventoryMaxWeight", "GameSave.es3"))
             {
                 var savedWeight = ES3.Load<float>("InventoryMaxWeight", "GameSave.es3");
-                PlayerInventoryManager.SetWeightLimit(savedWeight); // You’ll need to implement this
+                PlayerInventoryManager.Instance.SetWeightLimit(savedWeight); // You’ll need to implement this
             }
 
             foreach (var upgrade in availableUpgrades)

@@ -63,7 +63,7 @@ namespace Domains.Player.Scripts
         {
             if (eventType.EventType == ItemEventType.Picked)
             {
-                AddPickedItem(eventType.Item.UniqueID, true);
+                AddPickedItem(eventType.Item.uniqueID, true);
                 UnityEngine.Debug.Log($"Item picked: {eventType.Item.BaseItem.ItemName}");
             }
         }

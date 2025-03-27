@@ -64,9 +64,9 @@ namespace Domains.Scene.Scripts
                 pickableManager = GetComponentInChildren<PickableManager>(true);
                 if (pickableManager == null)
                 {
-                    var pickableGO = new GameObject("PickableManager");
-                    pickableManager = pickableGO.AddComponent<PickableManager>();
-                    pickableGO.transform.SetParent(transform);
+                    var pickableGo = new GameObject("PickableManager");
+                    pickableManager = pickableGo.AddComponent<PickableManager>();
+                    pickableGo.transform.SetParent(transform);
                 }
             }
 
@@ -75,9 +75,9 @@ namespace Domains.Scene.Scripts
                 playerInventoryManager = GetComponentInChildren<PlayerInventoryManager>(true);
                 if (playerInventoryManager == null)
                 {
-                    var inventoryGO = new GameObject("PlayerInventoryManager");
-                    playerInventoryManager = inventoryGO.AddComponent<PlayerInventoryManager>();
-                    inventoryGO.transform.SetParent(transform);
+                    var inventoryGo = new GameObject("PlayerInventoryManager");
+                    playerInventoryManager = inventoryGo.AddComponent<PlayerInventoryManager>();
+                    inventoryGo.transform.SetParent(transform);
                 }
             }
 
@@ -132,7 +132,10 @@ namespace Domains.Scene.Scripts
         {
             PlayerStaminaManager.SavePlayerStamina();
             PlayerHealthManager.SavePlayerHealth();
-            PlayerInventoryManager.SaveInventory();
+            if (playerInventoryManager != null)
+                PlayerInventoryManager.Instance.SaveInventory();
+            else
+                UnityEngine.Debug.LogError("PlayerInventoryManager.Instance is null. Skipping inventory save.");
             PlayerCurrencyManager.SavePlayerCurrency();
             PlayerUpgradeManager.SaveUpgrades();
             PickableManager.SaveAllPickedItems();
