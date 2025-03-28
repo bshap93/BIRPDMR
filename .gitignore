@@ -52,6 +52,12 @@ crashlytics-build.properties
 /[Aa]ssets/ThirdParty/SineVFX/*
 /[Aa]ssets/ThirdParty/Audio/*
 
+*.vom_v*
+*.vox_v*
+*.asset_*
+*.ver
+current_version.asset
+
 /[Pp]ackages/MicroSplat-Core/*
 /[Pp]ackages/MicroSplat-CoreURP6/*
 /[Pp]ackages/com.jbooth.microsplat.urp6/*

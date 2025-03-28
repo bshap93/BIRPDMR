@@ -294,22 +294,22 @@ namespace Domains.Player.Scripts
         public void LoadUpgrades()
         {
             UnityEngine.Debug.Log("Loading upgrades...");
+
+            // Load upgrade levels
             foreach (var upgrade in availableUpgrades)
                 if (ES3.KeyExists(upgrade.upgradeTypeName, "UpgradeSave.es3"))
                     UpgradeLevels[upgrade.upgradeTypeName] = ES3.Load<int>(upgrade.upgradeTypeName, "UpgradeSave.es3");
                 else
                     UpgradeLevels[upgrade.upgradeTypeName] = 0;
 
-            // Load mining tool size
-            if (ES3.KeyExists("MiningToolSize", "UpgradeSave.es3"))
-                miningToolSize = ES3.Load<float>("MiningToolSize", "UpgradeSave.es3");
+            // Load saved values directly without re-applying effects
 
-            // Load mining tool size
+            // Load mining tool size and apply directly
             if (ES3.KeyExists("MiningToolSize", "UpgradeSave.es3"))
             {
                 miningToolSize = ES3.Load<float>("MiningToolSize", "UpgradeSave.es3");
 
-                // Directly update the ShovelMiningState if possible
+                // Directly update the ShovelMiningState
                 if (shovelMiningState != null)
                 {
                     shovelMiningState.SetMiningSize(miningToolSize);
@@ -321,9 +321,6 @@ namespace Domains.Player.Scripts
                 }
             }
 
-            // After loading mining tool size
-            UnityEngine.Debug.Log($"Loaded mining tool size: {miningToolSize}");
-
             // Load stamina
             if (ES3.KeyExists("MaxStamina", "UpgradeSave.es3"))
                 PlayerStaminaManager.MaxStaminaPoints = ES3.Load<float>("MaxStamina", "UpgradeSave.es3");
@@ -332,27 +329,18 @@ namespace Domains.Player.Scripts
             if (ES3.KeyExists("MaxFuelCapacity", "UpgradeSave.es3"))
                 fuelCapacity = ES3.Load<float>("MaxFuelCapacity", "UpgradeSave.es3");
 
-
             // Load inventory size
             if (ES3.KeyExists("InventoryMaxWeight", "GameSave.es3"))
             {
                 var savedWeight = ES3.Load<float>("InventoryMaxWeight", "GameSave.es3");
-                PlayerInventoryManager.Instance.SetWeightLimit(savedWeight); // You’ll need to implement this
+                PlayerInventoryManager.Instance.SetWeightLimit(savedWeight);
             }
 
-            foreach (var upgrade in availableUpgrades)
-            {
-                var level = GetUpgradeLevel(upgrade.upgradeTypeName);
-                for (var i = 0; i < level; i++) // Apply all past levels
-                {
-                    if (upgrade.upgradeTypeName == "Inventory") continue;
-                    ApplyUpgradeEffect(upgrade, i);
-                    UnityEngine.Debug.Log($"Applying upgrade {upgrade.upgradeTypeName} level {i}");
-                }
-            }
+            // Load tool ID if necessary
+            if (ES3.KeyExists("CurrentToolID", "UpgradeSave.es3"))
+                currentToolId = ES3.Load<string>("CurrentToolID", "UpgradeSave.es3");
 
-            // After applying all upgrades
-            UnityEngine.Debug.Log("Finished applying all upgrades");
+            UnityEngine.Debug.Log("Finished loading all upgrades");
         }
 
 

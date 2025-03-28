@@ -13,12 +13,12 @@ namespace Domains.Player.Scripts
         [SerializeField] protected float miningRange = 5f;
         [SerializeField] protected GameObject effectPrefab; // Generic effect prefab
         public Transform cameraTransform;
+        public float currentDigDepth;
+
 
         // Shared mining properties
         [Header("Mining Parameters")] public float staminaExpense = 2f;
 
-        public float currentDigDepth;
-        public Light digSpotlight;
 
         // Layer depth thresholds (where material changes occur)
         public float[] layerDepthThresholds = { 10f, 20f, 35f }; // Dirt, stone, deeper materials
@@ -48,6 +48,7 @@ namespace Domains.Player.Scripts
             return false;
         }
 
+
         // This is the required abstract method implementation
         public override void UpdateBehaviour(float dt)
         {
@@ -71,6 +72,8 @@ namespace Domains.Player.Scripts
             // Track digging depth and update environment effects
             UpdateDepthEffects(hit.point);
 
+            // Update light effects based on depth
+
             // Spawn effects at impact point
             SpawnMiningEffect(hit);
 
@@ -79,9 +82,8 @@ namespace Domains.Player.Scripts
             var strokeDirection = cameraTransform.forward * 0.3f;
 
             // Get the appropriate texture index based on depth
-            var textureIndex = GetLayerTextureIndexFromDepth(currentDigDepth);
+            var textureIndex = GetLayerTextureIndexFromDepth(4000f);
 
-            UnityEngine.Debug.Log($"Mining at depth: {currentDigDepth}, texture index: {textureIndex}");
 
             // Modify terrain
             ModifyTerrain(strokeStart, strokeDirection, textureIndex);

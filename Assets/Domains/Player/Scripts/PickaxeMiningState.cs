@@ -42,6 +42,7 @@ namespace Domains.Player.Scripts
                 position, brush, action, textureIndex, localOpacity, size);
         }
 
+
         protected override int GetLayerTextureIndexFromDepth(float depth)
         {
             // Pickaxe might be better at specific layers - we could modify the logic

@@ -29,12 +29,15 @@ namespace Domains.Player.Scripts
         [Tooltip("The current texture layer name detected from terrain")]
         public string currentTextureName = "";
 
+        public float currentDigDepth;
+        public Light digSpotlight;
+        public float spotlightStrengthenDepth = 2f;
+
         private RuntimeDig _digClass;
         private DiggerMaster _diggerMaster;
         private DiggerMasterRuntime _diggerMasterRuntime;
         private bool _interactablePrompt;
         private TextureDetector _textureDetector; // Reference to the TextureDetector component
-
 
         private void Start()
         {
@@ -56,6 +59,8 @@ namespace Domains.Player.Scripts
 
             // Update texture information from TextureDetector if available
             UpdateTextureInformation();
+            currentDigDepth = transform.position.y;
+            UpdateLight();
 
             if (CustomInputBindings.IsInteractPressed()) // Press E to interact
                 PerformInteraction();
@@ -71,6 +76,24 @@ namespace Domains.Player.Scripts
             Gizmos.DrawRay(
                 playerCamera.transform.position,
                 playerCamera.transform.TransformDirection(Vector3.forward) * interactionDistance);
+        }
+
+        private void UpdateLight()
+        {
+            if (digSpotlight != null)
+            {
+                var depth = currentDigDepth;
+                if (Mathf.Abs(currentDigDepth) > spotlightStrengthenDepth)
+                {
+                    digSpotlight.spotAngle = 45f;
+                    digSpotlight.intensity = 1.5f;
+                }
+                else
+                {
+                    digSpotlight.spotAngle = 30f;
+                    digSpotlight.intensity = 1f;
+                }
+            }
         }
 
         // New method to update texture information
