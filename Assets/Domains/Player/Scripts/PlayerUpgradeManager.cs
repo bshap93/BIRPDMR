@@ -25,6 +25,7 @@ namespace Domains.Player.Scripts
 
 
         [SerializeField] private float fuelCapacity = 100f; // Default fuel capacity
+        private CharacterStatProfile characterStatProfile;
 
         private void Awake()
         {
@@ -38,6 +39,7 @@ namespace Domains.Player.Scripts
                 Destroy(gameObject);
             }
 
+
             // Find ShovelMiningState if not assigned
             if (shovelMiningState == null)
             {
@@ -46,6 +48,13 @@ namespace Domains.Player.Scripts
                     UnityEngine.Debug.LogWarning(
                         "ShovelMiningState not found. Mining upgrades may not apply correctly.");
             }
+
+            characterStatProfile =
+                Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
+            if (characterStatProfile != null)
+                miningToolSize = characterStatProfile.InitialMiningToolSize;
+            else
+                UnityEngine.Debug.LogError("CharacterStatProfile not set in PlayerStaminaManager");
         }
 
 
@@ -386,7 +395,7 @@ namespace Domains.Player.Scripts
             // Reset mining tool size to default value
             if (_instance != null)
             {
-                _instance.miningToolSize = 0.2f; // Use your default value here
+                _instance.miningToolSize = characterStatProfile.InitialMiningToolSize; // Use your default value here
 
                 // Also update the shovel mining state if available
                 if (_instance.shovelMiningState != null)

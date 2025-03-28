@@ -19,3 +19,4 @@ MonoBehaviour:
   InitialWeightLimit: 10
   InitialCurrency: 400
   InitialUpgradeState: 0
+  InitialMiningToolSize: 0.3
