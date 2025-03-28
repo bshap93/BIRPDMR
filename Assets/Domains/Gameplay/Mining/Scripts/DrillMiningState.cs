@@ -3,8 +3,8 @@ using Digger.Modules.Runtime.Sources;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
-using Lightbug.CharacterControllerPro.Implementation;
 using MoreMountains.Feedbacks;
+using ThirdParty.Character_Controller_Pro.Implementation.Scripts.Character.States;
 using UnityEngine;
 
 namespace Domains.Gameplay.Mining.Scripts

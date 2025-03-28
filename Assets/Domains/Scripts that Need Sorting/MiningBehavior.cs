@@ -1,4 +1,5 @@
 using Domains.Gameplay.Mining.Events;
+using Domains.Scripts_that_Need_Sorting;
 using UnityEngine;
 
 public class MiningBehavior : MonoBehaviour

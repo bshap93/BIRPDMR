@@ -181,9 +181,25 @@ namespace Domains.Player.Scripts
             }
             else if (upgradeType == "Mining") // Example: Multiply mining speed
             {
-                shovelMiningState.size *= multiplier;
-                miningToolSize = shovelMiningState.size; // Update the local variable too
-                ES3.Save("MiningToolSize", miningToolSize, "UpgradeSave.es3"); // Save immediately
+                // Calculate new size
+                var newSize = shovelMiningState.size * multiplier;
+
+                // Establish size limits to prevent excessive growth
+                var minSize = 0.1f;
+                var maxSize = 0.8f;
+
+                // Clamp the value
+                newSize = Mathf.Clamp(newSize, minSize, maxSize);
+
+                // Apply the clamped size
+                shovelMiningState.size = newSize;
+                miningToolSize = newSize;
+
+                // Log the size change for debugging
+                UnityEngine.Debug.Log($"Mining size changed to: {miningToolSize}");
+
+                // Save immediately
+                ES3.Save("MiningToolSize", miningToolSize, "UpgradeSave.es3");
             }
         }
 
@@ -358,17 +374,15 @@ namespace Domains.Player.Scripts
                 var upgradeKeys = new List<string>(UpgradeLevels.Keys);
                 foreach (var key in upgradeKeys) UpgradeLevels[key] = characterStatProfile.InitialUpgradeState;
             }
-    
+
             // Reset mining tool size to default value
             if (_instance != null)
             {
                 _instance.miningToolSize = 0.2f; // Use your default value here
-        
+
                 // Also update the shovel mining state if available
                 if (_instance.shovelMiningState != null)
-                {
                     _instance.shovelMiningState.SetMiningSize(_instance.miningToolSize);
-                }
             }
         }
     }

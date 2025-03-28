@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class PlayerEquipment : MonoBehaviour
+namespace Domains.Scripts_that_Need_Sorting
 {
-    public static PlayerEquipment Instance;
-
-    private void Awake()
+    public class PlayerEquipment : MonoBehaviour
     {
-        Instance = this;
+        public static PlayerEquipment Instance;
+
+        public GameObject currentToolGraphicalObject;
+
+        public ToolType currentToolType;
+        public ToolIteration currentToolIteration;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
     }
-
-    public GameObject currentToolGraphicalObject;
-
-    public ToolType currentToolType;
-    public ToolIteration currentToolIteration;
 }

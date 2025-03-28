@@ -3,12 +3,13 @@ using Digger.Demo;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
+using Domains.Scripts_that_Need_Sorting;
 using Lightbug.CharacterControllerPro.Core;
 using Lightbug.CharacterControllerPro.Demo;
-using Lightbug.CharacterControllerPro.Implementation;
 using Lightbug.Utilities;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
+using ThirdParty.Character_Controller_Pro.Implementation.Scripts.Character.States;
 using UnityEngine;
 using PointedObjectInfo = Domains.Player.Events.PointedObjectInfo;
 
@@ -191,7 +192,25 @@ namespace Domains.Gameplay.Mining.Scripts
                     return;
 
                 if (playerInteraction.diggableLayers[textureIndex])
-                    CharacterStateController.EnqueueTransition<ShovelMiningState>();
+                {
+                    var currentTool = PlayerEquipment.Instance.currentToolType;
+
+
+                    // Send the player to different mining states based on tool
+                    switch (currentTool)
+                    {
+                        case ToolType.Pickaxe:
+                            CharacterStateController.EnqueueTransition<PickaxeMiningState>();
+                            break;
+                        case ToolType.Drill:
+                            CharacterStateController.EnqueueTransition<DrillMiningState>();
+                            break;
+                        case ToolType.Shovel:
+                        default:
+                            CharacterStateController.EnqueueTransition<ShovelMiningState>();
+                            break;
+                    }
+                }
             }
         }
 
