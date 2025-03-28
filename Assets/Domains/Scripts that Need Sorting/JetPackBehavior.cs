@@ -1,16 +1,13 @@
+using Domains.Player.Events;
 using UnityEngine;
 
-public class JetPackBehavior : MonoBehaviour
+namespace Domains.Scripts_that_Need_Sorting
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class JetPackBehavior : MonoBehaviour
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public void JetPackBehaviorMethod()
+        {
+            StaminaEvent.Trigger(StaminaEventType.ConsumeStamina, 5f);
+        }
     }
 }

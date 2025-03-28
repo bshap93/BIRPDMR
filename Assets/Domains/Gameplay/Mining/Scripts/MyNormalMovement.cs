@@ -479,6 +479,14 @@ namespace Domains.Gameplay.Mining.Scripts
         {
             if (CharacterActions.jetPack.value)
             {
+                if (PlayerStaminaManager.IsPlayerOutOfStamina())
+                {
+                    PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfStamina);
+
+
+                    return;
+                }
+
                 CharacterActor.VerticalVelocity = Vector3.SmoothDamp(
                     CharacterActor.VerticalVelocity,
                     targetHeight * CharacterActor.Up,
@@ -487,11 +495,6 @@ namespace Domains.Gameplay.Mining.Scripts
                 ) * jetPackSpeedMultiplier;
                 jetPackFeedbacks?.PlayFeedbacks();
             }
-
-
-            // CharacterActor.PlanarVelocity = Vector3.Lerp(CharacterActor.PlanarVelocity,
-            //     planarMovementParameters.targetPlanarSpeed * CharacterStateController.InputMovementReference, 7f * dt);
-
 
             CharacterActor.SetYaw(CharacterActor.PlanarVelocity);
         }
