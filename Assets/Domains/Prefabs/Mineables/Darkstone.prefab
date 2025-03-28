@@ -915,8 +915,8 @@ MonoBehaviour:
   pieces: {fileID: 8035905410015936460, guid: 357724277cc6bb140bdddeeac30b8f99, type: 3}
   refinedPickup: {fileID: 8849736900048983242, guid: 33f5bfba364d8d14e8fe3013e9d0414b, type: 3}
   dropOnHit: 1
-  hitsToDestroy: 3
-  dropOnDestroy: 0
+  hitsToDestroy: 2
+  dropOnDestroy: 1
   knockAngle: {x: 0, y: 0, z: 10}
   knockCurve:
     serializedVersion: 2

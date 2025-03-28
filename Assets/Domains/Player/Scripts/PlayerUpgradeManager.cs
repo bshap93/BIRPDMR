@@ -21,7 +21,7 @@ namespace Domains.Player.Scripts
         [SerializeField] private string currentToolId = "Shovel"; // Default starting tool
 
 
-        public float miningToolSize = 0.2f;
+        [SerializeField] private float miningToolSize;
 
 
         [SerializeField] private float fuelCapacity = 100f; // Default fuel capacity
@@ -182,7 +182,7 @@ namespace Domains.Player.Scripts
             else if (upgradeType == "Mining") // Example: Multiply mining speed
             {
                 // Calculate new size
-                var newSize = shovelMiningState.size * multiplier;
+                var newSize = shovelMiningState.GetSize() * multiplier;
 
                 // Establish size limits to prevent excessive growth
                 var minSize = 0.1f;
@@ -192,8 +192,16 @@ namespace Domains.Player.Scripts
                 newSize = Mathf.Clamp(newSize, minSize, maxSize);
 
                 // Apply the clamped size
-                shovelMiningState.size = newSize;
-                miningToolSize = newSize;
+                if (shovelMiningState != null)
+                {
+                    shovelMiningState.SetMiningSize(newSize);
+                    miningToolSize = newSize;
+                }
+                else
+                {
+                    UnityEngine.Debug.LogWarning("ShovelMiningState reference is null during multiplier upgrade");
+                }
+
 
                 // Log the size change for debugging
                 UnityEngine.Debug.Log($"Mining size changed to: {miningToolSize}");

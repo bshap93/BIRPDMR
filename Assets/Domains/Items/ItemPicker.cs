@@ -45,11 +45,7 @@ namespace Domains.Items
 
         private void Awake()
         {
-            if (string.IsNullOrEmpty(uniqueID))
-            {
-                uniqueID = Guid.NewGuid().ToString(); // Generate only if unset
-                UnityEngine.Debug.LogWarning($"Generated new UniqueID for {gameObject.name}: {uniqueID}");
-            }
+            if (string.IsNullOrEmpty(uniqueID)) uniqueID = Guid.NewGuid().ToString(); // Generate only if unset
         }
 
         private void Start()

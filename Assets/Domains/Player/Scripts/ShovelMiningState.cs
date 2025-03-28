@@ -7,8 +7,6 @@ namespace Domains.Player.Scripts
     public class ShovelMiningState : MiningState
     {
         [Header("Shovel-Specific Parameters")] public int strokeCount = 1;
-
-        public float size = 0.2f;
         public float opacity = 1f;
         public BrushType brush = BrushType.Stalagmite;
         public ActionType action = ActionType.Dig;
@@ -19,6 +17,13 @@ namespace Domains.Player.Scripts
         [Header("Animation")] public Animator toolAnimator;
 
         [SerializeField] private GameObject dirtParticlePrefab;
+
+        private float size;
+
+        public float GetSize()
+        {
+            return size;
+        }
 
         protected override void SpawnMiningEffect(RaycastHit hit)
         {

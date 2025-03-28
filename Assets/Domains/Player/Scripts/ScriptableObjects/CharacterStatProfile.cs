@@ -16,5 +16,7 @@ namespace Domains.Player.Scripts.ScriptableObjects
         [Header("Currency Stats")] public int InitialCurrency;
 
         [Header("Upgrades")] public int InitialUpgradeState;
+
+        [Header("Tool Stats")] public float InitialMiningToolSize;
     }
 }

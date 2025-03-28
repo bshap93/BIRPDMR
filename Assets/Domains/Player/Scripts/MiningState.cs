@@ -81,6 +81,8 @@ namespace Domains.Player.Scripts
             // Get the appropriate texture index based on depth
             var textureIndex = GetLayerTextureIndexFromDepth(currentDigDepth);
 
+            UnityEngine.Debug.Log($"Mining at depth: {currentDigDepth}, texture index: {textureIndex}");
+
             // Modify terrain
             ModifyTerrain(strokeStart, strokeDirection, textureIndex);
 
@@ -110,11 +112,7 @@ namespace Domains.Player.Scripts
 
         protected virtual int GetLayerTextureIndexFromDepth(float depth)
         {
-            // Default layer mapping
-            // if (depth >= layerDepthThresholds[2]) return 3; // Deep layer
-            if (depth >= layerDepthThresholds[1]) return 2; // Stone layer
-            if (depth >= layerDepthThresholds[0]) return 1; // Dirt layer
-            return 1; // Surface layer
+            return 1;
         }
 
         public override void CheckExitTransition()

@@ -403,9 +403,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pieces: {fileID: 571559526548675538, guid: 9bee7fd801be1d643b7118e77444b2ba, type: 3}
   refinedPickup: {fileID: 315305511933059022, guid: 11b5c62c0a56f9d4994e0716530efe1d, type: 3}
-  dropOnHit: 0
-  hitsToDestroy: 3
-  dropOnDestroy: 3
+  dropOnHit: 1
+  hitsToDestroy: 2
+  dropOnDestroy: 1
   knockAngle: {x: 0, y: 0, z: 10}
   knockCurve:
     serializedVersion: 2
