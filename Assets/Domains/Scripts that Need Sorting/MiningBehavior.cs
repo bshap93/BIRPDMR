@@ -1,40 +1,42 @@
 using Domains.Gameplay.Mining.Events;
-using Domains.Scripts_that_Need_Sorting;
 using UnityEngine;
 
-public class MiningBehavior : MonoBehaviour
+namespace Domains.Scripts_that_Need_Sorting
 {
-    [SerializeField] private ToolIteration toolIteration;
-    [SerializeField] private ToolType toolType;
-
-    private void Start()
+    public class MiningBehavior : MonoBehaviour
     {
-        GetTool();
-    }
+        [SerializeField] private ToolIteration toolIteration;
+        [SerializeField] private ToolType toolType;
 
-    private void GetTool()
-    {
-        toolIteration = PlayerEquipment.Instance.currentToolIteration;
-        toolType = PlayerEquipment.Instance.currentToolType;
-    }
-
-    public void OnMining()
-    {
-        GetTool();
-        switch (toolType)
+        private void Start()
         {
-            case ToolType.Shovel:
-                switch (toolIteration)
-                {
-                    case ToolIteration.Smallest:
-                        ToolEvent.Trigger(ToolEventType.UseTool, ToolType.Shovel, ToolIteration.Smallest);
-                        break;
-                    case ToolIteration.SecondSmallest:
-                        ToolEvent.Trigger(ToolEventType.UseTool, ToolType.Shovel, ToolIteration.SecondSmallest);
-                        break;
-                }
+            GetTool();
+        }
 
-                break;
+        private void GetTool()
+        {
+            toolIteration = PlayerEquipment.Instance.currentToolIteration;
+            toolType = PlayerEquipment.Instance.currentToolType;
+        }
+
+        public void OnMining()
+        {
+            GetTool();
+            switch (toolType)
+            {
+                case ToolType.MiningTool:
+                    switch (toolIteration)
+                    {
+                        case ToolIteration.First:
+                            ToolEvent.Trigger(ToolEventType.UseTool, ToolType.MiningTool, ToolIteration.First);
+                            break;
+                        case ToolIteration.Second:
+                            ToolEvent.Trigger(ToolEventType.UseTool, ToolType.MiningTool, ToolIteration.Second);
+                            break;
+                    }
+
+                    break;
+            }
         }
     }
 }

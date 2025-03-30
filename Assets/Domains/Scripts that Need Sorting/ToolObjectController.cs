@@ -7,15 +7,14 @@ namespace Domains.Scripts_that_Need_Sorting
 {
     public enum ToolType
     {
-        Shovel,
-        Pickaxe,
-        Drill
+        MiningTool,
+        Scanner
     }
 
     public enum ToolIteration
     {
-        Smallest,
-        SecondSmallest
+        First,
+        Second
     }
 
     public class ToolObjectController : MonoBehaviour, MMEventListener<ToolEvent>
@@ -40,17 +39,19 @@ namespace Domains.Scripts_that_Need_Sorting
 
         public void OnMMEvent(ToolEvent eventType)
         {
-            if (eventType.ToolType == ToolType.Shovel)
+            if (eventType.ToolType == ToolType.MiningTool)
                 switch (eventType.ToolIteration)
                 {
-                    case ToolIteration.Smallest:
+                    case ToolIteration.First:
                         OnToolUseAction.Invoke();
                         break;
-                    case ToolIteration.SecondSmallest:
+                    case ToolIteration.Second:
                         UnityEngine.Debug.Log("Tool used with second smallest iteration");
                         OnToolUseAction.Invoke();
                         break;
                 }
+            else if (eventType.ToolType == ToolType.Scanner)
+                UnityEngine.Debug.Log("Tool used with scanner");
         }
 
 

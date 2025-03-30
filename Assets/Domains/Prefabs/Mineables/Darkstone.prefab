@@ -218,10 +218,8 @@ MonoBehaviour:
           ButtonText: Automatic Shaker Setup
         Owner: {fileID: 1277248301386597315}
         DebugActive: 0
-        Sfx: {fileID: 0}
-        RandomSfx:
-        - {fileID: 8300000, guid: a559b24f1e1483840913fd9acaafb639, type: 3}
-        - {fileID: 8300000, guid: f2a24606ea72c534595bea3ba05f7652, type: 3}
+        Sfx: {fileID: 8300000, guid: 2df63aacab03aad4cb1d958430c0a0c1, type: 3}
+        RandomSfx: []
         TestPlayButton:
           ButtonText: Debug Play Sound
         TestStopButton:
@@ -732,7 +730,7 @@ MonoBehaviour:
           ButtonText: Automatic Shaker Setup
         Owner: {fileID: 6017877751092101060}
         DebugActive: 0
-        Sfx: {fileID: 8300000, guid: 47bfa57d6668e2744bc2e6c257084aca, type: 3}
+        Sfx: {fileID: 8300000, guid: b4868b8448919c44083bc62125007795, type: 3}
         RandomSfx: []
         TestPlayButton:
           ButtonText: Debug Play Sound
@@ -913,7 +911,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pieces: {fileID: 8035905410015936460, guid: 357724277cc6bb140bdddeeac30b8f99, type: 3}
-  refinedPickup: {fileID: 8849736900048983242, guid: 33f5bfba364d8d14e8fe3013e9d0414b, type: 3}
+  refinedPickup: {fileID: 3895437934998590342, guid: c4e6628f7da6e4745b5d795efba226b1, type: 3}
   dropOnHit: 1
   hitsToDestroy: 2
   dropOnDestroy: 1
@@ -955,7 +953,7 @@ MonoBehaviour:
   oreHitFeedback: {fileID: 1277248301386597315}
   oreDestroyFeedback: {fileID: 6017877751092101060}
   OreHitBehavior: {fileID: 5709700749129327246}
-  UniqueID: 
+  UniqueID: 0d038004-d12b-457e-abb6-5382b7dfde1e
 --- !u!114 &4375252831640017369
 MonoBehaviour:
   m_ObjectHideFlags: 0

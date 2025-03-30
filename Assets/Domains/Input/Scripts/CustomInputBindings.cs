@@ -60,5 +60,15 @@ namespace Domains.Input.Scripts
         {
             return UnityEngine.Input.GetMouseButton(MineMouseButton);
         }
+
+        public static bool IsChangingWeapons()
+        {
+            return UnityEngine.Input.mouseScrollDelta.y != 0;
+        }
+
+        public static int GetWeaponChangeDirection()
+        {
+            return UnityEngine.Input.mouseScrollDelta.y > 0 ? 1 : -1;
+        }
     }
 }

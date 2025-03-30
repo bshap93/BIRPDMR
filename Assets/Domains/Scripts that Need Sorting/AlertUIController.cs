@@ -4,50 +4,54 @@ using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
 
-public class AlertUIController : MonoBehaviour, MMEventListener<AlertEvent>
+namespace Domains.Scripts_that_Need_Sorting
 {
-    private NotificationManager _notificationManager;
-    [SerializeField] private MMFeedbacks normalAlertFeedbacks;
-
-    private void Awake()
+    public class AlertUIController : MonoBehaviour, MMEventListener<AlertEvent>
     {
-        _notificationManager = GetComponentInChildren<NotificationManager>();
-    }
+        [SerializeField] private MMFeedbacks normalAlertFeedbacks;
+        private NotificationManager _notificationManager;
 
-    private void Start()
-    {
-        AlertEvent.Trigger(AlertType.Test, "This is a test alert message.", "Test Alert", null);
-    }
+        private void Awake()
+        {
+            _notificationManager = GetComponentInChildren<NotificationManager>();
+        }
+
+        private void Start()
+        {
+            AlertEvent.Trigger(AlertType.Test, "Use the Toggle Locations button to turn location indicators off and on",
+                "Locations");
+        }
+
+        private void OnEnable()
+        {
+            this.MMEventStartListening();
+        }
+
+        private void OnDisable()
+        {
+            this.MMEventStopListening();
+        }
+
+        public void OnMMEvent(AlertEvent eventType)
+        {
+            ShowAlert(eventType);
+        }
 
 
-    public void ShowAlert(AlertEvent evt)
-    {
-        _notificationManager.title = evt.AlertTitle;
-        _notificationManager.description = evt.AlertMessage;
-        _notificationManager.icon = evt.AlertIcon;
-        _notificationManager.UpdateUI();
+        public void ShowAlert(AlertEvent evt)
+        {
+            _notificationManager.title = evt.AlertTitle;
+            _notificationManager.description = evt.AlertMessage;
+            _notificationManager.icon = evt.AlertIcon;
+            _notificationManager.UpdateUI();
 
 
-        _notificationManager.Open();
-    }
+            _notificationManager.Open();
+        }
 
-    public void HideAlert()
-    {
-        _notificationManager.Close();
-    }
-
-    public void OnMMEvent(AlertEvent eventType)
-    {
-        ShowAlert(eventType);
-    }
-
-    private void OnEnable()
-    {
-        this.MMEventStartListening();
-    }
-
-    private void OnDisable()
-    {
-        this.MMEventStopListening();
+        public void HideAlert()
+        {
+            _notificationManager.Close();
+        }
     }
 }

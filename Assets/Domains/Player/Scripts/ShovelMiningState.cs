@@ -10,32 +10,17 @@ namespace Domains.Player.Scripts
         public float opacity = 1f;
         public BrushType brush = BrushType.Stalagmite;
         public ActionType action = ActionType.Dig;
-        public Vector3 brushScale = new(1.5f, 0.5f, 0.5f);
         public float stalagmiteHeight = 10F;
         public bool editAsynchronously = true;
 
-        [Header("Animation")] public Animator toolAnimator;
+        [SerializeField] private GameObject debrisEffectPrefab;
 
-        [SerializeField] private GameObject dirtParticlePrefab;
 
         private float size;
 
         public float GetSize()
         {
             return size;
-        }
-
-        protected override void SpawnMiningEffect(RaycastHit hit)
-        {
-            if (dirtParticlePrefab != null)
-            {
-                var spawnPosition = hit.point + hit.normal * 0.05f;
-                var effect = Instantiate(dirtParticlePrefab, spawnPosition, Quaternion.identity);
-                effect.transform.rotation = Quaternion.LookRotation(hit.normal);
-
-                var system = effect.GetComponent<ParticleSystem>();
-                if (system != null && !system.main.playOnAwake) system.Play();
-            }
         }
 
         protected override void ModifyTerrain(Vector3 position, Vector3 direction, int textureIndex)
@@ -63,6 +48,18 @@ namespace Domains.Player.Scripts
             {
                 var interactable = hit.collider.GetComponent<IInteractable>();
                 if (interactable != null) interactable.Interact();
+
+                if (Camera.main != null)
+                {
+                    var digPoint = Camera.main.transform.position + Camera.main.transform.forward * 2f;
+                    var rotation = Quaternion.LookRotation(-Camera.main.transform.forward); // optional, face player
+
+                    if (debrisEffectPrefab != null)
+                    {
+                        var debris = Instantiate(debrisEffectPrefab, digPoint, rotation);
+                        Destroy(debris, 2f); // destroy after 2 seconds
+                    }
+                }
 
                 // Use the base class implementation for core mining functionality
                 PerformMiningCore(hit);

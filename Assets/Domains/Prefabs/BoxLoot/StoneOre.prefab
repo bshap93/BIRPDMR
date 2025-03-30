@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: -4061664199757022274}
   - component: {fileID: -2290751886586889473}
   m_Layer: 6
-  m_Name: RefinedMetal_3c
+  m_Name: StoneOre
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -318,7 +318,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3895437934998590342}
-  m_Mesh: {fileID: 4208612138771336169, guid: 52772a0a4fd12a14e92cf28ee5df64d6, type: 3}
+  m_Mesh: {fileID: 2520969327096213910, guid: 947d340893c9ecd4c95c20b1f70d4507, type: 3}
 --- !u!23 &3246985764814434899
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -342,7 +342,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b97ff63b61191bf4381b215c08c794fe, type: 2}
+  - {fileID: 2100000, guid: 7ca95f3e93981a14e9dd45147409da3e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -554,7 +554,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uniqueID: 
-  itemType: {fileID: 11400000, guid: a719b9f4b542db34abd5856a06fd8f15, type: 2}
+  itemType: {fileID: 11400000, guid: 067dac50920fe314b8317efa0019d531, type: 2}
   quantity: 1
   interactionHoldTime: 0.01
   pickedMmFeedbacks: {fileID: 5199052493657640101}

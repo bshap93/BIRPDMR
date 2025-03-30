@@ -218,7 +218,7 @@ MonoBehaviour:
           ButtonText: Automatic Shaker Setup
         Owner: {fileID: 8422469489274627456}
         DebugActive: 0
-        Sfx: {fileID: 8300000, guid: 47bfa57d6668e2744bc2e6c257084aca, type: 3}
+        Sfx: {fileID: 8300000, guid: 71834457716ce83409c715d59178353c, type: 3}
         RandomSfx: []
         TestPlayButton:
           ButtonText: Debug Play Sound
@@ -441,7 +441,7 @@ MonoBehaviour:
   oreHitFeedback: {fileID: 4387118057940184018}
   oreDestroyFeedback: {fileID: 8422469489274627456}
   OreHitBehavior: {fileID: 6744317757069056925}
-  UniqueID: 
+  UniqueID: 565172a0-7f5f-4e83-a653-f3471abb54d0
 --- !u!114 &-2297433984325193803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,10 +915,8 @@ MonoBehaviour:
           ButtonText: Automatic Shaker Setup
         Owner: {fileID: 4387118057940184018}
         DebugActive: 0
-        Sfx: {fileID: 0}
-        RandomSfx:
-        - {fileID: 8300000, guid: a559b24f1e1483840913fd9acaafb639, type: 3}
-        - {fileID: 8300000, guid: f2a24606ea72c534595bea3ba05f7652, type: 3}
+        Sfx: {fileID: 8300000, guid: 625122e4e83030041a008e2705103f43, type: 3}
+        RandomSfx: []
         TestPlayButton:
           ButtonText: Debug Play Sound
         TestStopButton:

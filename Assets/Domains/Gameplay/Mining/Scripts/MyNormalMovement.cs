@@ -199,15 +199,12 @@ namespace Domains.Gameplay.Mining.Scripts
                     // Send the player to different mining states based on tool
                     switch (currentTool)
                     {
-                        case ToolType.Pickaxe:
-                            CharacterStateController.EnqueueTransition<PickaxeMiningState>();
-                            break;
-                        case ToolType.Drill:
-                            CharacterStateController.EnqueueTransition<DrillMiningState>();
-                            break;
-                        case ToolType.Shovel:
-                        default:
+                        case ToolType.MiningTool:
                             CharacterStateController.EnqueueTransition<ShovelMiningState>();
+                            break;
+
+                        case ToolType.Scanner:
+                            CharacterStateController.EnqueueTransition<ScanningState>();
                             break;
                     }
                 }
