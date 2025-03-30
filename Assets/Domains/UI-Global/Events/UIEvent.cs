@@ -5,7 +5,9 @@ namespace Domains.UI_Global.Events
     public enum UIEventType
     {
         OpenVendorConsole,
-        CloseVendorConsole
+        CloseVendorConsole,
+        OpenFuelConsole,
+        CloseFuelConsole
     }
 
     public struct UIEvent

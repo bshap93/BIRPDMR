@@ -1,16 +1,28 @@
+using Domains.Player.Scripts;
+using Domains.UI_Global.Events;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
-public class FuelConsole : MonoBehaviour
+namespace Domains.Scripts
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class FuelConsole : MonoBehaviour
     {
-        
-    }
+        public float fuelPricePerUnit = 10f;
+        private MMFeedbacks buyFuelFeedbacks;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private int playerCurrencyAmount;
+        private float playerFuelRemaining;
+
+        private void Start()
+        {
+            playerFuelRemaining = PlayerStaminaManager.StaminaPoints;
+            playerCurrencyAmount = PlayerCurrencyManager.CompanyCredits;
+        }
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+        public void TriggerOpenFuelUI()
+        {
+            UIEvent.Trigger(UIEventType.OpenFuelConsole);
+        }
     }
 }
