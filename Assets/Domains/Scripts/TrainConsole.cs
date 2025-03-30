@@ -5,28 +5,31 @@ using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class TrainConsole : MonoBehaviour
+namespace Domains.Scripts
 {
-    [FormerlySerializedAs("SellAllFeedbacks")]
-    public MMFeedbacks sellAllFeedbacks;
-
-    private Inventory _inventory;
-
-
-    private void Start()
+    public class TrainConsole : MonoBehaviour
     {
-        _inventory = FindFirstObjectByType<Inventory>();
-    }
+        [FormerlySerializedAs("SellAllFeedbacks")]
+        public MMFeedbacks sellAllFeedbacks;
+
+        private Inventory _inventory;
 
 
-    public void TriggerSellAll()
-    {
-        sellAllFeedbacks?.PlayFeedbacks();
-        InventoryEvent.Trigger(InventoryEventType.SellAllItems, _inventory, 0);
-    }
+        private void Start()
+        {
+            _inventory = FindFirstObjectByType<Inventory>();
+        }
 
-    public void TriggerOpenVendorUI()
-    {
-        UIEvent.Trigger(UIEventType.OpenVendorConsole);
+
+        public void TriggerSellAll()
+        {
+            sellAllFeedbacks?.PlayFeedbacks();
+            InventoryEvent.Trigger(InventoryEventType.SellAllItems, _inventory, 0);
+        }
+
+        public void TriggerOpenVendorUI()
+        {
+            UIEvent.Trigger(UIEventType.OpenVendorConsole);
+        }
     }
 }

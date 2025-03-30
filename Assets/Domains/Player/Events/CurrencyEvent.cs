@@ -6,7 +6,8 @@ namespace Domains.Player.Events
     {
         AddCurrency,
         RemoveCurrency,
-        SetCurrency
+        SetCurrency,
+        LoseCurrency
     }
 
     public struct CurrencyEvent

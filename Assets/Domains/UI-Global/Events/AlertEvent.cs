@@ -8,14 +8,13 @@ namespace Domains.UI_Global.Events
     [Serializable]
     public enum AlertType
     {
-        ItemScrapped,
         InventoryFull,
         Test,
         InsufficientFunds,
         OutOfStamina,
-        HealthHitZero,
         SavingGame,
-        DeletingDiggerData
+        DeletingDiggerData,
+        Died
     }
 
     public struct AlertEvent

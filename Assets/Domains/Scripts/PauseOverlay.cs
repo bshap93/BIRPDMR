@@ -1,3 +1,4 @@
+using Domains.Player.Scripts;
 using Domains.Scene.Events;
 using MoreMountains.Tools;
 using UnityEngine;
@@ -37,6 +38,16 @@ namespace Domains.Scripts
                 Cursor.visible = isPaused;
                 Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
             }
+        }
+
+        public void DieAndReset()
+        {
+            PlayerStatusEvent.Trigger(PlayerStatusEventType.Died);
+        }
+
+        public void QuitGame()
+        {
+            Application.Quit();
         }
     }
 }

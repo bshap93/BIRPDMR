@@ -91,10 +91,19 @@ namespace Domains.Player.Scripts
                 case StaminaEventType.IncreaseMaximumStamina:
                     IncreaseMaximumStamina(staminaEvent.ByValue);
                     break;
+                case StaminaEventType.SetCurrentStamina:
+                    SetCurrentStamina(staminaEvent.ByValue);
+                    break;
                 case StaminaEventType.SetMaxStamina:
                     StaminaPoints = staminaEvent.ByValue;
                     break;
             }
+        }
+
+        private void SetCurrentStamina(float value)
+        {
+            StaminaPoints = value;
+            SavePlayerStamina();
         }
 
         public void Initialize()

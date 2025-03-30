@@ -1,5 +1,4 @@
 ﻿using System;
-using Domains.Player.Events;
 using Domains.Player.Scripts;
 using Lightbug.CharacterControllerPro.Core;
 using Lightbug.CharacterControllerPro.Demo;
@@ -79,7 +78,7 @@ namespace Domains.Scene.Scripts
         {
             switch (eventType.EventType)
             {
-                case PlayerStatusEventType.OutOfHealth:
+                case PlayerStatusEventType.Died:
                     OnApplicationReset(ResetReason.OutOfHealth);
 
                     break;
@@ -142,10 +141,8 @@ namespace Domains.Scene.Scripts
             switch (resetReason)
             {
                 case ResetReason.OutOfHealth:
-                    HealthEvent.Trigger(HealthEventType.RecoverHealth, 20);
                     break;
                 case ResetReason.OutOfStamina:
-                    StaminaEvent.Trigger(StaminaEventType.RecoverStamina, 100);
                     break;
             }
 

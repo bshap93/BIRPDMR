@@ -12,7 +12,8 @@ namespace Domains.Player.Events
         IncreaseMaximumStamina,
         DecreaseMaximumStamina,
         Initialize,
-        SetMaxStamina
+        SetMaxStamina,
+        SetCurrentStamina
     }
 
     public struct StaminaEvent

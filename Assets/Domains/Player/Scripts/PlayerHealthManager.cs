@@ -2,7 +2,6 @@ using Domains.Player.Events;
 using Domains.Player.Scripts.ScriptableObjects;
 using Domains.Scene.Scripts;
 using Domains.UI;
-using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEditor;
@@ -32,7 +31,6 @@ namespace Domains.Player.Scripts
 
         public MMFeedbacks hurtFeedbacks;
 
-        public MMFeedbacks deathFeedbacks;
 
         public bool immuneToDamage;
 
@@ -97,6 +95,12 @@ namespace Domains.Player.Scripts
                 case HealthEventType.DecreaseMaximumHealth:
                     DecreaseMaximumHealth(eventType.ByValue);
                     break;
+                case HealthEventType.FullyRecoverHealth:
+                    FullyRecoverHealth();
+                    break;
+                case HealthEventType.SetCurrentHealth:
+                    SetCurrentHealth(eventType.ByValue);
+                    break;
                 default:
                     UnityEngine.Debug.LogWarning($"Unknown HealthEventType: {eventType.EventType}");
                     break;
@@ -112,18 +116,18 @@ namespace Domains.Player.Scripts
 
         public void ConsumeHealth(float healthToConsume)
         {
-            if (HealthPoints - healthToConsume < 0)
+            if (HealthPoints - healthToConsume <= 0)
             {
                 HealthPoints = 0;
-                PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfHealth);
-                AlertEvent.Trigger(AlertType.HealthHitZero, "You have run out of health!", "Out of Health");
-                deathFeedbacks?.PlayFeedbacks();
+                PlayerStatusEvent.Trigger(PlayerStatusEventType.Died);
             }
             else
             {
                 hurtFeedbacks?.PlayFeedbacks();
                 HealthPoints -= healthToConsume;
             }
+
+            SavePlayerHealth();
         }
 
         public static void RecoverHealth(float amount)
@@ -137,6 +141,12 @@ namespace Domains.Player.Scripts
         {
             HealthPoints = MaxHealthPoints;
             PlayerStatusEvent.Trigger(PlayerStatusEventType.RegainedHealth);
+            SavePlayerHealth();
+        }
+
+        public static void SetCurrentHealth(float amount)
+        {
+            HealthPoints = amount;
             SavePlayerHealth();
         }
 
@@ -206,18 +216,6 @@ namespace Domains.Player.Scripts
         public bool HasSavedData()
         {
             return ES3.FileExists(GetSaveFilePath());
-        }
-
-        public static bool IsPlayerOutOfHealth()
-        {
-            return HealthPoints <= 0;
-        }
-
-        // [Button(ButtonSizes.Medium)]
-        public void HurtPlayer(float damage = 10)
-        {
-            if (immuneToDamage) return;
-            ConsumeHealth(damage);
         }
     }
 }

@@ -89,6 +89,9 @@ namespace Domains.Player.Scripts
                 case CurrencyEventType.RemoveCurrency:
                     RemoveCurrency(eventType.Amount);
                     break;
+                case CurrencyEventType.LoseCurrency:
+                    LoseCurrency(eventType.Amount);
+                    break;
                 case CurrencyEventType.SetCurrency:
                     SetCurrency(eventType.Amount);
                     break;
@@ -108,6 +111,16 @@ namespace Domains.Player.Scripts
         {
             CompanyCredits += amount;
             // Add an event trigger to notify UI and other systems
+        }
+
+        public static void LoseCurrency(int amount)
+        {
+            if (CompanyCredits - amount < 0)
+                CompanyCredits = 0;
+            else
+                CompanyCredits -= amount;
+
+            SavePlayerCurrency();
         }
 
         public static void RemoveCurrency(int amount)

@@ -7,7 +7,7 @@ namespace Domains.Player.Scripts
     public enum PlayerStatusEventType
     {
         OutOfStamina,
-        OutOfHealth,
+        Died,
         RegainedHealth,
         ImmuneToDamage,
         ResetHealth,

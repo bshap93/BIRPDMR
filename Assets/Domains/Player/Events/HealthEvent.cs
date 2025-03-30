@@ -11,12 +11,12 @@ namespace Domains.Player.Events
         FullyRecoverHealth,
         IncreaseMaximumHealth,
         DecreaseMaximumHealth,
-        Initialize
+        SetCurrentHealth
     }
 
     public struct HealthEvent
     {
-        static HealthEvent e;
+        private static HealthEvent e;
 
         public HealthEventType EventType;
         public float ByValue;
