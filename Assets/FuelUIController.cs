@@ -1,15 +1,20 @@
 using Domains.UI_Global.Events;
-using Michsky.MUIP;
 using MoreMountains.Tools;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
+using ProgressBar = Michsky.MUIP.ProgressBar;
 
 public class FuelUIController : MonoBehaviour, MMEventListener<UIEvent>
 {
+    [SerializeField] private ProgressBar fuelRemainingRadial;
+    [SerializeField] private TMP_Text fuelPriceText;
+    [SerializeField] private TMP_Text fuelRemainingText;
     private CanvasGroup _canvasGroup;
 
     private bool _isPaused;
-
-    private ProgressBar fuelRemainingRadial;
+    [SerializeField] private Button buyFuelButton;
 
     public FuelUIController(bool isPaused)
     {
@@ -63,5 +68,12 @@ public class FuelUIController : MonoBehaviour, MMEventListener<UIEvent>
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    public void UpdateFuelUI(float fuelRemaining, float maxFuelAmount, float fuelPrice)
+    {
+        fuelRemainingRadial.SetValue(fuelRemaining / maxFuelAmount);
+        fuelRemainingText.text = $"{fuelRemaining} / {maxFuelAmount} ml";
+        fuelPriceText.text = $"{fuelPrice} Credits";
     }
 }
