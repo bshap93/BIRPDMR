@@ -76,11 +76,18 @@ namespace Domains.Player.Scripts
             Cursor.visible = true;
         }
 
+        public static void TriggerUpdateFuelUI()
+        {
+            UIEvent.Trigger(UIEventType.UpdateFuelConsole);
+        }
+
+
         public void UpdateFuelUI(float fuelRemaining, float maxFuelAmount, int fuelPrice, int playerCredits,
             float fuelToBuy, int costOfFuelToBuy)
         {
             fuelRemainingRadial.isOn = false;
-            fuelRemainingRadial.currentPercent = fuelRemaining / maxFuelAmount;
+            fuelRemainingRadial.currentPercent = fuelRemaining / maxFuelAmount * 100;
+
             UnityEngine.Debug.LogWarning("Fuel Remaining: " + fuelRemaining);
             fuelRemainingText.text = $"{fuelRemaining} / {maxFuelAmount} ml";
             fuelPriceText.text = $"{fuelPrice} Credits";
