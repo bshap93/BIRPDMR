@@ -1,3 +1,4 @@
+using Domains.Player.Events;
 using Domains.Player.Scripts;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
@@ -41,6 +42,24 @@ namespace Domains.Scripts
                 costOfFuelToBuy);
 
             UIEvent.Trigger(UIEventType.OpenFuelConsole);
+        }
+
+        public void BuyFuelPlayerCanAfford()
+        {
+            var playerCredits = PlayerCurrencyManager.CompanyCredits;
+            var maxFuel = PlayerStaminaManager.MaxStaminaPoints;
+            var currentFuel = PlayerStaminaManager.StaminaPoints;
+            var fuelPlayerCanAfford = playerCredits / fuelPricePerUnit;
+            var fuelToBuy = Mathf.Min(fuelPlayerCanAfford, maxFuel - currentFuel);
+            var costOfFuelToBuy = Mathf.FloorToInt(fuelToBuy * fuelPricePerUnit);
+
+            if (costOfFuelToBuy > 0)
+            {
+                CurrencyEvent.Trigger(CurrencyEventType.RemoveCurrency, costOfFuelToBuy);
+                StaminaEvent.Trigger(StaminaEventType.RecoverStamina, fuelToBuy);
+
+                buyFuelFeedbacks?.PlayFeedbacks();
+            }
         }
     }
 }

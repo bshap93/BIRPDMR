@@ -576,7 +576,7 @@ MonoBehaviour:
   OnActivation:
     m_PersistentCalls:
       m_Calls: []
-  ButtonPromptPrefab: {fileID: 8627712031620381495, guid: 97c08a61fbf75d4489bb726815194a1a, type: 3}
+  ButtonPromptPrefab: {fileID: 8627712031620381495, guid: f790004c1ebd5184cbd97c72bbf954a0, type: 3}
   promptTransformOffset: {x: 0, y: 1, z: 0}
   promptRotationOffset: {x: 0, y: 0, z: 0}
   activationFeedback: {fileID: 0}
