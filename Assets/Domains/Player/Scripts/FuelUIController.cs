@@ -16,6 +16,7 @@ namespace Domains.Player.Scripts
         [SerializeField] private TMP_Text fuelRemainingText;
         [SerializeField] private TMP_Text amountToBuyText;
         [SerializeField] private MMFeedbacks buyFuelFeedbacks;
+        [SerializeField] private TMP_Text costOfFuelToBuyText;
         private CanvasGroup _canvasGroup;
 
         private bool _isPaused;
@@ -75,11 +76,15 @@ namespace Domains.Player.Scripts
             Cursor.visible = true;
         }
 
-        public void UpdateFuelUI(float fuelRemaining, float maxFuelAmount, float fuelPrice)
+        public void UpdateFuelUI(float fuelRemaining, float maxFuelAmount, int fuelPrice, int playerCredits,
+            float fuelToBuy, int costOfFuelToBuy)
         {
             fuelRemainingRadial.SetValue(fuelRemaining / maxFuelAmount);
+            fuelRemainingRadial.UpdateUI();
             fuelRemainingText.text = $"{fuelRemaining} / {maxFuelAmount} ml";
             fuelPriceText.text = $"{fuelPrice} Credits";
+            amountToBuyText.text = $"{fuelToBuy} ml";
+            costOfFuelToBuyText.text = $"{costOfFuelToBuy} Credits";
         }
     }
 }

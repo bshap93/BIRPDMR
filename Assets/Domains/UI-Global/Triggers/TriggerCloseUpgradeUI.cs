@@ -1,11 +1,15 @@
 using Domains.UI_Global.Events;
 using UnityEngine;
 
-public class TriggerCloseUpgradeUI : MonoBehaviour
+namespace Domains.UI_Global.Triggers
 {
-    public void TriggerCloseUI()
+    public class TriggerCloseUpgradeUI : MonoBehaviour
     {
-        Debug.Log("TriggerCloseUI");
-        UIEvent.Trigger(UIEventType.CloseVendorConsole);
+        public void TriggerCloseUI()
+        {
+            UnityEngine.Debug.Log("TriggerCloseUI");
+            UIEvent.Trigger(UIEventType.CloseVendorConsole);
+            UIEvent.Trigger(UIEventType.CloseFuelConsole);
+        }
     }
 }
