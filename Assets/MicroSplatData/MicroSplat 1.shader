@@ -79,11 +79,13 @@ Shader "Terrain"
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
       #define _TRIPLANARUSEFACENORMALS 1
+      #define _MSRENDERLOOP_SURFACESHADER 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -5081,11 +5083,13 @@ float3 GetTessFactors ()
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
       #define _TRIPLANARUSEFACENORMALS 1
+      #define _MSRENDERLOOP_SURFACESHADER 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -10011,11 +10015,13 @@ float3 GetTessFactors ()
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
       #define _TRIPLANARUSEFACENORMALS 1
+      #define _MSRENDERLOOP_SURFACESHADER 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -15029,11 +15035,13 @@ float3 GetTessFactors ()
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
       #define _TRIPLANARUSEFACENORMALS 1
+      #define _MSRENDERLOOP_SURFACESHADER 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -19852,11 +19860,13 @@ float3 GetTessFactors ()
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
       #define _TRIPLANAR 1
       #define _TRIPLANARUSEFACENORMALS 1
+      #define _MSRENDERLOOP_SURFACESHADER 1
 
 #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
 
@@ -24685,7 +24695,7 @@ float3 GetTessFactors ()
       UsePass "Hidden/Nature/Terrain/Utilities/SELECTION"
 
    }
-   Dependency "BaseMapShader" =  "Hidden/Terrain_Base-645886353"
-   Fallback "Hidden/Terrain_Base-645886353"
+   Dependency "BaseMapShader" =  "Hidden/Terrain_Base379935235"
+   Fallback "Hidden/Terrain_Base379935235"
    CustomEditor "MicroSplatShaderGUI"
 }

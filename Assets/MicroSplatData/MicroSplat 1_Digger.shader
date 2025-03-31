@@ -78,6 +78,7 @@ Shader "Terrain_Digger"
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _TRIPLANAR 1
@@ -5110,6 +5111,7 @@ float3 GetTessFactors ()
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _TRIPLANAR 1
@@ -10070,6 +10072,7 @@ float3 GetTessFactors ()
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _TRIPLANAR 1
@@ -15118,6 +15121,7 @@ float3 GetTessFactors ()
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _TRIPLANAR 1
@@ -19971,6 +19975,7 @@ float3 GetTessFactors ()
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _TRIPLANAR 1

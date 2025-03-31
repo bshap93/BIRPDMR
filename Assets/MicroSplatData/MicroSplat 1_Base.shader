@@ -11,7 +11,7 @@
 ////////////////////////////////////////
 
 
-Shader "Hidden/Terrain_Base-645886353"
+Shader "Hidden/Terrain_Base379935235"
 {
    Properties
    {
@@ -79,6 +79,7 @@ Shader "Hidden/Terrain_Base-645886353"
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
@@ -5083,6 +5084,7 @@ float3 GetTessFactors ()
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
@@ -10015,6 +10017,7 @@ float3 GetTessFactors ()
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
@@ -15035,6 +15038,7 @@ float3 GetTessFactors ()
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
@@ -19860,6 +19864,7 @@ float3 GetTessFactors ()
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
       #define _PERTEXUVSCALEOFFSET 1
+      #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
       #define _BRANCHSAMPLESAGR 1
       #define _OUTPUTDIGGER 1
