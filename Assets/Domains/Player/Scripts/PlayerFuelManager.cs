@@ -120,7 +120,7 @@ namespace Domains.Player.Scripts
 
         public static void ConsumeFuel(float amount)
         {
-            if (FuelPoints - amount < 0)
+            if (FuelPoints - amount <= 0)
             {
                 FuelPoints = 0;
                 PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfFuel);

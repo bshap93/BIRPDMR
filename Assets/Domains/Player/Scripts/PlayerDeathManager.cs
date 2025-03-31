@@ -4,6 +4,7 @@ using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Player.Scripts
 {
@@ -19,7 +20,8 @@ namespace Domains.Player.Scripts
         public MMFeedbacks deathFeedbacks;
         public MMFeedbacks outOfFuelFeedbacks;
 
-        private MMSceneRestarter _sceneRestarter;
+        [FormerlySerializedAs("_sceneRestarter")] [SerializeField]
+        private MMSceneRestarter sceneRestarter;
 
         private void Awake()
         {
@@ -28,7 +30,7 @@ namespace Domains.Player.Scripts
 
         private void Start()
         {
-            _sceneRestarter = GetComponent<MMSceneRestarter>();
+            sceneRestarter = GetComponent<MMSceneRestarter>();
         }
 
         private void OnEnable()
@@ -48,7 +50,7 @@ namespace Domains.Player.Scripts
                 SetPostDeathStats();
                 deathFeedbacks?.PlayFeedbacks();
                 AlertEvent.Trigger(AlertReason.Died, "You have died!", "Game Over");
-                _sceneRestarter.RestartScene();
+                sceneRestarter.RestartScene();
             }
 
             if (eventType.EventType == PlayerStatusEventType.OutOfFuel)
@@ -56,7 +58,7 @@ namespace Domains.Player.Scripts
                 SetPostFuelOutStats();
                 outOfFuelFeedbacks?.PlayFeedbacks();
                 AlertEvent.Trigger(AlertReason.OutOfFuel, "You are out of fuel!", "Out of Fuel");
-                _sceneRestarter.RestartScene();
+                sceneRestarter.RestartScene();
             }
         }
 
