@@ -8,23 +8,25 @@ using UnityEngine.Serialization;
 
 namespace Domains.Input.Scripts
 {
-    public class ButtonActivated : MonoBehaviour, IInteractable
+    public class ButtonActivatedWithAction : MonoBehaviour, IInteractable
     {
         public UnityEvent OnActivation;
-        public ButtonPrompt ButtonPromptPrefab;
+        public ButtonPromptWithAction ButtonPromptPrefab;
 
         public Vector3 promptTransformOffset;
         public Vector3 promptRotationOffset;
 
         public MMFeedbacks activationFeedback;
 
+        [FormerlySerializedAs("PromptActionText")]
+        public string PromptActionStr = "Interact";
 
         public Color PromptTextColor = Color.white;
 
         [FormerlySerializedAs("PromptKeyText")]
         public string PromptKeyStr = "E";
 
-        private ButtonPrompt _buttonPrompt;
+        private ButtonPromptWithAction _buttonPrompt;
 
         private void Start()
         {
@@ -45,7 +47,7 @@ namespace Domains.Input.Scripts
 
         public void ShowInteractablePrompt()
         {
-            if (_buttonPrompt != null) _buttonPrompt.Show(PromptKeyStr);
+            if (_buttonPrompt != null) _buttonPrompt.Show(PromptKeyStr, PromptActionStr);
         }
 
         public void HideInteractablePrompt()

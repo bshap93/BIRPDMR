@@ -62,7 +62,7 @@ namespace Domains.Input.Scripts
             PromptText.color = newColor;
         }
 
-        public virtual void Show(string key, string action)
+        public virtual void Show(string key)
         {
             gameObject.SetActive(true);
             PromptText.text = key;
