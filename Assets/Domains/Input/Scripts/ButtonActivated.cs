@@ -1,4 +1,5 @@
 ﻿using Domains.Gameplay.Mining.Scripts;
+using Domains.Player.Events;
 using Domains.SaveLoad;
 using MoreMountains.Feedbacks;
 using UnityEngine;
@@ -57,6 +58,11 @@ namespace Domains.Input.Scripts
         public void TriggerSave()
         {
             SaveLoadEvent.Trigger(SaveLoadEventType.Save);
+        }
+
+        public void TriggerHealthRestore()
+        {
+            HealthEvent.Trigger(HealthEventType.RecoverHealth, 100);
         }
     }
 }

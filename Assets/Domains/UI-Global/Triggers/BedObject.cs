@@ -5,7 +5,7 @@ public class BedObject : MonoBehaviour
 {
     public void TriggerRestoreStamina()
     {
-        StaminaEvent.Trigger(StaminaEventType.FullyRecoverStamina, 100);
+        FuelEvent.Trigger(FuelEventType.FullyRecoverStamina, 100);
         Debug.Log("Restoring stamina");
     }
 }

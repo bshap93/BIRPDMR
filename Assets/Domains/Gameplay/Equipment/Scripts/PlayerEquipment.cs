@@ -31,7 +31,6 @@ namespace Domains.Gameplay.Equipment.Scripts
 
         private void Start()
         {
-            SwitchTool(0);
         }
 
         private void Update()

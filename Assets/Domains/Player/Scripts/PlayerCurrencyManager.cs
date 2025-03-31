@@ -128,7 +128,8 @@ namespace Domains.Player.Scripts
             if (CompanyCredits - amount < 0)
             {
                 CompanyCredits = 0;
-                AlertEvent.Trigger(AlertType.InsufficientFunds, "You don't have enough funds to complete this action.",
+                AlertEvent.Trigger(AlertReason.InsufficientFunds,
+                    "You don't have enough funds to complete this action.",
                     "Insufficient Funds");
             }
             else

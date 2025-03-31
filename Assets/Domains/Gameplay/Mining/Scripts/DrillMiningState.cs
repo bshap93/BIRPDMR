@@ -49,7 +49,7 @@ namespace Domains.Gameplay.Mining.Scripts
         public override bool CheckEnterTransition(CharacterState fromState)
         {
             // if (toolAnimator != null) toolAnimator.SetBool(SwingMiningTool, true);
-            if (!PlayerStaminaManager.IsPlayerOutOfStamina()) return PerformMining();
+            if (!PlayerFuelManager.IsPlayerOutOfFuel()) return PerformMining();
 
             cannotMineFeedbacks?.PlayFeedbacks();
             return false;
@@ -71,7 +71,7 @@ namespace Domains.Gameplay.Mining.Scripts
 
                 miningFeedbacks?.PlayFeedbacks();
 
-                StaminaEvent.Trigger(StaminaEventType.ConsumeStamina, staminaExpense);
+                FuelEvent.Trigger(FuelEventType.ConsumeStamina, staminaExpense);
                 return true;
             }
 
@@ -81,7 +81,7 @@ namespace Domains.Gameplay.Mining.Scripts
         // Write your transitions here
         public override void CheckExitTransition()
         {
-            if (PlayerStaminaManager.IsPlayerOutOfStamina())
+            if (PlayerFuelManager.IsPlayerOutOfFuel())
             {
                 cannotMineFeedbacks?.PlayFeedbacks();
                 CharacterStateController.EnqueueTransition<MyNormalMovement>();

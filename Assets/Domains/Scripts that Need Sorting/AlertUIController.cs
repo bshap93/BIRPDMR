@@ -18,7 +18,8 @@ namespace Domains.Scripts_that_Need_Sorting
 
         private void Start()
         {
-            AlertEvent.Trigger(AlertType.Test, "Use the Toggle Locations button to turn location indicators off and on",
+            AlertEvent.Trigger(AlertReason.Test,
+                "Use the Toggle Locations button to turn location indicators off and on",
                 "Locations");
         }
 

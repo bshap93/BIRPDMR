@@ -4,7 +4,7 @@ using MoreMountains.Tools;
 namespace Domains.Player.Events
 {
     [Serializable]
-    public enum StaminaEventType
+    public enum FuelEventType
     {
         ConsumeStamina,
         RecoverStamina,
@@ -16,17 +16,17 @@ namespace Domains.Player.Events
         SetCurrentStamina
     }
 
-    public struct StaminaEvent
+    public struct FuelEvent
     {
-        private static StaminaEvent _e;
+        private static FuelEvent _e;
 
-        public StaminaEventType EventType;
+        public FuelEventType EventType;
         public float ByValue;
 
-        public static void Trigger(StaminaEventType staminaEventType,
+        public static void Trigger(FuelEventType fuelEventType,
             float byValue)
         {
-            _e.EventType = staminaEventType;
+            _e.EventType = fuelEventType;
             _e.ByValue = byValue;
             MMEventManager.TriggerEvent(_e);
         }

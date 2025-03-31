@@ -37,7 +37,7 @@ namespace Domains.Gameplay.Mining.Scripts
         // On click trigger.
         private void OnMouseDown()
         {
-            if (!PlayerStaminaManager.IsPlayerOutOfStamina())
+            if (!PlayerFuelManager.IsPlayerOutOfFuel())
                 OreHitBehavior?.PlayFeedbacks();
         }
 
@@ -53,7 +53,7 @@ namespace Domains.Gameplay.Mining.Scripts
         // Sets number of pickups to spawn.
         public void oreHit()
         {
-            StaminaEvent.Trigger(StaminaEventType.ConsumeStamina, 2f);
+            FuelEvent.Trigger(FuelEventType.ConsumeStamina, 2f);
             hitIndex++;
             if (hitIndex < hitsToDestroy)
                 dropIndex = dropOnHit;

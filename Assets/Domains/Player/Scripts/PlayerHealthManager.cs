@@ -1,7 +1,7 @@
 using Domains.Player.Events;
 using Domains.Player.Scripts.ScriptableObjects;
 using Domains.Scene.Scripts;
-using Domains.UI;
+using Domains.UI_Global.UIUpdaters;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEditor;
@@ -133,7 +133,11 @@ namespace Domains.Player.Scripts
         public static void RecoverHealth(float amount)
         {
             if (HealthPoints == 0 && amount > 0) PlayerStatusEvent.Trigger(PlayerStatusEventType.RegainedHealth);
-            HealthPoints += amount;
+            var newHealth = HealthPoints + amount;
+            if (newHealth > MaxHealthPoints)
+                HealthPoints = MaxHealthPoints;
+            else
+                HealthPoints = newHealth;
             SavePlayerHealth();
         }
 

@@ -4,19 +4,19 @@ using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
 
-namespace Domains.UI
+namespace Domains.UI_Global.UIUpdaters
 {
     public class HealthBarUpdater : MonoBehaviour, MMEventListener<HealthEvent>
     {
         public bool useTextPlaceholder = true;
         public TMP_Text textPlaceholderCurrentHealth;
         public TMP_Text textPlaceholderMaxHealth;
-        MMProgressBar _bar;
-        float _currentHealth;
+        private MMProgressBar _bar;
+        private float _currentHealth;
 
-        float _maxHealth;
+        private float _maxHealth;
 
-        void Awake()
+        private void Awake()
         {
             if (useTextPlaceholder)
             {
@@ -27,15 +27,16 @@ namespace Domains.UI
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             this.MMEventStartListening();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             this.MMEventStopListening();
         }
+
         public void OnMMEvent(HealthEvent eventType)
         {
             if (useTextPlaceholder)

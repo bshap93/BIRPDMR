@@ -12,7 +12,15 @@ namespace Domains.Scene.Location
         private void Start()
         {
             compassPro = GetComponent<CompassPro>();
-            if (compassPro == null) UnityEngine.Debug.LogError("CompassPro component not found on this GameObject.");
+            if (compassPro == null)
+            {
+                UnityEngine.Debug.LogError("CompassPro component not found on this GameObject.");
+                return;
+            }
+
+            compassPro.showOnScreenIndicators = false;
+            compassPro.showOffScreenIndicators = false;
+            compassPro.UpdateSettings();
         }
 
         private void OnEnable()

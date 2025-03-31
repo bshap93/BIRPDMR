@@ -17,6 +17,7 @@ namespace Domains.Player.Scripts
         public float healthPenaltyMultiplier = 0.2f;
 
         public MMFeedbacks deathFeedbacks;
+        public MMFeedbacks outOfFuelFeedbacks;
 
         private MMSceneRestarter _sceneRestarter;
 
@@ -46,18 +47,36 @@ namespace Domains.Player.Scripts
             {
                 SetPostDeathStats();
                 deathFeedbacks?.PlayFeedbacks();
-                AlertEvent.Trigger(AlertType.Died, "You have died!", "Game Over");
+                AlertEvent.Trigger(AlertReason.Died, "You have died!", "Game Over");
                 _sceneRestarter.RestartScene();
             }
+
+            if (eventType.EventType == PlayerStatusEventType.OutOfFuel)
+            {
+                SetPostFuelOutStats();
+                outOfFuelFeedbacks?.PlayFeedbacks();
+                AlertEvent.Trigger(AlertReason.OutOfFuel, "You are out of fuel!", "Out of Fuel");
+                _sceneRestarter.RestartScene();
+            }
+        }
+
+        public void SetPostFuelOutStats()
+        {
+            var maximumFuel = PlayerFuelManager.MaxFuelPoints;
+
+            FuelEvent.Trigger(FuelEventType.SetCurrentStamina, staminaPenaltyMultiplier * maximumFuel);
+            CurrencyEvent.Trigger(CurrencyEventType.LoseCurrency, monetaryPenalty);
+
+            SaveManager.Instance.SaveAll();
         }
 
         public void SetPostDeathStats()
         {
             var maximumHealth = PlayerHealthManager.MaxHealthPoints;
-            var maximumStamina = PlayerStaminaManager.MaxStaminaPoints;
+            var maximumStamina = PlayerFuelManager.MaxFuelPoints;
             var currentCurrency = PlayerCurrencyManager.CompanyCredits;
-            StaminaEvent.Trigger(StaminaEventType.SetCurrentStamina, staminaPenaltyMultiplier * maximumStamina);
-            HealthEvent.Trigger(HealthEventType.SetCurrentHealth, staminaPenaltyMultiplier * maximumHealth);
+            FuelEvent.Trigger(FuelEventType.SetCurrentStamina, staminaPenaltyMultiplier * maximumStamina);
+            HealthEvent.Trigger(HealthEventType.SetCurrentHealth, healthPenaltyMultiplier * maximumHealth);
             CurrencyEvent.Trigger(CurrencyEventType.LoseCurrency, monetaryPenalty);
 
             SaveManager.Instance.SaveAll();

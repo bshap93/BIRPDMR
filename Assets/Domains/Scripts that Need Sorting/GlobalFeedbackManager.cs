@@ -7,7 +7,8 @@ using UnityEngine.Serialization;
 
 namespace Domains.Scripts_that_Need_Sorting
 {
-    public class GlobalFeedbackManager : MonoBehaviour, MMEventListener<UpgradeEvent>, MMEventListener<PlayerStatusEvent>
+    public class GlobalFeedbackManager : MonoBehaviour, MMEventListener<UpgradeEvent>,
+        MMEventListener<PlayerStatusEvent>
     {
         [FormerlySerializedAs("UpgradeFeedbacks")] [SerializeField]
         private MMFeedbacks upgradeFeedbacks;
@@ -28,18 +29,18 @@ namespace Domains.Scripts_that_Need_Sorting
             this.MMEventStopListening<PlayerStatusEvent>();
         }
 
+        public void OnMMEvent(PlayerStatusEvent eventType)
+        {
+            if (eventType.EventType == PlayerStatusEventType.OutOfFuel)
+                outOfStaminaFeedbacks.PlayFeedbacks();
+        }
+
         public void OnMMEvent(UpgradeEvent eventType)
         {
             if (eventType.EventType == UpgradeEventType.UpgradePurchased)
                 upgradeFeedbacks.PlayFeedbacks();
             else if (eventType.EventType == UpgradeEventType.UpgradeFailed)
                 upgradeFailedFeedbacks.PlayFeedbacks();
-        }
-
-        public void OnMMEvent(PlayerStatusEvent eventType)
-        {
-            if (eventType.EventType == PlayerStatusEventType.OutOfStamina)
-                outOfStaminaFeedbacks.PlayFeedbacks();
         }
     }
 }

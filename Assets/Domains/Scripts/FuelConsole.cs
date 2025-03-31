@@ -17,7 +17,7 @@ namespace Domains.Scripts
 
         private void Start()
         {
-            playerFuelRemaining = PlayerStaminaManager.StaminaPoints;
+            playerFuelRemaining = PlayerFuelManager.FuelPoints;
             playerCurrencyAmount = PlayerCurrencyManager.CompanyCredits;
             fuelUIController = FindFirstObjectByType<FuelUIController>();
         }
@@ -32,8 +32,8 @@ namespace Domains.Scripts
             }
 
             var playerCredits = PlayerCurrencyManager.CompanyCredits;
-            var maxFuel = PlayerStaminaManager.MaxStaminaPoints;
-            var currentFuel = PlayerStaminaManager.StaminaPoints;
+            var maxFuel = PlayerFuelManager.MaxFuelPoints;
+            var currentFuel = PlayerFuelManager.FuelPoints;
             var fuelPlayerCanAfford = playerCredits / fuelPricePerUnit;
             var fuelToBuy = Mathf.Min(fuelPlayerCanAfford, maxFuel - currentFuel);
             var costOfFuelToBuy = Mathf.FloorToInt(fuelToBuy * fuelPricePerUnit);
@@ -47,8 +47,8 @@ namespace Domains.Scripts
         public void BuyFuelPlayerCanAfford()
         {
             var playerCredits = PlayerCurrencyManager.CompanyCredits;
-            var maxFuel = PlayerStaminaManager.MaxStaminaPoints;
-            var currentFuel = PlayerStaminaManager.StaminaPoints;
+            var maxFuel = PlayerFuelManager.MaxFuelPoints;
+            var currentFuel = PlayerFuelManager.FuelPoints;
             var fuelPlayerCanAfford = playerCredits / fuelPricePerUnit;
             var fuelToBuy = Mathf.Min(fuelPlayerCanAfford, maxFuel - currentFuel);
             var costOfFuelToBuy = Mathf.FloorToInt(fuelToBuy * fuelPricePerUnit);
@@ -56,7 +56,7 @@ namespace Domains.Scripts
             if (costOfFuelToBuy > 0)
             {
                 CurrencyEvent.Trigger(CurrencyEventType.RemoveCurrency, costOfFuelToBuy);
-                StaminaEvent.Trigger(StaminaEventType.RecoverStamina, fuelToBuy);
+                FuelEvent.Trigger(FuelEventType.RecoverStamina, fuelToBuy);
 
                 buyFuelFeedbacks?.PlayFeedbacks();
             }

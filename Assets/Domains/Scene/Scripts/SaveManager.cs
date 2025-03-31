@@ -20,11 +20,12 @@ namespace Domains.Scene.Scripts
 
         // [Header("Persistence Managers")] [SerializeField]
         // InventoryPersistenceManager inventoryManager;
+        [FormerlySerializedAs("playerStaminaManager")]
         [FormerlySerializedAs("playerMutableStatsManager")]
         [FormerlySerializedAs("playerStatsManager")]
         [FormerlySerializedAs("resourcesManager")]
         [SerializeField]
-        private PlayerStaminaManager playerStaminaManager;
+        private PlayerFuelManager playerFuelManager;
 
         [SerializeField] private PlayerHealthManager playerHealthManager;
 
@@ -82,10 +83,10 @@ namespace Domains.Scene.Scripts
             }
 
 
-            if (playerStaminaManager == null)
+            if (playerFuelManager == null)
             {
-                playerStaminaManager = GetComponentInChildren<PlayerStaminaManager>(true);
-                if (playerStaminaManager == null)
+                playerFuelManager = GetComponentInChildren<PlayerFuelManager>(true);
+                if (playerFuelManager == null)
                     UnityEngine.Debug.LogError("PlayerStaminaManager not found in SaveManager");
             }
 
@@ -130,7 +131,7 @@ namespace Domains.Scene.Scripts
 
         public void SaveAll()
         {
-            PlayerStaminaManager.SavePlayerStamina();
+            PlayerFuelManager.SavePlayerFuel();
             PlayerHealthManager.SavePlayerHealth();
             if (playerInventoryManager != null)
                 PlayerInventoryManager.Instance.SaveInventory();
@@ -146,7 +147,7 @@ namespace Domains.Scene.Scripts
 
         public bool LoadAll()
         {
-            var staminaLoaded = playerStaminaManager != null && playerStaminaManager.HasSavedData();
+            var staminaLoaded = playerFuelManager != null && playerFuelManager.HasSavedData();
             var healthLoaded = playerHealthManager != null && playerHealthManager.HasSavedData();
             var inventoryLoaded = playerInventoryManager != null && playerInventoryManager.HasSavedData();
             var currencyLoaded = playerCurrencyManager != null && playerCurrencyManager.HasSavedData();
@@ -157,7 +158,7 @@ namespace Domains.Scene.Scripts
             // Digger has no Load method
 
 
-            if (staminaLoaded) playerStaminaManager.LoadPlayerStamina();
+            if (staminaLoaded) playerFuelManager.LoadPlayerStamina();
             if (healthLoaded) playerHealthManager.LoadPlayerHealth();
             if (inventoryLoaded) playerInventoryManager.LoadInventory();
             if (currencyLoaded) playerCurrencyManager.LoadPlayerCurrency();
@@ -180,7 +181,7 @@ namespace Domains.Scene.Scripts
         {
             SaveAll();
             saveFeedbacks?.PlayFeedbacks();
-            AlertEvent.Trigger(AlertType.SavingGame, "Saving game...");
+            AlertEvent.Trigger(AlertReason.SavingGame, "Saving game...");
             yield return new WaitForSeconds(1);
         }
     }

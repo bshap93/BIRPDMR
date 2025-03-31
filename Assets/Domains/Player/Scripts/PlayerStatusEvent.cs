@@ -6,7 +6,7 @@ namespace Domains.Player.Scripts
     [Serializable]
     public enum PlayerStatusEventType
     {
-        OutOfStamina,
+        OutOfFuel,
         Died,
         RegainedHealth,
         ImmuneToDamage,

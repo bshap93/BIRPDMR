@@ -180,7 +180,7 @@ namespace Domains.Gameplay.Mining.Scripts
 
         public override void CheckExitTransition()
         {
-            if (CustomInputBindings.IsMineMouseButtonPressed() && !PlayerStaminaManager.IsPlayerOutOfStamina())
+            if (CustomInputBindings.IsMineMouseButtonPressed() && !PlayerFuelManager.IsPlayerOutOfFuel())
             {
                 // CharacterStateController.EnqueueTransition<ShovelMiningState>();
                 // return;
@@ -477,9 +477,9 @@ namespace Domains.Gameplay.Mining.Scripts
         {
             if (CharacterActions.jetPack.value)
             {
-                if (PlayerStaminaManager.IsPlayerOutOfStamina())
+                if (PlayerFuelManager.IsPlayerOutOfFuel())
                 {
-                    PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfStamina);
+                    PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfFuel);
 
 
                     return;

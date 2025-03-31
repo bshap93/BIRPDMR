@@ -7,7 +7,7 @@ namespace Domains.Scripts_that_Need_Sorting
     {
         public void JetPackBehaviorMethod()
         {
-            StaminaEvent.Trigger(StaminaEventType.ConsumeStamina, 5f);
+            FuelEvent.Trigger(FuelEventType.ConsumeStamina, 5f);
         }
     }
 }

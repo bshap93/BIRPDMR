@@ -183,10 +183,10 @@ namespace Domains.Player.Scripts
 
             if (upgradeType == "Endurance") // Example: Multiply stamina
             {
-                var newStamina = PlayerStaminaManager.MaxStaminaPoints * multiplier;
-                PlayerStaminaManager.MaxStaminaPoints = newStamina;
+                var newStamina = PlayerFuelManager.MaxFuelPoints * multiplier;
+                PlayerFuelManager.MaxFuelPoints = newStamina;
 
-                StaminaEvent.Trigger(StaminaEventType.SetMaxStamina, newStamina);
+                FuelEvent.Trigger(FuelEventType.SetMaxStamina, newStamina);
             }
             else if (upgradeType == "Mining") // Example: Multiply mining speed
             {
@@ -237,8 +237,8 @@ namespace Domains.Player.Scripts
             else if (upgradeType == "Endurance")
             {
                 // Increase stamina directly
-                PlayerStaminaManager.MaxStaminaPoints += addition;
-                ES3.Save("MaxStamina", PlayerStaminaManager.MaxStaminaPoints, "UpgradeSave.es3"); // Save stamina
+                PlayerFuelManager.MaxFuelPoints += addition;
+                ES3.Save("MaxStamina", PlayerFuelManager.MaxFuelPoints, "UpgradeSave.es3"); // Save stamina
             }
             else if (upgradeType == "FuelCapacity")
             {
@@ -271,7 +271,7 @@ namespace Domains.Player.Scripts
             ES3.Save("CurrentToolID", _instance.currentToolId, "UpgradeSave.es3");
 
             // Save stamina
-            ES3.Save("MaxStamina", PlayerStaminaManager.MaxStaminaPoints, "UpgradeSave.es3");
+            ES3.Save("MaxStamina", PlayerFuelManager.MaxFuelPoints, "UpgradeSave.es3");
 
             // Save fuel capacity
             ES3.Save("MaxFuelCapacity", _instance.fuelCapacity, "UpgradeSave.es3");
@@ -323,7 +323,7 @@ namespace Domains.Player.Scripts
 
             // Load stamina
             if (ES3.KeyExists("MaxStamina", "UpgradeSave.es3"))
-                PlayerStaminaManager.MaxStaminaPoints = ES3.Load<float>("MaxStamina", "UpgradeSave.es3");
+                PlayerFuelManager.MaxFuelPoints = ES3.Load<float>("MaxStamina", "UpgradeSave.es3");
 
             // Load fuel capacity
             if (ES3.KeyExists("MaxFuelCapacity", "UpgradeSave.es3"))

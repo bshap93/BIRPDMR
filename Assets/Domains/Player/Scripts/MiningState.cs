@@ -42,7 +42,7 @@ namespace Domains.Player.Scripts
 
         public override bool CheckEnterTransition(CharacterState fromState)
         {
-            if (!PlayerStaminaManager.IsPlayerOutOfStamina()) return true;
+            if (!PlayerFuelManager.IsPlayerOutOfFuel()) return true;
 
             outOfStaminaFeedback?.PlayFeedbacks();
             return false;
@@ -89,7 +89,7 @@ namespace Domains.Player.Scripts
             ModifyTerrain(strokeStart, strokeDirection, textureIndex);
 
             // Consume stamina
-            StaminaEvent.Trigger(StaminaEventType.ConsumeStamina, staminaExpense);
+            FuelEvent.Trigger(FuelEventType.ConsumeStamina, staminaExpense);
         }
 
         // Methods to be overridden by specific tools
@@ -119,7 +119,7 @@ namespace Domains.Player.Scripts
 
         public override void CheckExitTransition()
         {
-            if (PlayerStaminaManager.IsPlayerOutOfStamina())
+            if (PlayerFuelManager.IsPlayerOutOfFuel())
             {
                 outOfStaminaFeedback?.PlayFeedbacks();
                 CharacterStateController.EnqueueTransition<MyNormalMovement>();

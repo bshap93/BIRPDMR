@@ -82,7 +82,7 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
     {
         deleteAllDataFeedbacks?.PlayFeedbacks();
         diggerMasterRuntime.DeleteAllPersistedData();
-        AlertEvent.Trigger(AlertType.DeletingDiggerData, "Digger data deleted.");
+        AlertEvent.Trigger(AlertReason.DeletingDiggerData, "Digger data deleted.");
 
         Debug.Log("Digger data deleted.");
     }

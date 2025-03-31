@@ -20,8 +20,8 @@ namespace Domains.Debug
             if (isEditorMode) UnityEngine.Debug.Log("Running data reset in Editor mode...");
 
             // Reset stats
-            PlayerStaminaManager.ResetPlayerStamina();
-            PlayerStaminaManager.SavePlayerStamina();
+            PlayerFuelManager.ResetPlayerFuel();
+            PlayerFuelManager.SavePlayerFuel();
 
             // Reset health
             PlayerHealthManager.ResetPlayerHealth();
