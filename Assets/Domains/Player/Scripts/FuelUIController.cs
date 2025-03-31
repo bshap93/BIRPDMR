@@ -1,4 +1,5 @@
 using Domains.UI_Global.Events;
+using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace Domains.Player.Scripts
         [SerializeField] private ProgressBar fuelRemainingRadial;
         [SerializeField] private TMP_Text fuelPriceText;
         [SerializeField] private TMP_Text fuelRemainingText;
+        [SerializeField] private TMP_Text amountToBuyText;
+        [SerializeField] private MMFeedbacks buyFuelFeedbacks;
         private CanvasGroup _canvasGroup;
 
         private bool _isPaused;

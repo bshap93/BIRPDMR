@@ -1,5 +1,6 @@
 ﻿using System;
 using Digger.Demo;
+using Domains.Gameplay.Equipment.Scripts;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;

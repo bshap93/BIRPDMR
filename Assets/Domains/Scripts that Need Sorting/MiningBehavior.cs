@@ -1,3 +1,4 @@
+using Domains.Gameplay.Equipment.Scripts;
 using Domains.Gameplay.Mining.Events;
 using UnityEngine;
 

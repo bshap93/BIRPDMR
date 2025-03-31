@@ -1,16 +1,44 @@
+using CompassNavigatorPro;
+using Domains.Gameplay.Equipment.Events;
+using MoreMountains.Tools;
 using UnityEngine;
 
-public class CompassProController : MonoBehaviour
+namespace Domains.Scene.Location
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class CompassProController : MonoBehaviour, MMEventListener<EquipmentEvent>
     {
-        
-    }
+        private CompassPro compassPro;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Start()
+        {
+            compassPro = GetComponent<CompassPro>();
+            if (compassPro == null) UnityEngine.Debug.LogError("CompassPro component not found on this GameObject.");
+        }
+
+        private void OnEnable()
+        {
+            this.MMEventStartListening();
+        }
+
+        private void OnDisable()
+        {
+            this.MMEventStopListening();
+        }
+
+        public void OnMMEvent(EquipmentEvent eventType)
+        {
+            if (eventType.EventType == EquipmentEventType.EquipScanner)
+            {
+                compassPro.showOnScreenIndicators = true;
+                compassPro.showOffScreenIndicators = true;
+                compassPro.UpdateSettings();
+            }
+            else if (eventType.EventType == EquipmentEventType.SwitchFromScanner)
+            {
+                compassPro.showOnScreenIndicators = false;
+                compassPro.showOffScreenIndicators = false;
+                compassPro.UpdateSettings();
+            }
+        }
     }
 }

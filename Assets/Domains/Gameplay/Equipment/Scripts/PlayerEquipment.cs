@@ -1,8 +1,10 @@
 using Domains.Gameplay.Equipment.Events;
 using Domains.Input.Scripts;
+using Domains.Scripts_that_Need_Sorting;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
-namespace Domains.Scripts_that_Need_Sorting
+namespace Domains.Gameplay.Equipment.Scripts
 {
     public class PlayerEquipment : MonoBehaviour
     {
@@ -10,6 +12,9 @@ namespace Domains.Scripts_that_Need_Sorting
 
         public GameObject miningTool;
         public GameObject scanningTool;
+
+        [SerializeField] private MMFeedbacks equipMinerFeedbacks;
+        [SerializeField] private MMFeedbacks equipScannerFeedbacks;
 
         public int numTools;
 
@@ -51,6 +56,7 @@ namespace Domains.Scripts_that_Need_Sorting
                 currentToolIteration = ToolIteration.First;
                 EquipmentEvent.Trigger(EquipmentEventType.SwitchFromScanner);
                 EquipmentEvent.Trigger(EquipmentEventType.EquipMiner);
+                equipMinerFeedbacks?.PlayFeedbacks();
             }
             else if (index == 1)
             {
@@ -60,6 +66,7 @@ namespace Domains.Scripts_that_Need_Sorting
                 currentToolIteration = ToolIteration.First;
                 EquipmentEvent.Trigger(EquipmentEventType.SwitchFromMiner);
                 EquipmentEvent.Trigger(EquipmentEventType.EquipScanner);
+                equipScannerFeedbacks?.PlayFeedbacks();
             }
         }
     }
