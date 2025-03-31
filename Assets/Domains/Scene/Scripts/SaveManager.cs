@@ -87,7 +87,7 @@ namespace Domains.Scene.Scripts
             {
                 playerFuelManager = GetComponentInChildren<PlayerFuelManager>(true);
                 if (playerFuelManager == null)
-                    UnityEngine.Debug.LogError("PlayerStaminaManager not found in SaveManager");
+                    UnityEngine.Debug.LogError("PlayerFuelManager not found in SaveManager");
             }
 
             if (playerHealthManager == null)
@@ -158,7 +158,7 @@ namespace Domains.Scene.Scripts
             // Digger has no Load method
 
 
-            if (staminaLoaded) playerFuelManager.LoadPlayerStamina();
+            if (staminaLoaded) playerFuelManager.LoadPlayerFuel();
             if (healthLoaded) playerHealthManager.LoadPlayerHealth();
             if (inventoryLoaded) playerInventoryManager.LoadInventory();
             if (currencyLoaded) playerCurrencyManager.LoadPlayerCurrency();

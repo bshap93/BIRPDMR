@@ -1,4 +1,5 @@
 using Domains.Player.Events;
+using Domains.Player.Scripts;
 using UnityEngine;
 
 namespace Domains.Scripts_that_Need_Sorting
@@ -7,7 +8,7 @@ namespace Domains.Scripts_that_Need_Sorting
     {
         public void JetPackBehaviorMethod()
         {
-            FuelEvent.Trigger(FuelEventType.ConsumeStamina, 5f);
+            FuelEvent.Trigger(FuelEventType.ConsumeFuel, 5f, PlayerFuelManager.MaxFuelPoints);
         }
     }
 }

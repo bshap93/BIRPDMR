@@ -6,6 +6,7 @@ using Domains.Player.Scripts;
 using MoreMountains.Feedbacks;
 using ThirdParty.Character_Controller_Pro.Implementation.Scripts.Character.States;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Gameplay.Mining.Scripts
 {
@@ -16,7 +17,8 @@ namespace Domains.Gameplay.Mining.Scripts
         public Animator toolAnimator;
         public Transform cameraTransform;
 
-        public float staminaExpense = 2f;
+        [FormerlySerializedAs("staminaExpense")]
+        public float fuelExpense = 2f;
 
         public MMFeedbacks miningFeedbacks;
         public MMFeedbacks cannotMineFeedbacks;
@@ -71,7 +73,10 @@ namespace Domains.Gameplay.Mining.Scripts
 
                 miningFeedbacks?.PlayFeedbacks();
 
-                FuelEvent.Trigger(FuelEventType.ConsumeStamina, staminaExpense);
+                var currentFuel = PlayerFuelManager.FuelPoints;
+                var maxFuel = PlayerFuelManager.MaxFuelPoints;
+
+                FuelEvent.Trigger(FuelEventType.SetCurrentFuel, currentFuel - fuelExpense, maxFuel);
                 return true;
             }
 

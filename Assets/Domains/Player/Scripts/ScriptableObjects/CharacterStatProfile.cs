@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Player.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "CharacterStatProfile", menuName = "Character/Character Stat Profile")]
     public class CharacterStatProfile : ScriptableObject
     {
-        [Header("Initial Stats")] public float InitialMaxStamina;
+        [FormerlySerializedAs("InitialMaxStamina")] [Header("Initial Stats")]
+        public float InitialMaxFuel;
+
         public float InitialMaxHealth;
 
 

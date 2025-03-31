@@ -6,14 +6,15 @@ namespace Domains.Player.Events
     [Serializable]
     public enum FuelEventType
     {
-        ConsumeStamina,
-        RecoverStamina,
-        FullyRecoverStamina,
-        IncreaseMaximumStamina,
-        DecreaseMaximumStamina,
+        ConsumeFuel,
+        RecoverFuel,
+        FullyRecoverFuel,
+        IncreaseMaximumFuel,
+        DecreaseMaximumFuel,
         Initialize,
-        SetMaxStamina,
-        SetCurrentStamina
+        SetMaxFuel,
+        SetCurrentFuel,
+        NotifyListeners
     }
 
     public struct FuelEvent
@@ -21,13 +22,16 @@ namespace Domains.Player.Events
         private static FuelEvent _e;
 
         public FuelEventType EventType;
-        public float ByValue;
+        public float CurrentByValue;
+        public float MaxByValue;
 
         public static void Trigger(FuelEventType fuelEventType,
-            float byValue)
+            float byValue, float maxByValue)
         {
             _e.EventType = fuelEventType;
-            _e.ByValue = byValue;
+
+            _e.CurrentByValue = byValue;
+            _e.MaxByValue = maxByValue;
             MMEventManager.TriggerEvent(_e);
         }
     }

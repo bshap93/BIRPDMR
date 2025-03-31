@@ -5,6 +5,7 @@ using Domains.Player.Events;
 using MoreMountains.Feedbacks;
 using ThirdParty.Character_Controller_Pro.Implementation.Scripts.Character.States;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Player.Scripts
 {
@@ -17,7 +18,8 @@ namespace Domains.Player.Scripts
 
 
         // Shared mining properties
-        [Header("Mining Parameters")] public float staminaExpense = 2f;
+        [FormerlySerializedAs("staminaExpense")] [Header("Mining Parameters")]
+        public float fuelExpense = 2f;
 
 
         // Layer depth thresholds (where material changes occur)
@@ -25,7 +27,9 @@ namespace Domains.Player.Scripts
 
         // Feedback effects
         [SerializeField] protected MMFeedbacks miningBehavior;
-        [SerializeField] protected MMFeedbacks outOfStaminaFeedback;
+
+        [FormerlySerializedAs("outOfStaminaFeedback")] [SerializeField]
+        protected MMFeedbacks outOfFuelFeedback;
 
         // Digger parameters
         protected DiggerMasterRuntime _diggerMasterRuntime;
@@ -44,7 +48,7 @@ namespace Domains.Player.Scripts
         {
             if (!PlayerFuelManager.IsPlayerOutOfFuel()) return true;
 
-            outOfStaminaFeedback?.PlayFeedbacks();
+            outOfFuelFeedback?.PlayFeedbacks();
             return false;
         }
 
@@ -89,7 +93,9 @@ namespace Domains.Player.Scripts
             ModifyTerrain(strokeStart, strokeDirection, textureIndex);
 
             // Consume stamina
-            FuelEvent.Trigger(FuelEventType.ConsumeStamina, staminaExpense);
+            var currentFuel = PlayerFuelManager.FuelPoints;
+            var maxFuel = PlayerFuelManager.MaxFuelPoints;
+            FuelEvent.Trigger(FuelEventType.SetCurrentFuel, currentFuel - fuelExpense, maxFuel);
         }
 
         // Methods to be overridden by specific tools
@@ -121,7 +127,7 @@ namespace Domains.Player.Scripts
         {
             if (PlayerFuelManager.IsPlayerOutOfFuel())
             {
-                outOfStaminaFeedback?.PlayFeedbacks();
+                outOfFuelFeedback?.PlayFeedbacks();
                 CharacterStateController.EnqueueTransition<MyNormalMovement>();
             }
 

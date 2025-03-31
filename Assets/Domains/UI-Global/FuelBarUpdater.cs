@@ -12,12 +12,14 @@ namespace Domains.UI_Global
     {
         public bool useTextPlaceholder = true;
 
-        [FormerlySerializedAs("textPlaceholder")]
-        public TMP_Text textPlaceholderCurrentStamina;
+        [FormerlySerializedAs("textPlaceholderCurrentStamina")] [FormerlySerializedAs("textPlaceholder")]
+        public TMP_Text textPlaceholderCurrentFuel;
 
-        public TMP_Text textPlaceholderMaxStamina;
+        [FormerlySerializedAs("textPlaceholderMaxStamina")]
+        public TMP_Text textPlaceholderMaxFuel;
+
         private MMProgressBar _bar;
-        private float _currentStamina;
+        private float _currentFuel;
 
         private float _maxFuel;
 
@@ -44,75 +46,38 @@ namespace Domains.UI_Global
 
         public void OnMMEvent(FuelEvent eventType)
         {
-            if (useTextPlaceholder)
-                switch (eventType.EventType)
-                {
-                    case FuelEventType.ConsumeStamina:
-                        _currentStamina -= eventType.ByValue;
-                        textPlaceholderCurrentStamina.text = _currentStamina.ToString();
-                        break;
-                    case FuelEventType.RecoverStamina:
-                        _currentStamina += eventType.ByValue;
-                        textPlaceholderCurrentStamina.text = _currentStamina.ToString();
-                        break;
-                    case FuelEventType.FullyRecoverStamina:
-                        _currentStamina = _maxFuel;
-                        textPlaceholderCurrentStamina.text = _currentStamina.ToString();
-                        break;
-                    case FuelEventType.IncreaseMaximumStamina:
-                        _maxFuel += eventType.ByValue;
-                        textPlaceholderMaxStamina.text = _maxFuel.ToString();
-                        break;
-                    case FuelEventType.DecreaseMaximumStamina:
-                        _maxFuel -= eventType.ByValue;
-                        textPlaceholderMaxStamina.text = _maxFuel.ToString();
-                        break;
-                    case FuelEventType.SetMaxStamina:
-                        _maxFuel = eventType.ByValue;
-                        textPlaceholderMaxStamina.text = _maxFuel.ToString();
-                        UnityEngine.Debug.Log($"Updated Max Stamina to {_maxFuel}"); // Debugging
-                        if (_bar != null)
-                            _bar.UpdateBar(_currentStamina, 0, _maxFuel);
-                        break;
-                }
-            else
-                switch (eventType.EventType)
-                {
-                    case FuelEventType.ConsumeStamina:
-                        _currentStamina -= eventType.ByValue;
-                        _bar.UpdateBar(_currentStamina, 0, _maxFuel);
-                        break;
-                    case FuelEventType.RecoverStamina:
-                        _currentStamina += eventType.ByValue;
-                        _bar.UpdateBar(_currentStamina, 0, _maxFuel);
-                        break;
-                    case FuelEventType.FullyRecoverStamina:
-                        _currentStamina = _maxFuel;
-                        _bar.UpdateBar(_currentStamina, 0, _maxFuel);
-                        break;
-                    case FuelEventType.IncreaseMaximumStamina:
-                        _maxFuel += eventType.ByValue;
-                        _bar.UpdateBar(_currentStamina, 0, _maxFuel);
-                        break;
-                    case FuelEventType.SetMaxStamina:
-                        _maxFuel = eventType.ByValue;
-                        _bar.UpdateBar(_currentStamina, 0, _maxFuel);
-                        break;
-                }
+            _currentFuel = PlayerFuelManager.FuelPoints;
+            _maxFuel = PlayerFuelManager.MaxFuelPoints;
+
+            UpdateUI();
         }
+
+        private void UpdateUI()
+        {
+            // Update text elements if using text mode
+            if (useTextPlaceholder)
+            {
+                textPlaceholderCurrentFuel.text = _currentFuel.ToString();
+                textPlaceholderMaxFuel.text = _maxFuel.ToString();
+            }
+
+            // Always update the progress bar if it exists
+            if (_bar != null) _bar.UpdateBar(_currentFuel, 0, _maxFuel);
+        }
+
 
         public void Initialize()
         {
             _maxFuel = PlayerFuelManager.MaxFuelPoints;
-            _currentStamina = PlayerFuelManager.FuelPoints;
+            _currentFuel = PlayerFuelManager.FuelPoints;
             if (useTextPlaceholder)
             {
-                textPlaceholderCurrentStamina.text = _currentStamina.ToString();
-                textPlaceholderMaxStamina.text = _maxFuel.ToString();
+                textPlaceholderCurrentFuel.text = _currentFuel.ToString();
+                textPlaceholderMaxFuel.text = _maxFuel.ToString();
             }
             else
             {
-                _bar.UpdateBar(_currentStamina, 0, _maxFuel);
+                _bar.UpdateBar(_currentFuel, 0, _maxFuel);
             }
         }
     }

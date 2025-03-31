@@ -53,7 +53,9 @@ namespace Domains.Gameplay.Mining.Scripts
         // Sets number of pickups to spawn.
         public void oreHit()
         {
-            FuelEvent.Trigger(FuelEventType.ConsumeStamina, 2f);
+            var currentFuel = PlayerFuelManager.FuelPoints;
+            var maxFuel = PlayerFuelManager.MaxFuelPoints;
+            FuelEvent.Trigger(FuelEventType.SetCurrentFuel, currentFuel - 2f, maxFuel);
             hitIndex++;
             if (hitIndex < hitsToDestroy)
                 dropIndex = dropOnHit;

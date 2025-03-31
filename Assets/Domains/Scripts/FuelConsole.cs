@@ -56,7 +56,8 @@ namespace Domains.Scripts
             if (costOfFuelToBuy > 0)
             {
                 CurrencyEvent.Trigger(CurrencyEventType.RemoveCurrency, costOfFuelToBuy);
-                FuelEvent.Trigger(FuelEventType.RecoverStamina, fuelToBuy);
+                FuelEvent.Trigger(FuelEventType.RecoverFuel,
+                    fuelToBuy, PlayerFuelManager.MaxFuelPoints);
 
                 buyFuelFeedbacks?.PlayFeedbacks();
             }

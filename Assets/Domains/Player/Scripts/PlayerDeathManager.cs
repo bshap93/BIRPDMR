@@ -14,7 +14,10 @@ namespace Domains.Player.Scripts
         private static PlayerDeathManager _instance;
 
         public int monetaryPenalty = 400;
-        public float staminaPenaltyMultiplier = 0.2f;
+
+        [FormerlySerializedAs("staminaPenaltyMultiplier")]
+        public float fuelPenaltyMultiplier = 0.2f;
+
         public float healthPenaltyMultiplier = 0.2f;
 
         public MMFeedbacks deathFeedbacks;
@@ -23,15 +26,15 @@ namespace Domains.Player.Scripts
         [FormerlySerializedAs("_sceneRestarter")] [SerializeField]
         private MMSceneRestarter sceneRestarter;
 
+        [SerializeField] private Transform spawnPoint;
+        [SerializeField] private GameObject playerCamera;
+
+
         private void Awake()
         {
             _instance = this;
         }
 
-        private void Start()
-        {
-            sceneRestarter = GetComponent<MMSceneRestarter>();
-        }
 
         private void OnEnable()
         {
@@ -50,7 +53,6 @@ namespace Domains.Player.Scripts
                 SetPostDeathStats();
                 deathFeedbacks?.PlayFeedbacks();
                 AlertEvent.Trigger(AlertReason.Died, "You have died!", "Game Over");
-                sceneRestarter.RestartScene();
             }
 
             if (eventType.EventType == PlayerStatusEventType.OutOfFuel)
@@ -58,7 +60,6 @@ namespace Domains.Player.Scripts
                 SetPostFuelOutStats();
                 outOfFuelFeedbacks?.PlayFeedbacks();
                 AlertEvent.Trigger(AlertReason.OutOfFuel, "You are out of fuel!", "Out of Fuel");
-                sceneRestarter.RestartScene();
             }
         }
 
@@ -66,18 +67,20 @@ namespace Domains.Player.Scripts
         {
             var maximumFuel = PlayerFuelManager.MaxFuelPoints;
 
-            FuelEvent.Trigger(FuelEventType.SetCurrentStamina, staminaPenaltyMultiplier * maximumFuel);
+
+            FuelEvent.Trigger(FuelEventType.SetCurrentFuel, fuelPenaltyMultiplier * maximumFuel, maximumFuel);
             CurrencyEvent.Trigger(CurrencyEventType.LoseCurrency, monetaryPenalty);
 
             SaveManager.Instance.SaveAll();
         }
 
+
         public void SetPostDeathStats()
         {
             var maximumHealth = PlayerHealthManager.MaxHealthPoints;
-            var maximumStamina = PlayerFuelManager.MaxFuelPoints;
+            var maxFuel = PlayerFuelManager.MaxFuelPoints;
             var currentCurrency = PlayerCurrencyManager.CompanyCredits;
-            FuelEvent.Trigger(FuelEventType.SetCurrentStamina, staminaPenaltyMultiplier * maximumStamina);
+            FuelEvent.Trigger(FuelEventType.SetCurrentFuel, fuelPenaltyMultiplier * maxFuel, maxFuel);
             HealthEvent.Trigger(HealthEventType.SetCurrentHealth, healthPenaltyMultiplier * maximumHealth);
             CurrencyEvent.Trigger(CurrencyEventType.LoseCurrency, monetaryPenalty);
 

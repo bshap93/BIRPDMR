@@ -183,10 +183,10 @@ namespace Domains.Player.Scripts
 
             if (upgradeType == "Endurance") // Example: Multiply stamina
             {
-                var newStamina = PlayerFuelManager.MaxFuelPoints * multiplier;
-                PlayerFuelManager.MaxFuelPoints = newStamina;
+                var newFuel = PlayerFuelManager.MaxFuelPoints * multiplier;
+                PlayerFuelManager.MaxFuelPoints = newFuel;
 
-                FuelEvent.Trigger(FuelEventType.SetMaxStamina, newStamina);
+                FuelEvent.Trigger(FuelEventType.SetMaxFuel, newFuel, newFuel);
             }
             else if (upgradeType == "Mining") // Example: Multiply mining speed
             {

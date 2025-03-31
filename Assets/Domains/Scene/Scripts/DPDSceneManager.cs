@@ -142,7 +142,7 @@ namespace Domains.Scene.Scripts
             {
                 case ResetReason.OutOfHealth:
                     break;
-                case ResetReason.OutOfStamina:
+                case ResetReason.OutOfFuel:
                     break;
             }
 
@@ -154,6 +154,6 @@ namespace Domains.Scene.Scripts
     public enum ResetReason
     {
         OutOfHealth,
-        OutOfStamina
+        OutOfFuel
     }
 }
