@@ -79,8 +79,9 @@ namespace Domains.Player.Scripts
         public void UpdateFuelUI(float fuelRemaining, float maxFuelAmount, int fuelPrice, int playerCredits,
             float fuelToBuy, int costOfFuelToBuy)
         {
-            fuelRemainingRadial.SetValue(fuelRemaining / maxFuelAmount);
-            fuelRemainingRadial.UpdateUI();
+            fuelRemainingRadial.isOn = false;
+            fuelRemainingRadial.currentPercent = fuelRemaining / maxFuelAmount;
+            UnityEngine.Debug.LogWarning("Fuel Remaining: " + fuelRemaining);
             fuelRemainingText.text = $"{fuelRemaining} / {maxFuelAmount} ml";
             fuelPriceText.text = $"{fuelPrice} Credits";
             amountToBuyText.text = $"{fuelToBuy} ml";
