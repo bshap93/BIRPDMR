@@ -1,3 +1,4 @@
+using System.Collections;
 using Domains.Player.Scripts;
 using Lightbug.CharacterControllerPro.Core;
 using MoreMountains.Tools;
@@ -38,11 +39,32 @@ public class SpawnManager : MonoBehaviour, MMEventListener<PlayerStatusEvent>
     {
         if (eventType.EventType == PlayerStatusEventType.Died) TeleportPlayerToSpawn();
 
-        if (eventType.EventType == PlayerStatusEventType.OutOfFuel) TeleportPlayerToSpawn();
+        if (eventType.EventType == PlayerStatusEventType.OutOfFuel)
+        {
+            TeleportPlayerToSpawn();
+            // Add a slight delay to ensure death manager has processed first
+            StartCoroutine(VerifyFuelAfterTeleport());
+        }
     }
 
+    private IEnumerator VerifyFuelAfterTeleport()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        // Double-check that player has enough fuel to move
+        if (PlayerFuelManager.FuelPoints < 10f)
+        {
+            Debug.LogWarning("Player fuel still too low after teleport, forcing minimum");
+            PlayerFuelManager.EnsureMinimumFuel();
+        }
+    }
+
+// In SpawnManager.cs
     private void TeleportPlayerToSpawn()
     {
         _player01TeleportPlayer.Teleport(characterActor);
+
+        // Debug when teleporting
+        Debug.Log("Player teleported to spawn point");
     }
 }

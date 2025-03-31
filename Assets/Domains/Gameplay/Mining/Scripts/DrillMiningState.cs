@@ -76,7 +76,7 @@ namespace Domains.Gameplay.Mining.Scripts
                 var currentFuel = PlayerFuelManager.FuelPoints;
                 var maxFuel = PlayerFuelManager.MaxFuelPoints;
 
-                FuelEvent.Trigger(FuelEventType.SetCurrentFuel, currentFuel - fuelExpense, maxFuel);
+                FuelEvent.Trigger(FuelEventType.ConsumeFuel, fuelExpense, maxFuel);
                 return true;
             }
 

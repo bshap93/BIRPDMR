@@ -10,8 +10,7 @@ namespace Domains.Player.Events
         RecoverFuel,
         FullyRecoverFuel,
         IncreaseMaximumFuel,
-        DecreaseMaximumFuel,
-        Initialize,
+
         SetMaxFuel,
         SetCurrentFuel,
         NotifyListeners

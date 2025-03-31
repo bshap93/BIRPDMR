@@ -63,15 +63,26 @@ namespace Domains.Player.Scripts
             }
         }
 
+// In PlayerDeathManager.cs
         public void SetPostFuelOutStats()
         {
             var maximumFuel = PlayerFuelManager.MaxFuelPoints;
+            var recoveryAmount = fuelPenaltyMultiplier * maximumFuel;
 
+            // Ensure a minimum amount (e.g., 10) if the penalty calculation is too low
+            recoveryAmount = Mathf.Max(recoveryAmount, 10f);
 
-            FuelEvent.Trigger(FuelEventType.SetCurrentFuel, fuelPenaltyMultiplier * maximumFuel, maximumFuel);
+            // Use SetCurrentFuel to set the fuel amount
+            FuelEvent.Trigger(FuelEventType.SetCurrentFuel, recoveryAmount, maximumFuel);
             CurrencyEvent.Trigger(CurrencyEventType.LoseCurrency, monetaryPenalty);
 
+            // Ensure the UI is updated
+            FuelEvent.Trigger(FuelEventType.NotifyListeners, recoveryAmount, maximumFuel);
+
             SaveManager.Instance.SaveAll();
+
+            // Debug the fuel reset
+            UnityEngine.Debug.Log($"Set fuel to {recoveryAmount} after running out of fuel");
         }
 
 

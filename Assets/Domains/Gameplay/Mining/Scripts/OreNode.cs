@@ -55,7 +55,7 @@ namespace Domains.Gameplay.Mining.Scripts
         {
             var currentFuel = PlayerFuelManager.FuelPoints;
             var maxFuel = PlayerFuelManager.MaxFuelPoints;
-            FuelEvent.Trigger(FuelEventType.SetCurrentFuel, currentFuel - 2f, maxFuel);
+            FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, maxFuel);
             hitIndex++;
             if (hitIndex < hitsToDestroy)
                 dropIndex = dropOnHit;

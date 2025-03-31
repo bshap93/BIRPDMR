@@ -95,7 +95,7 @@ namespace Domains.Player.Scripts
             // Consume stamina
             var currentFuel = PlayerFuelManager.FuelPoints;
             var maxFuel = PlayerFuelManager.MaxFuelPoints;
-            FuelEvent.Trigger(FuelEventType.SetCurrentFuel, currentFuel - fuelExpense, maxFuel);
+            FuelEvent.Trigger(FuelEventType.ConsumeFuel, fuelExpense, maxFuel);
         }
 
         // Methods to be overridden by specific tools

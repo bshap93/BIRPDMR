@@ -29,13 +29,15 @@ namespace Domains.Player.Scripts
         // ReSharper disable once FieldCanBeMadeReadOnly.Global
         public static float InitialCharacterFuel;
 
+        [Header("Debug Options")] public bool fuelNotConsumed;
+
+        public float FuelPointsDebug;
+
         [FormerlySerializedAs("AmountFuelReturnedMultiplier")]
         public float amountFuelReturnedMultiplier = 0.1f;
 
         [FormerlySerializedAs("staminaBarUpdater")]
         public FuelBarUpdater fuelBarUpdater;
-
-        public float fuelPoints;
 
 
         private string _savePath;
@@ -82,7 +84,7 @@ namespace Domains.Player.Scripts
 
         private void Update()
         {
-            fuelPoints = FuelPoints;
+            FuelPointsDebug = FuelPoints;
         }
 
 
@@ -133,13 +135,17 @@ namespace Domains.Player.Scripts
             fuelBarUpdater.Initialize();
         }
 
+// In PlayerFuelManager.cs
         public static void ConsumeFuel(float amount)
         {
             if (FuelPoints - amount <= 0)
             {
+                // Player is out of fuel
                 PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfFuel);
                 AlertEvent.Trigger(AlertReason.OutOfFuel, "You are out of fuel!", "Out of Fuel");
-                FuelPoints = 0;
+                FuelPoints = 0; // Set to zero for consistent state
+
+                // Note: Don't worry about recovery here, let the PlayerDeathManager handle that
             }
             else
             {
@@ -239,6 +245,18 @@ namespace Domains.Player.Scripts
         public static bool IsPlayerOutOfFuel()
         {
             return FuelPoints <= 0;
+        }
+
+        // Add this to PlayerFuelManager.cs
+        public static void EnsureMinimumFuel(float minimumAmount = 10f)
+        {
+            if (FuelPoints < minimumAmount)
+            {
+                FuelPoints = minimumAmount;
+                FuelEvent.Trigger(FuelEventType.NotifyListeners, FuelPoints, MaxFuelPoints);
+                SavePlayerFuel();
+                UnityEngine.Debug.Log($"Ensuring minimum fuel of {minimumAmount}");
+            }
         }
     }
 }
