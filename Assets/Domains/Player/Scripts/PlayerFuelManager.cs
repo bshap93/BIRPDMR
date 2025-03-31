@@ -237,6 +237,13 @@ namespace Domains.Player.Scripts
             ES3.Save("MaxFuelPoints", MaxFuelPoints, "GameSave.es3");
         }
 
+        // In PlayerFuelManager.cs
+        public static bool IsPlayerStranded()
+        {
+            // Player is stranded if they're out of fuel and teleportWhenOutOfFuel is false
+            return IsPlayerOutOfFuel() && FindFirstObjectByType<PlayerDeathManager>()?.autoResetWhenOutOfFuel == false;
+        }
+
         public bool HasSavedData()
         {
             return ES3.FileExists(GetSaveFilePath());

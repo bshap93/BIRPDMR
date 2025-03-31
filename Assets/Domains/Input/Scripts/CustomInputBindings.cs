@@ -70,5 +70,12 @@ namespace Domains.Input.Scripts
         {
             return UnityEngine.Input.mouseScrollDelta.y > 0 ? 1 : -1;
         }
+
+        // In CustomInputBindings.cs
+        public static bool IsEmergencyTeleportPressed()
+        {
+            // You can use any key you prefer - T for teleport is intuitive
+            return UnityEngine.Input.GetKeyDown(KeyCode.R);
+        }
     }
 }

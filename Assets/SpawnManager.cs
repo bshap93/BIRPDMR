@@ -8,6 +8,9 @@ public class SpawnManager : MonoBehaviour, MMEventListener<PlayerStatusEvent>
 {
     public static SpawnManager Instance;
     public GameObject player01;
+
+    // In SpawnManager.cs
+    [SerializeField] private PlayerDeathManager playerDeathManager; // Reference to death manager
     private TeleportPlayer _player01TeleportPlayer;
     private CharacterActor characterActor;
 
@@ -17,6 +20,8 @@ public class SpawnManager : MonoBehaviour, MMEventListener<PlayerStatusEvent>
         _player01TeleportPlayer = GetComponent<TeleportPlayer>();
 
         characterActor = player01.GetComponent<CharacterActor>();
+
+        playerDeathManager = FindFirstObjectByType<PlayerDeathManager>();
 
         if (characterActor == null)
             Debug.LogError("CharacterActor component not found on player01.");
@@ -35,17 +40,17 @@ public class SpawnManager : MonoBehaviour, MMEventListener<PlayerStatusEvent>
         this.MMEventStopListening();
     }
 
+
     public void OnMMEvent(PlayerStatusEvent eventType)
     {
         if (eventType.EventType == PlayerStatusEventType.Died) TeleportPlayerToSpawn();
 
-        if (eventType.EventType == PlayerStatusEventType.OutOfFuel)
-        {
+        if (eventType.EventType == PlayerStatusEventType.OutOfFuel &&
+            playerDeathManager != null &&
+            playerDeathManager.autoResetWhenOutOfFuel)
             TeleportPlayerToSpawn();
-            // Add a slight delay to ensure death manager has processed first
-            StartCoroutine(VerifyFuelAfterTeleport());
-        }
     }
+
 
     private IEnumerator VerifyFuelAfterTeleport()
     {

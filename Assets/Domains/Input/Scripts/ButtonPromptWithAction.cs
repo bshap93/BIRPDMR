@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Domains.Input.Scripts
 {
-    public class ButtonPrompt : MonoBehaviour
+    public class ButtonPromptWithAction : MonoBehaviour
     {
         [Header("Bindings")]
         /// the image to use as the prompt's border
@@ -25,6 +25,7 @@ namespace Domains.Input.Scripts
         [Tooltip("the Text component of the prompt")]
         public TMP_Text PromptText;
 
+        [Tooltip("the action")] public TMP_Text ActionText;
 
         [Header("Durations")]
         /// the duration of the fade in, in seconds
@@ -66,6 +67,7 @@ namespace Domains.Input.Scripts
         {
             gameObject.SetActive(true);
             PromptText.text = key;
+            ActionText.text = action;
             if (_hideCoroutine != null) StopCoroutine(_hideCoroutine);
             ContainerCanvasGroup.alpha = 0f;
             StartCoroutine(MMFade.FadeCanvasGroup(ContainerCanvasGroup, FadeInDuration, 1f));

@@ -4,6 +4,7 @@ using Domains.SaveLoad;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Domains.Input.Scripts
 {
@@ -16,6 +17,15 @@ namespace Domains.Input.Scripts
         public Vector3 promptRotationOffset;
 
         public MMFeedbacks activationFeedback;
+
+        [FormerlySerializedAs("PromptActionText")]
+        public string PromptActionStr = "Interact";
+
+        public Color PromptTextColor = Color.white;
+
+        [FormerlySerializedAs("PromptKeyText")]
+        public string PromptKeyStr = "E";
+
         private ButtonPrompt _buttonPrompt;
 
         private void Start()
@@ -37,7 +47,7 @@ namespace Domains.Input.Scripts
 
         public void ShowInteractablePrompt()
         {
-            if (_buttonPrompt != null) _buttonPrompt.Show();
+            if (_buttonPrompt != null) _buttonPrompt.Show(PromptKeyStr, PromptActionStr);
         }
 
         public void HideInteractablePrompt()

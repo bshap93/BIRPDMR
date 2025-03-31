@@ -1,4 +1,5 @@
-﻿using Domains.Player.Events;
+﻿using Domains.Input.Scripts;
+using Domains.Player.Events;
 using Domains.Scene.Scripts;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
@@ -12,6 +13,9 @@ namespace Domains.Player.Scripts
 
     {
         private static PlayerDeathManager _instance;
+
+        [FormerlySerializedAs("teleportWhenOutOfFuel")] [Header("Game Mechanics")]
+        public bool autoResetWhenOutOfFuel = true; // Toggle in inspector
 
         public int monetaryPenalty = 400;
 
@@ -35,6 +39,15 @@ namespace Domains.Player.Scripts
             _instance = this;
         }
 
+        private void Update()
+        {
+            // Only check for manual reset if auto reset is disabled
+            if (!autoResetWhenOutOfFuel &&
+                PlayerFuelManager.IsPlayerOutOfFuel() &&
+                CustomInputBindings.IsEmergencyTeleportPressed())
+                ManualReset();
+        }
+
 
         private void OnEnable()
         {
@@ -55,12 +68,27 @@ namespace Domains.Player.Scripts
                 AlertEvent.Trigger(AlertReason.Died, "You have died!", "Game Over");
             }
 
-            if (eventType.EventType == PlayerStatusEventType.OutOfFuel)
-            {
-                SetPostFuelOutStats();
-                outOfFuelFeedbacks?.PlayFeedbacks();
-                AlertEvent.Trigger(AlertReason.OutOfFuel, "You are out of fuel!", "Out of Fuel");
-            }
+
+            if (eventType.EventType == PlayerStatusEventType.OutOfFuel && autoResetWhenOutOfFuel)
+                // Only set the post-fuel stats if this was caused by auto-reset
+                // or if we're handling a manual reset (which already set the stats)
+                if (autoResetWhenOutOfFuel)
+                {
+                    SetPostFuelOutStats();
+                    outOfFuelFeedbacks?.PlayFeedbacks();
+                    AlertEvent.Trigger(AlertReason.OutOfFuel, "You are out of fuel!", "Out of Fuel");
+                }
+        }
+
+        private void ManualReset()
+        {
+            // Apply the same penalties as the automatic reset
+            SetPostFuelOutStats();
+            outOfFuelFeedbacks?.PlayFeedbacks();
+            AlertEvent.Trigger(AlertReason.OutOfFuel, "Manual reset activated!", "Reset to Base");
+
+            // Trigger the reset event manually
+            PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfFuel);
         }
 
 // In PlayerDeathManager.cs
