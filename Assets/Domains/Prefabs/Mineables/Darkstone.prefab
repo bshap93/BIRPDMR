@@ -950,10 +950,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   knockDuration: 0.25
-  oreHitFeedback: {fileID: 1277248301386597315}
-  oreDestroyFeedback: {fileID: 6017877751092101060}
+  oreHitFeedback: {fileID: 0}
+  oreDestroyFeedback: {fileID: 0}
   OreHitBehavior: {fileID: 5709700749129327246}
-  UniqueID: 0d038004-d12b-457e-abb6-5382b7dfde1e
+  UniqueID: 
 --- !u!114 &4375252831640017369
 MonoBehaviour:
   m_ObjectHideFlags: 0

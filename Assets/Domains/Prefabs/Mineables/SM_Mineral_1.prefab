@@ -442,7 +442,7 @@ MonoBehaviour:
   oreHitFeedback: {fileID: 8640104945982745857}
   oreDestroyFeedback: {fileID: 2687134068422912147}
   OreHitBehavior: {fileID: 1052840361668016853}
-  UniqueID: efd86cc5-9e35-448a-b250-4b35ad6caf9a
+  UniqueID: 
 --- !u!114 &-5264020533336785524
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -86,7 +86,8 @@ namespace Domains.Player.Scripts
             float fuelToBuy, int costOfFuelToBuy)
         {
             fuelRemainingRadial.isOn = false;
-            fuelRemainingRadial.currentPercent = fuelRemaining / maxFuelAmount * 100;
+            // fuelRemainingRadial.currentPercent = fuelRemaining / maxFuelAmount * 100;
+            fuelRemainingRadial.ChangeValue(fuelRemaining / maxFuelAmount * 100);
 
             UnityEngine.Debug.LogWarning("Fuel Remaining: " + fuelRemaining);
             fuelRemainingText.text = $"{fuelRemaining} / {maxFuelAmount} ml";
