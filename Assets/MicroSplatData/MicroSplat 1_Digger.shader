@@ -17,8 +17,6 @@ Shader "Terrain_Digger"
    {
             [HideInInspector] _Control0 ("Control0", 2D) = "red" {}
       [HideInInspector] _Control1 ("Control1", 2D) = "black" {}
-      [HideInInspector] _Control2 ("Control2", 2D) = "black" {}
-      [HideInInspector] _Control3 ("Control3", 2D) = "black" {}
       
 
       // Splats
@@ -46,7 +44,7 @@ Shader "Terrain_Digger"
    }
    SubShader
    {
-            Tags {"RenderType" = "Opaque" "Queue" = "Geometry+100" "IgnoreProjector" = "False" "SplatCount" = "16"}
+            Tags {"RenderType" = "Opaque" "Queue" = "Geometry+100" "IgnoreProjector" = "False" "SplatCount" = "8"}
 
       
       Pass
@@ -77,6 +75,7 @@ Shader "Terrain_Digger"
       #define _MICROSPLAT 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _MAX8TEXTURES 1
       #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
@@ -661,8 +660,8 @@ Shader "Terrain_Digger"
                UNITY_SHADOW_COORDS(11)
             #endif
 
-             float4 extraV2F0 : TEXCOORD13;
-             float4 extraV2F1 : TEXCOORD14;
+            // float4 extraV2F0 : TEXCOORD13;
+            // float4 extraV2F1 : TEXCOORD14;
             // float4 extraV2F2 : TEXCOORD15;
             // float4 extraV2F3 : TEXCOORD16;
             // float4 extraV2F4 : TEXCOORD17;
@@ -776,8 +775,8 @@ Shader "Terrain_Digger"
                 float4 vertexColor : COLOR;
 
                
-                float4 extraV2F0 : TEXCOORD4;
-                float4 extraV2F1 : TEXCOORD5;
+               // float4 extraV2F0 : TEXCOORD4;
+               // float4 extraV2F1 : TEXCOORD5;
                // float4 extraV2F2 : TEXCOORD6;
                // float4 extraV2F3 : TEXCOORD7;
                // float4 extraV2F4 : TEXCOORD8;
@@ -2264,8 +2263,8 @@ TEXTURE2D(_MainTex);
       i.w0.xy = d.texcoord0.zw;
       i.w0.zw = d.texcoord1.zw;
        i.w1 = d.vertexColor;
-       i.w2 = d.extraV2F0;
-       i.w3 = d.extraV2F1;
+
+
 
 
 
@@ -2276,8 +2275,8 @@ TEXTURE2D(_MainTex);
       float4 data0 = DecodeToFloat4(i.vertexColor.r);
       
       
-       d.extraV2F0 = DecodeToFloat4(i.vertexColor.b);
-       d.extraV2F1 = DecodeToFloat4(i.vertexColor.a);
+
+
         i.vertexColor = DecodeToFloat4(i.vertexColor.g);
 
 
@@ -4781,8 +4780,8 @@ float3 GetTessFactors ()
             // d.screenPos = i.screenPos;
             // d.screenUV = i.screenPos.xy / i.screenPos.w;
 
-             d.extraV2F0 = i.extraV2F0;
-             d.extraV2F1 = i.extraV2F1;
+            // d.extraV2F0 = i.extraV2F0;
+            // d.extraV2F1 = i.extraV2F1;
             // d.extraV2F2 = i.extraV2F2;
             // d.extraV2F3 = i.extraV2F3;
             // d.extraV2F4 = i.extraV2F4;
@@ -4799,8 +4798,8 @@ float3 GetTessFactors ()
                ExtraV2F d = (ExtraV2F)0;
                ModifyVertex(v, d);
 
-                v2p.extraV2F0 = d.extraV2F0;
-                v2p.extraV2F1 = d.extraV2F1;
+               // v2p.extraV2F0 = d.extraV2F0;
+               // v2p.extraV2F1 = d.extraV2F1;
                // v2p.extraV2F2 = d.extraV2F2;
                // v2p.extraV2F3 = d.extraV2F3;
                // v2p.extraV2F4 = d.extraV2F4;
@@ -4812,8 +4811,8 @@ float3 GetTessFactors ()
             void ChainModifyTessellatedVertex(inout VertexData v, inout VertexToPixel v2p)
             {
                ExtraV2F d = (ExtraV2F)0;
-                d.extraV2F0 = v2p.extraV2F0;
-                d.extraV2F1 = v2p.extraV2F1;
+               // d.extraV2F0 = v2p.extraV2F0;
+               // d.extraV2F1 = v2p.extraV2F1;
                // d.extraV2F2 = v2p.extraV2F2;
                // d.extraV2F3 = v2p.extraV2F3;
                // d.extraV2F4 = v2p.extraV2F4;
@@ -4823,8 +4822,8 @@ float3 GetTessFactors ()
 
                ModifyTessellatedVertex(v, d);
 
-                v2p.extraV2F0 = d.extraV2F0;
-                v2p.extraV2F1 = d.extraV2F1;
+               // v2p.extraV2F0 = d.extraV2F0;
+               // v2p.extraV2F1 = d.extraV2F1;
                // v2p.extraV2F2 = d.extraV2F2;
                // v2p.extraV2F3 = d.extraV2F3;
                // v2p.extraV2F4 = d.extraV2F4;
@@ -5110,6 +5109,7 @@ float3 GetTessFactors ()
       #define _MICROSPLAT 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _MAX8TEXTURES 1
       #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
@@ -5686,8 +5686,8 @@ float3 GetTessFactors ()
             UNITY_LIGHTING_COORDS(8,9)
             UNITY_FOG_COORDS(10)
 
-             float4 extraV2F0 : TEXCOORD11;
-             float4 extraV2F1 : TEXCOORD12;
+            // float4 extraV2F0 : TEXCOORD11;
+            // float4 extraV2F1 : TEXCOORD12;
             // float4 extraV2F2 : TEXCOORD13;
             // float4 extraV2F3 : TEXCOORD14;
             // float4 extraV2F4 : TEXCOORD15;
@@ -5801,8 +5801,8 @@ float3 GetTessFactors ()
                 float4 vertexColor : COLOR;
 
                
-                float4 extraV2F0 : TEXCOORD4;
-                float4 extraV2F1 : TEXCOORD5;
+               // float4 extraV2F0 : TEXCOORD4;
+               // float4 extraV2F1 : TEXCOORD5;
                // float4 extraV2F2 : TEXCOORD6;
                // float4 extraV2F3 : TEXCOORD7;
                // float4 extraV2F4 : TEXCOORD8;
@@ -7289,8 +7289,8 @@ TEXTURE2D(_MainTex);
       i.w0.xy = d.texcoord0.zw;
       i.w0.zw = d.texcoord1.zw;
        i.w1 = d.vertexColor;
-       i.w2 = d.extraV2F0;
-       i.w3 = d.extraV2F1;
+
+
 
 
 
@@ -7301,8 +7301,8 @@ TEXTURE2D(_MainTex);
       float4 data0 = DecodeToFloat4(i.vertexColor.r);
       
       
-       d.extraV2F0 = DecodeToFloat4(i.vertexColor.b);
-       d.extraV2F1 = DecodeToFloat4(i.vertexColor.a);
+
+
         i.vertexColor = DecodeToFloat4(i.vertexColor.g);
 
 
@@ -9806,8 +9806,8 @@ float3 GetTessFactors ()
             // d.screenPos = i.screenPos;
             // d.screenUV = i.screenPos.xy / i.screenPos.w;
 
-             d.extraV2F0 = i.extraV2F0;
-             d.extraV2F1 = i.extraV2F1;
+            // d.extraV2F0 = i.extraV2F0;
+            // d.extraV2F1 = i.extraV2F1;
             // d.extraV2F2 = i.extraV2F2;
             // d.extraV2F3 = i.extraV2F3;
             // d.extraV2F4 = i.extraV2F4;
@@ -9824,8 +9824,8 @@ float3 GetTessFactors ()
                ExtraV2F d = (ExtraV2F)0;
                ModifyVertex(v, d);
 
-                v2p.extraV2F0 = d.extraV2F0;
-                v2p.extraV2F1 = d.extraV2F1;
+               // v2p.extraV2F0 = d.extraV2F0;
+               // v2p.extraV2F1 = d.extraV2F1;
                // v2p.extraV2F2 = d.extraV2F2;
                // v2p.extraV2F3 = d.extraV2F3;
                // v2p.extraV2F4 = d.extraV2F4;
@@ -9837,8 +9837,8 @@ float3 GetTessFactors ()
             void ChainModifyTessellatedVertex(inout VertexData v, inout VertexToPixel v2p)
             {
                ExtraV2F d = (ExtraV2F)0;
-                d.extraV2F0 = v2p.extraV2F0;
-                d.extraV2F1 = v2p.extraV2F1;
+               // d.extraV2F0 = v2p.extraV2F0;
+               // d.extraV2F1 = v2p.extraV2F1;
                // d.extraV2F2 = v2p.extraV2F2;
                // d.extraV2F3 = v2p.extraV2F3;
                // d.extraV2F4 = v2p.extraV2F4;
@@ -9848,8 +9848,8 @@ float3 GetTessFactors ()
 
                ModifyTessellatedVertex(v, d);
 
-                v2p.extraV2F0 = d.extraV2F0;
-                v2p.extraV2F1 = d.extraV2F1;
+               // v2p.extraV2F0 = d.extraV2F0;
+               // v2p.extraV2F1 = d.extraV2F1;
                // v2p.extraV2F2 = d.extraV2F2;
                // v2p.extraV2F3 = d.extraV2F3;
                // v2p.extraV2F4 = d.extraV2F4;
@@ -10071,6 +10071,7 @@ float3 GetTessFactors ()
       #define _MICROSPLAT 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _MAX8TEXTURES 1
       #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
@@ -10654,8 +10655,8 @@ float3 GetTessFactors ()
               #endif
             #endif
 
-             float4 extraV2F0 : TEXCOORD12;
-             float4 extraV2F1 : TEXCOORD13;
+            // float4 extraV2F0 : TEXCOORD12;
+            // float4 extraV2F1 : TEXCOORD13;
             // float4 extraV2F2 : TEXCOORD14;
             // float4 extraV2F3 : TEXCOORD15;
             // float4 extraV2F4 : TEXCOORD16;
@@ -10768,8 +10769,8 @@ float3 GetTessFactors ()
                 float4 vertexColor : COLOR;
 
                
-                float4 extraV2F0 : TEXCOORD4;
-                float4 extraV2F1 : TEXCOORD5;
+               // float4 extraV2F0 : TEXCOORD4;
+               // float4 extraV2F1 : TEXCOORD5;
                // float4 extraV2F2 : TEXCOORD6;
                // float4 extraV2F3 : TEXCOORD7;
                // float4 extraV2F4 : TEXCOORD8;
@@ -12256,8 +12257,8 @@ TEXTURE2D(_MainTex);
       i.w0.xy = d.texcoord0.zw;
       i.w0.zw = d.texcoord1.zw;
        i.w1 = d.vertexColor;
-       i.w2 = d.extraV2F0;
-       i.w3 = d.extraV2F1;
+
+
 
 
 
@@ -12268,8 +12269,8 @@ TEXTURE2D(_MainTex);
       float4 data0 = DecodeToFloat4(i.vertexColor.r);
       
       
-       d.extraV2F0 = DecodeToFloat4(i.vertexColor.b);
-       d.extraV2F1 = DecodeToFloat4(i.vertexColor.a);
+
+
         i.vertexColor = DecodeToFloat4(i.vertexColor.g);
 
 
@@ -14773,8 +14774,8 @@ float3 GetTessFactors ()
             // d.screenPos = i.screenPos;
             // d.screenUV = i.screenPos.xy / i.screenPos.w;
 
-             d.extraV2F0 = i.extraV2F0;
-             d.extraV2F1 = i.extraV2F1;
+            // d.extraV2F0 = i.extraV2F0;
+            // d.extraV2F1 = i.extraV2F1;
             // d.extraV2F2 = i.extraV2F2;
             // d.extraV2F3 = i.extraV2F3;
             // d.extraV2F4 = i.extraV2F4;
@@ -14791,8 +14792,8 @@ float3 GetTessFactors ()
                ExtraV2F d = (ExtraV2F)0;
                ModifyVertex(v, d);
 
-                v2p.extraV2F0 = d.extraV2F0;
-                v2p.extraV2F1 = d.extraV2F1;
+               // v2p.extraV2F0 = d.extraV2F0;
+               // v2p.extraV2F1 = d.extraV2F1;
                // v2p.extraV2F2 = d.extraV2F2;
                // v2p.extraV2F3 = d.extraV2F3;
                // v2p.extraV2F4 = d.extraV2F4;
@@ -14804,8 +14805,8 @@ float3 GetTessFactors ()
             void ChainModifyTessellatedVertex(inout VertexData v, inout VertexToPixel v2p)
             {
                ExtraV2F d = (ExtraV2F)0;
-                d.extraV2F0 = v2p.extraV2F0;
-                d.extraV2F1 = v2p.extraV2F1;
+               // d.extraV2F0 = v2p.extraV2F0;
+               // d.extraV2F1 = v2p.extraV2F1;
                // d.extraV2F2 = v2p.extraV2F2;
                // d.extraV2F3 = v2p.extraV2F3;
                // d.extraV2F4 = v2p.extraV2F4;
@@ -14815,8 +14816,8 @@ float3 GetTessFactors ()
 
                ModifyTessellatedVertex(v, d);
 
-                v2p.extraV2F0 = d.extraV2F0;
-                v2p.extraV2F1 = d.extraV2F1;
+               // v2p.extraV2F0 = d.extraV2F0;
+               // v2p.extraV2F1 = d.extraV2F1;
                // v2p.extraV2F2 = d.extraV2F2;
                // v2p.extraV2F3 = d.extraV2F3;
                // v2p.extraV2F4 = d.extraV2F4;
@@ -15120,6 +15121,7 @@ float3 GetTessFactors ()
       #define _MICROSPLAT 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _MAX8TEXTURES 1
       #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
@@ -15678,8 +15680,8 @@ float3 GetTessFactors ()
             // float4 screenPos : TEXCOORD7;
              float4 vertexColor : COLOR;
 
-             float4 extraV2F0 : TEXCOORD8;
-             float4 extraV2F1 : TEXCOORD9;
+            // float4 extraV2F0 : TEXCOORD8;
+            // float4 extraV2F1 : TEXCOORD9;
             // float4 extraV2F2 : TEXCOORD10;
             // float4 extraV2F3 : TEXCOORD11;
             // float4 extraV2F4 : TEXCOORD12;
@@ -15792,8 +15794,8 @@ float3 GetTessFactors ()
                 float4 vertexColor : COLOR;
 
                
-                float4 extraV2F0 : TEXCOORD4;
-                float4 extraV2F1 : TEXCOORD5;
+               // float4 extraV2F0 : TEXCOORD4;
+               // float4 extraV2F1 : TEXCOORD5;
                // float4 extraV2F2 : TEXCOORD6;
                // float4 extraV2F3 : TEXCOORD7;
                // float4 extraV2F4 : TEXCOORD8;
@@ -17280,8 +17282,8 @@ TEXTURE2D(_MainTex);
       i.w0.xy = d.texcoord0.zw;
       i.w0.zw = d.texcoord1.zw;
        i.w1 = d.vertexColor;
-       i.w2 = d.extraV2F0;
-       i.w3 = d.extraV2F1;
+
+
 
 
 
@@ -17292,8 +17294,8 @@ TEXTURE2D(_MainTex);
       float4 data0 = DecodeToFloat4(i.vertexColor.r);
       
       
-       d.extraV2F0 = DecodeToFloat4(i.vertexColor.b);
-       d.extraV2F1 = DecodeToFloat4(i.vertexColor.a);
+
+
         i.vertexColor = DecodeToFloat4(i.vertexColor.g);
 
 
@@ -19797,8 +19799,8 @@ float3 GetTessFactors ()
             // d.screenPos = i.screenPos;
             // d.screenUV = i.screenPos.xy / i.screenPos.w;
 
-             d.extraV2F0 = i.extraV2F0;
-             d.extraV2F1 = i.extraV2F1;
+            // d.extraV2F0 = i.extraV2F0;
+            // d.extraV2F1 = i.extraV2F1;
             // d.extraV2F2 = i.extraV2F2;
             // d.extraV2F3 = i.extraV2F3;
             // d.extraV2F4 = i.extraV2F4;
@@ -19815,8 +19817,8 @@ float3 GetTessFactors ()
                ExtraV2F d = (ExtraV2F)0;
                ModifyVertex(v, d);
 
-                v2p.extraV2F0 = d.extraV2F0;
-                v2p.extraV2F1 = d.extraV2F1;
+               // v2p.extraV2F0 = d.extraV2F0;
+               // v2p.extraV2F1 = d.extraV2F1;
                // v2p.extraV2F2 = d.extraV2F2;
                // v2p.extraV2F3 = d.extraV2F3;
                // v2p.extraV2F4 = d.extraV2F4;
@@ -19828,8 +19830,8 @@ float3 GetTessFactors ()
             void ChainModifyTessellatedVertex(inout VertexData v, inout VertexToPixel v2p)
             {
                ExtraV2F d = (ExtraV2F)0;
-                d.extraV2F0 = v2p.extraV2F0;
-                d.extraV2F1 = v2p.extraV2F1;
+               // d.extraV2F0 = v2p.extraV2F0;
+               // d.extraV2F1 = v2p.extraV2F1;
                // d.extraV2F2 = v2p.extraV2F2;
                // d.extraV2F3 = v2p.extraV2F3;
                // d.extraV2F4 = v2p.extraV2F4;
@@ -19839,8 +19841,8 @@ float3 GetTessFactors ()
 
                ModifyTessellatedVertex(v, d);
 
-                v2p.extraV2F0 = d.extraV2F0;
-                v2p.extraV2F1 = d.extraV2F1;
+               // v2p.extraV2F0 = d.extraV2F0;
+               // v2p.extraV2F1 = d.extraV2F1;
                // v2p.extraV2F2 = d.extraV2F2;
                // v2p.extraV2F3 = d.extraV2F3;
                // v2p.extraV2F4 = d.extraV2F4;
@@ -19974,6 +19976,7 @@ float3 GetTessFactors ()
       #define _MICROSPLAT 1
       #define _HYBRIDHEIGHTBLEND 1
       #define _USEGRADMIP 1
+      #define _MAX8TEXTURES 1
       #define _PERTEXUVSCALEOFFSET 1
       #define _PERTEXTINT 1
       #define _BRANCHSAMPLES 1
@@ -20548,8 +20551,8 @@ float3 GetTessFactors ()
               float4 lightCoord : TEXCOORD9;
             #endif
 
-             float4 extraV2F0 : TEXCOORD10;
-             float4 extraV2F1 : TEXCOORD11;
+            // float4 extraV2F0 : TEXCOORD10;
+            // float4 extraV2F1 : TEXCOORD11;
             // float4 extraV2F2 : TEXCOORD12;
             // float4 extraV2F3 : TEXCOORD13;
             // float4 extraV2F4 : TEXCOORD14;
@@ -20663,8 +20666,8 @@ float3 GetTessFactors ()
                 float4 vertexColor : COLOR;
 
                
-                float4 extraV2F0 : TEXCOORD4;
-                float4 extraV2F1 : TEXCOORD5;
+               // float4 extraV2F0 : TEXCOORD4;
+               // float4 extraV2F1 : TEXCOORD5;
                // float4 extraV2F2 : TEXCOORD6;
                // float4 extraV2F3 : TEXCOORD7;
                // float4 extraV2F4 : TEXCOORD8;
@@ -22151,8 +22154,8 @@ TEXTURE2D(_MainTex);
       i.w0.xy = d.texcoord0.zw;
       i.w0.zw = d.texcoord1.zw;
        i.w1 = d.vertexColor;
-       i.w2 = d.extraV2F0;
-       i.w3 = d.extraV2F1;
+
+
 
 
 
@@ -22163,8 +22166,8 @@ TEXTURE2D(_MainTex);
       float4 data0 = DecodeToFloat4(i.vertexColor.r);
       
       
-       d.extraV2F0 = DecodeToFloat4(i.vertexColor.b);
-       d.extraV2F1 = DecodeToFloat4(i.vertexColor.a);
+
+
         i.vertexColor = DecodeToFloat4(i.vertexColor.g);
 
 
@@ -24668,8 +24671,8 @@ float3 GetTessFactors ()
             // d.screenPos = i.screenPos;
             // d.screenUV = i.screenPos.xy / i.screenPos.w;
 
-             d.extraV2F0 = i.extraV2F0;
-             d.extraV2F1 = i.extraV2F1;
+            // d.extraV2F0 = i.extraV2F0;
+            // d.extraV2F1 = i.extraV2F1;
             // d.extraV2F2 = i.extraV2F2;
             // d.extraV2F3 = i.extraV2F3;
             // d.extraV2F4 = i.extraV2F4;
@@ -24686,8 +24689,8 @@ float3 GetTessFactors ()
                ExtraV2F d = (ExtraV2F)0;
                ModifyVertex(v, d);
 
-                v2p.extraV2F0 = d.extraV2F0;
-                v2p.extraV2F1 = d.extraV2F1;
+               // v2p.extraV2F0 = d.extraV2F0;
+               // v2p.extraV2F1 = d.extraV2F1;
                // v2p.extraV2F2 = d.extraV2F2;
                // v2p.extraV2F3 = d.extraV2F3;
                // v2p.extraV2F4 = d.extraV2F4;
@@ -24699,8 +24702,8 @@ float3 GetTessFactors ()
             void ChainModifyTessellatedVertex(inout VertexData v, inout VertexToPixel v2p)
             {
                ExtraV2F d = (ExtraV2F)0;
-                d.extraV2F0 = v2p.extraV2F0;
-                d.extraV2F1 = v2p.extraV2F1;
+               // d.extraV2F0 = v2p.extraV2F0;
+               // d.extraV2F1 = v2p.extraV2F1;
                // d.extraV2F2 = v2p.extraV2F2;
                // d.extraV2F3 = v2p.extraV2F3;
                // d.extraV2F4 = v2p.extraV2F4;
@@ -24710,8 +24713,8 @@ float3 GetTessFactors ()
 
                ModifyTessellatedVertex(v, d);
 
-                v2p.extraV2F0 = d.extraV2F0;
-                v2p.extraV2F1 = d.extraV2F1;
+               // v2p.extraV2F0 = d.extraV2F0;
+               // v2p.extraV2F1 = d.extraV2F1;
                // v2p.extraV2F2 = d.extraV2F2;
                // v2p.extraV2F3 = d.extraV2F3;
                // v2p.extraV2F4 = d.extraV2F4;
