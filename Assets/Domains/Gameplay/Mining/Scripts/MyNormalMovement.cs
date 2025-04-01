@@ -80,6 +80,8 @@ namespace Domains.Gameplay.Mining.Scripts
 
         private float _footstepTimer;
 
+        private bool _wasMovingLastFrame;
+
 
         protected PlanarMovementParameters.PlanarMovementProperties currentMotion;
         protected float currentPlanarSpeedLimit;
@@ -676,26 +678,36 @@ namespace Domains.Gameplay.Mining.Scripts
             HandleVelocity(dt);
             HandleRotation(dt);
 
-            if (CharacterActor.IsGrounded && CharacterActor.PlanarVelocity.magnitude > 0.1f)
+            var isMoving = CharacterActor.IsGrounded && CharacterActor.PlanarVelocity.magnitude > 0.01f;
+
+            if (isMoving)
             {
-                // Adjust interval: faster speed = more frequent steps
+                // Dynamically scale interval
                 var speed = CharacterActor.PlanarVelocity.magnitude;
                 _footstepInterval = baseStepInterval / Mathf.Max(speed, 0.1f);
                 _footstepInterval = Mathf.Clamp(_footstepInterval, baseStepInterval * 0.7f, baseStepInterval * 1.3f);
 
+                // Trigger first footstep as soon as movement begins
+                if (!_wasMovingLastFrame)
+                    _footstepTimer = _footstepInterval;
 
-                _footstepTimer += dt;
-
+                // Run step timer
                 if (_footstepTimer >= _footstepInterval)
                 {
                     PlayFootstepFeedback();
                     _footstepTimer = 0f;
+                }
+                else
+                {
+                    _footstepTimer += dt;
                 }
             }
             else
             {
                 _footstepTimer = 0f;
             }
+
+            _wasMovingLastFrame = isMoving;
         }
 
         private void PlayFootstepFeedback()
