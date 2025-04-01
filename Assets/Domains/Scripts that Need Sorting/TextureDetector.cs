@@ -3,7 +3,7 @@ using Digger.Modules.Core.Sources;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Digger.Demo
+namespace Domains.Scripts_that_Need_Sorting
 {
     public class TextureDetector : MonoBehaviour
     {
@@ -25,7 +25,7 @@ namespace Digger.Demo
         {
             if (Physics.Raycast(transform.position, transform.forward, out var hit, 500, 1 << diggerMaster.Layer))
             {
-                Debug.DrawLine(transform.position, hit.point, Color.green);
+                UnityEngine.Debug.DrawLine(transform.position, hit.point, Color.green);
                 var index = GetTextureIndex(hit, out var terrain);
 
                 if (terrain != null && index >= 0)
@@ -62,7 +62,8 @@ namespace Digger.Demo
 
             if (baseVertexIndex < 0 || baseVertexIndex >= uvs.Count)
             {
-                Debug.LogWarning($"Invalid UV index: {baseVertexIndex} for channel {channel}. UV count: {uvs.Count}");
+                UnityEngine.Debug.LogWarning(
+                    $"Invalid UV index: {baseVertexIndex} for channel {channel}. UV count: {uvs.Count}");
                 coord = float4.zero;
                 return false;
             }
@@ -89,7 +90,7 @@ namespace Digger.Demo
 
                 if (triArrayIndex < 0 || triArrayIndex + 2 >= triangles.Length)
                 {
-                    Debug.LogWarning(
+                    UnityEngine.Debug.LogWarning(
                         $"Triangle index {hit.triangleIndex} out of range for mesh {diggerColliderMesh.name}.");
                     terrain = null;
                     return -1;
@@ -142,7 +143,7 @@ namespace Digger.Demo
                 mesh.GetUVs(channel, uvs);
                 if (baseVertexIndex < 0 || baseVertexIndex >= uvs.Count)
                 {
-                    Debug.LogWarning(
+                    UnityEngine.Debug.LogWarning(
                         $"UV channel {channel} is invalid at index {baseVertexIndex} (UV count: {uvs.Count})");
                     return false;
                 }
@@ -158,7 +159,8 @@ namespace Digger.Demo
 
             if (baseVertexIndex < 0 || baseVertexIndex >= uvs.Count)
             {
-                Debug.LogWarning($"Invalid UV index: {baseVertexIndex} for channel {channel}. UV count: {uvs.Count}");
+                UnityEngine.Debug.LogWarning(
+                    $"Invalid UV index: {baseVertexIndex} for channel {channel}. UV count: {uvs.Count}");
                 return float4.zero; // or a sensible default
             }
 

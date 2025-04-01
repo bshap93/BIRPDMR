@@ -1,5 +1,4 @@
 ﻿using System;
-using Digger.Demo;
 using Domains.Gameplay.Equipment.Scripts;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
@@ -26,6 +25,13 @@ namespace Domains.Gameplay.Mining.Scripts
             Grounded,
             NotGrounded
         }
+
+        [Header("Footsteps")] [SerializeField] private MMFeedbacks terrainFootstepFeedbacks;
+
+        [SerializeField] private MMFeedbacks chunkFootstepFeedbacks;
+        [SerializeField] private MMFeedbacks defaultFootstepFeedbacks;
+        [SerializeField] private float baseStepInterval = 0.5f;
+        [SerializeField] private float maxSpeed = 5f; // used for scaling
 
 
         [Space(10)] public PlanarMovementParameters planarMovementParameters = new();
@@ -70,6 +76,9 @@ namespace Domains.Gameplay.Mining.Scripts
 
 
         private PointedObjectInfo _currentPointedObjectInfo;
+        private float _footstepInterval;
+
+        private float _footstepTimer;
 
 
         protected PlanarMovementParameters.PlanarMovementProperties currentMotion;
@@ -666,6 +675,46 @@ namespace Domains.Gameplay.Mining.Scripts
             HandleSize(dt);
             HandleVelocity(dt);
             HandleRotation(dt);
+
+            if (CharacterActor.IsGrounded && CharacterActor.PlanarVelocity.magnitude > 0.1f)
+            {
+                // Adjust interval: faster speed = more frequent steps
+                var speed = CharacterActor.PlanarVelocity.magnitude;
+                _footstepInterval = baseStepInterval / Mathf.Max(speed, 0.1f);
+                _footstepInterval = Mathf.Clamp(_footstepInterval, baseStepInterval * 0.7f, baseStepInterval * 1.3f);
+
+
+                _footstepTimer += dt;
+
+                if (_footstepTimer >= _footstepInterval)
+                {
+                    PlayFootstepFeedback();
+                    _footstepTimer = 0f;
+                }
+            }
+            else
+            {
+                _footstepTimer = 0f;
+            }
+        }
+
+        private void PlayFootstepFeedback()
+        {
+            switch (textureDetector.textureIndex)
+            {
+                case 1: // Chunk terrain from Digger
+                    chunkFootstepFeedbacks?.PlayFeedbacks();
+                    break;
+
+                case >= 0: // Terrain (index 0, 2, 3, etc.)
+                    terrainFootstepFeedbacks?.PlayFeedbacks();
+                    break;
+
+                case -1: // Meshes, non-terrain
+                default:
+                    defaultFootstepFeedbacks?.PlayFeedbacks();
+                    break;
+            }
         }
 
 

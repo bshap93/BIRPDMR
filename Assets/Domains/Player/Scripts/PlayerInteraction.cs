@@ -1,9 +1,9 @@
 using System;
-using Digger.Demo;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Input.Scripts;
+using Domains.Scripts_that_Need_Sorting;
 using UnityEngine;
 using UnityEngine.UI;
 
