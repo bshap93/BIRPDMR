@@ -32,12 +32,12 @@ namespace Domains.Player.Scripts
         public float currentDigDepth;
         public Light digSpotlight;
         public float spotlightStrengthenDepth = 2f;
+        public TextureDetector ForwardTextureDetector;
 
         private RuntimeDig _digClass;
         private DiggerMaster _diggerMaster;
         private DiggerMasterRuntime _diggerMasterRuntime;
         private bool _interactablePrompt;
-        private TextureDetector _textureDetector; // Reference to the TextureDetector component
 
         private void Start()
         {
@@ -46,9 +46,8 @@ namespace Domains.Player.Scripts
             _digClass = GetComponent<RuntimeDig>();
 
             // Find the TextureDetector in the scene
-            _textureDetector = FindFirstObjectByType<TextureDetector>();
 
-            if (_textureDetector == null)
+            if (ForwardTextureDetector == null)
                 UnityEngine.Debug.LogWarning(
                     "TextureDetector not found in the scene. Cannot track texture information.");
         }
@@ -99,9 +98,9 @@ namespace Domains.Player.Scripts
         // New method to update texture information
         private void UpdateTextureInformation()
         {
-            if (_textureDetector != null && !string.IsNullOrEmpty(_textureDetector.texture))
+            if (ForwardTextureDetector != null && !string.IsNullOrEmpty(ForwardTextureDetector.texture))
                 // Extract name and index from TextureDetector's texture string
-                if (ExtractNameAndIndex(_textureDetector.texture, out var name, out var index))
+                if (ExtractNameAndIndex(ForwardTextureDetector.texture, out var name, out var index))
                 {
                     // Update our tracking variables
                     currentTextureName = name;

@@ -44,7 +44,10 @@ namespace Domains.Gameplay.Mining.Scripts
 
 
         public PlayerInteraction playerInteraction;
-        public TextureDetector textureDetector;
+
+        // public TextureDetector textureDetector;
+        public TextureDetector ForwardTextureDetector;
+        public TextureDetector DownTextureDetector;
 
 
         [Header("Animation")] [SerializeField] protected string groundedParameter = "Grounded";
@@ -132,7 +135,6 @@ namespace Domains.Gameplay.Mining.Scripts
 
             materialController = this.GetComponentInBranch<CharacterActor, MaterialController>();
 
-            if (textureDetector == null) textureDetector = FindFirstObjectByType<TextureDetector>();
             if (playerInteraction == null)
                 playerInteraction = FindFirstObjectByType<PlayerInteraction>();
         }
@@ -198,7 +200,7 @@ namespace Domains.Gameplay.Mining.Scripts
                 if (playerInteraction == null)
                     return;
 
-                var textureIndex = textureDetector.textureIndex;
+                var textureIndex = ForwardTextureDetector.textureIndex;
 
                 if (textureIndex < 0 || textureIndex >= playerInteraction.diggableLayers.Length)
                     return;
@@ -712,7 +714,7 @@ namespace Domains.Gameplay.Mining.Scripts
 
         private void PlayFootstepFeedback()
         {
-            switch (textureDetector.textureIndex)
+            switch (DownTextureDetector.textureIndex)
             {
                 case 1: // Chunk terrain from Digger
                     chunkFootstepFeedbacks?.PlayFeedbacks();

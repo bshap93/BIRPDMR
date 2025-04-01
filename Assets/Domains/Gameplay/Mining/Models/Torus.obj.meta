@@ -3,7 +3,12 @@ guid: 8b03f64b0495eff4b86f275d4a00d824
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_29_5_Rock_Taurus
+    second: {fileID: 2100000, guid: 2eba8baecb1b7764cba7033052f3b0c1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
