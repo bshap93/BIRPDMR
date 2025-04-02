@@ -1,19 +1,30 @@
+using System.Collections;
 using Domains.UI_Global.Events;
 using MoreMountains.Tools;
 using UnityEngine;
 
 public class InfoDumpController : MonoBehaviour, MMEventListener<UIEvent>
 {
+    private bool _isPaused;
     private CanvasGroup canvasGroup;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public InfoDumpController(bool isPaused)
+    {
+        _isPaused = isPaused;
+    }
+
     private void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
-        if (canvasGroup == null) Debug.LogError("InfoDumpController: No CanvasGroup found on this GameObject.");
-        
-        
+        if (canvasGroup == null)
+        {
+            Debug.LogError("InfoDumpController: No CanvasGroup found on this GameObject.");
+            return;
+        }
+
+        StartCoroutine(DelayedShowInfoDump());
     }
+
 
     private void OnEnable()
     {
@@ -30,6 +41,12 @@ public class InfoDumpController : MonoBehaviour, MMEventListener<UIEvent>
         if (eventType.EventType == UIEventType.CloseUI) HideInfoDump();
     }
 
+    private IEnumerator DelayedShowInfoDump()
+    {
+        yield return null; // Wait one frame
+        ShowInfoDump();
+    }
+
     private void ShowInfoDump()
     {
         if (canvasGroup != null)
@@ -37,6 +54,12 @@ public class InfoDumpController : MonoBehaviour, MMEventListener<UIEvent>
             canvasGroup.alpha = 1f;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
+
+            _isPaused = true;
+            Time.timeScale = 0;
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
         else
         {
@@ -51,6 +74,12 @@ public class InfoDumpController : MonoBehaviour, MMEventListener<UIEvent>
             canvasGroup.alpha = 0f;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
+
+            _isPaused = false;
+            Time.timeScale = 1;
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
         else
         {
