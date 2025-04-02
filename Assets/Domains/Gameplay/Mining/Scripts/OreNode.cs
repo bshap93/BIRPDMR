@@ -2,6 +2,8 @@ using System.Collections;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
 using MoreMountains.Feedbacks;
+using MoreMountains.Tools;
+using ThirdParty.Feel.MMTools.Core.MMUI;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -97,14 +99,12 @@ namespace Domains.Gameplay.Mining.Scripts
                 Destroy(gameObject);
             }
         }
-        
-        IEnumerator DoFadeAfterDelay(float delay, GameObject pieces)
+
+        private IEnumerator DoFadeAfterDelay(float delay, GameObject pieces)
         {
             yield return new WaitForSeconds(delay);
             // Fade out the object
-            var fade = pieces.GetComponent<MMFader>();
-            
-            
+
         }
 
 
