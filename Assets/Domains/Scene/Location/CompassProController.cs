@@ -39,12 +39,14 @@ namespace Domains.Scene.Location
             {
                 compassPro.showOnScreenIndicators = true;
                 compassPro.showOffScreenIndicators = true;
+                compassPro.showMiniMap = true;
                 compassPro.UpdateSettings();
             }
             else if (eventType.EventType == EquipmentEventType.SwitchFromScanner)
             {
                 compassPro.showOnScreenIndicators = false;
                 compassPro.showOffScreenIndicators = false;
+                compassPro.showMiniMap = false;
                 compassPro.UpdateSettings();
             }
         }
