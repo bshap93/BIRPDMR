@@ -8,7 +8,8 @@ namespace Domains.UI_Global.Events
         CloseVendorConsole,
         OpenFuelConsole,
         CloseFuelConsole,
-        UpdateFuelConsole
+        UpdateFuelConsole,
+        CloseUI
     }
 
     public struct UIEvent

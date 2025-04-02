@@ -18094,7 +18094,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 448358659123787493}
         m_TargetAssemblyTypeName: TriggerCloseUpgradeUI, Assembly-CSharp
-        m_MethodName: TriggerCloseUI
+        m_MethodName: TriggerCloseVendorUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

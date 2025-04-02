@@ -3,13 +3,19 @@ using UnityEngine;
 
 namespace Domains.UI_Global.Triggers
 {
-    public class TriggerCloseUpgradeUI : MonoBehaviour
+    public class TriggerForCloseUI : MonoBehaviour
     {
-        public void TriggerCloseUI()
+        public void TriggerCloseVendorUI()
         {
             UnityEngine.Debug.Log("TriggerCloseUI");
             UIEvent.Trigger(UIEventType.CloseVendorConsole);
             UIEvent.Trigger(UIEventType.CloseFuelConsole);
+        }
+
+        public void TriggerCloseUI()
+        {
+            UnityEngine.Debug.Log("TriggerCloseUI");
+            UIEvent.Trigger(UIEventType.CloseUI);
         }
     }
 }
