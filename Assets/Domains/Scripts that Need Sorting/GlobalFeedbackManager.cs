@@ -8,25 +8,36 @@ using UnityEngine.Serialization;
 namespace Domains.Scripts_that_Need_Sorting
 {
     public class GlobalFeedbackManager : MonoBehaviour, MMEventListener<UpgradeEvent>,
-        MMEventListener<PlayerStatusEvent>
+        MMEventListener<PlayerStatusEvent>, MMEventListener<CurrencyEvent>
     {
         [FormerlySerializedAs("UpgradeFeedbacks")] [SerializeField]
         private MMFeedbacks upgradeFeedbacks;
 
         [SerializeField] private MMFeedbacks upgradeFailedFeedbacks;
         [SerializeField] private MMFeedbacks outOfStaminaFeedbacks;
+        [SerializeField] private MMFeedbacks currencyAddedFeedbacks;
 
 
         private void OnEnable()
         {
             this.MMEventStartListening<UpgradeEvent>();
             this.MMEventStartListening<PlayerStatusEvent>();
+            this.MMEventStartListening<CurrencyEvent>();
         }
 
         private void OnDisable()
         {
             this.MMEventStopListening<UpgradeEvent>();
             this.MMEventStopListening<PlayerStatusEvent>();
+            this.MMEventStopListening<CurrencyEvent>();
+        }
+
+        public void OnMMEvent(CurrencyEvent eventType)
+        {
+            if (eventType.EventType == CurrencyEventType.AddCurrency)
+                currencyAddedFeedbacks.PlayFeedbacks();
+            else if (eventType.EventType == CurrencyEventType.LoseCurrency)
+                upgradeFailedFeedbacks.PlayFeedbacks();
         }
 
         public void OnMMEvent(PlayerStatusEvent eventType)
