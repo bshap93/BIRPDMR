@@ -854,7 +854,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7ca95f3e93981a14e9dd45147409da3e, type: 2}
+  - {fileID: 2100000, guid: 19c5d38bd2629b645981a7a7cbcbfe3b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -910,7 +910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e2bd9f5befd9f4c8cb26008e447fba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieces: {fileID: 8035905410015936460, guid: 357724277cc6bb140bdddeeac30b8f99, type: 3}
+  pieces: {fileID: 6129471906034433602, guid: be2b4a1dc102cb745a6c5ccc747cf38c, type: 3}
   refinedPickup: {fileID: 3895437934998590342, guid: c4e6628f7da6e4745b5d795efba226b1, type: 3}
   dropOnHit: 1
   hitsToDestroy: 2
@@ -953,7 +953,7 @@ MonoBehaviour:
   oreHitFeedback: {fileID: 1277248301386597315}
   oreDestroyFeedback: {fileID: 6017877751092101060}
   OreHitBehavior: {fileID: 5709700749129327246}
-  UniqueID: 
+  UniqueID: 1ca98553-7fb1-4a5a-8f5c-439b6c12c3ca
 --- !u!114 &4375252831640017369
 MonoBehaviour:
   m_ObjectHideFlags: 0

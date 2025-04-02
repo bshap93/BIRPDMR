@@ -342,7 +342,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7ca95f3e93981a14e9dd45147409da3e, type: 2}
+  - {fileID: 2100000, guid: 19c5d38bd2629b645981a7a7cbcbfe3b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -580,6 +580,8 @@ MonoBehaviour:
   promptTransformOffset: {x: 0, y: 1, z: 0}
   promptRotationOffset: {x: 0, y: 0, z: 0}
   activationFeedback: {fileID: 0}
+  PromptTextColor: {r: 1, g: 1, b: 1, a: 1}
+  PromptKeyStr: E
 --- !u!54 &-2290751886586889473
 Rigidbody:
   m_ObjectHideFlags: 0
