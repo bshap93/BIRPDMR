@@ -20,6 +20,7 @@ namespace Domains.Scene.Location
 
             compassPro.showOnScreenIndicators = false;
             compassPro.showOffScreenIndicators = false;
+            compassPro.showMiniMap = false;
             compassPro.UpdateSettings();
         }
 
