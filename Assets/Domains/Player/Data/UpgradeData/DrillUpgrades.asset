@@ -22,10 +22,10 @@ MonoBehaviour:
   upgradeCosts: 2c01000040060000800c0000581b0000
   effectTypes: 00000000000000000000000000000000
   effectValues:
-  - 1.5
-  - 1.5
-  - 1.5
-  - 1.5
+  - 2
+  - 2
+  - 2
+  - 2
   toolChangeIDs:
   - 
   - Drill

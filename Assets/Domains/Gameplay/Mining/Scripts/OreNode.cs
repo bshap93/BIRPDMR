@@ -86,15 +86,25 @@ namespace Domains.Gameplay.Mining.Scripts
             }
             else
             {
-                //Spawn pieces and destroy.
+                // Spawn pieces and destroy.
                 oreDestroyFeedback?.PlayFeedbacks();
                 var position = transform.position;
                 var rotation = transform.rotation;
-                Instantiate(pieces, position, rotation);
-                DestructableEvent.Trigger(DestructableEventType.Destroyed, UniqueID);
+                var spawnedPieces = Instantiate(pieces, position, rotation);
+                StartCoroutine(DoFadeAfterDelay(5f, spawnedPieces));
 
+                DestructableEvent.Trigger(DestructableEventType.Destroyed, UniqueID);
                 Destroy(gameObject);
             }
+        }
+        
+        IEnumerator DoFadeAfterDelay(float delay, GameObject pieces)
+        {
+            yield return new WaitForSeconds(delay);
+            // Fade out the object
+            var fade = pieces.GetComponent<MMFader>();
+            
+            
         }
 
 
