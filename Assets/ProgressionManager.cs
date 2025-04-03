@@ -2,15 +2,8 @@ using UnityEngine;
 
 public class ProgressionManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public const int NumBeacons = 5;
+    public static bool[] BeaconsActivated = new bool[NumBeacons];
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public static bool IsFirstTimeOpeningGameplayScene = true;
 }

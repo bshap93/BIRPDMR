@@ -6,6 +6,7 @@ using Domains.Scene.Scripts;
 using Gameplay.Events;
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Gameplay.Mining.Scripts
 
@@ -23,7 +24,9 @@ namespace Domains.Gameplay.Mining.Scripts
 
         [SerializeField] private MMFeedbacks oreHitFeedback;
         [SerializeField] private MMFeedbacks oreDestroyFeedback;
-        public MMFeedbacks OreHitBehavior;
+
+        [FormerlySerializedAs("OreHitBehavior")]
+        public MMFeedbacks oreHitBehavior;
 
         // Unique ID for the ore node.
         public string UniqueID;
@@ -40,7 +43,7 @@ namespace Domains.Gameplay.Mining.Scripts
         private void OnMouseDown()
         {
             if (!PlayerFuelManager.IsPlayerOutOfFuel())
-                OreHitBehavior?.PlayFeedbacks();
+                oreHitBehavior?.PlayFeedbacks();
         }
 
         private IEnumerator InitializeAfterDestructableManager()
