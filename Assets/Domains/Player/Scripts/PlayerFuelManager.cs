@@ -23,10 +23,6 @@ namespace Domains.Player.Scripts
     {
         public static float FuelPoints;
         public static float MaxFuelPoints;
-
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        // ReSharper disable once FieldCanBeMadeReadOnly.Global
         public static float InitialCharacterFuel;
 
         [Header("Fuel Settings")] public static float lowAmount = 40f;
@@ -120,16 +116,9 @@ namespace Domains.Player.Scripts
         private void SetCurrentFuel(float value)
         {
             FuelPoints = value;
-            SavePlayerFuel();
         }
 
-        public void Initialize()
-        {
-            ResetPlayerFuel();
-            fuelBarUpdater.Initialize();
-        }
-
-// In PlayerFuelManager.cs
+        // In PlayerFuelManager.cs
         public static void ConsumeFuel(float amount)
         {
             if (FuelPoints - amount <= 0)
@@ -156,7 +145,6 @@ namespace Domains.Player.Scripts
 
             // After changing the value, trigger an event to update UI
             FuelEvent.Trigger(FuelEventType.NotifyListeners, FuelPoints, MaxFuelPoints);
-            SavePlayerFuel();
         }
 
         public static void RecoverFuel(float amount)
@@ -166,7 +154,6 @@ namespace Domains.Player.Scripts
 
             // After changing the value, trigger an event to update UI
             FuelEvent.Trigger(FuelEventType.NotifyListeners, FuelPoints, MaxFuelPoints);
-            SavePlayerFuel();
         }
 
         public static void FullyRecoverFuel()
@@ -175,7 +162,6 @@ namespace Domains.Player.Scripts
             PlayerStatusEvent.Trigger(PlayerStatusEventType.RegainedFuel);
 
             FuelEvent.Trigger(FuelEventType.NotifyListeners, FuelPoints, MaxFuelPoints);
-            SavePlayerFuel();
         }
 
         public static void IncreaseMaximumFuel(float amount)
