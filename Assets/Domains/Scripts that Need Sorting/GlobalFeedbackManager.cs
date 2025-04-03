@@ -8,14 +8,14 @@ using UnityEngine.Serialization;
 namespace Domains.Scripts_that_Need_Sorting
 {
     public class GlobalFeedbackManager : MonoBehaviour, MMEventListener<UpgradeEvent>,
-        MMEventListener<PlayerStatusEvent>, MMEventListener<CurrencyEvent>
+        MMEventListener<PlayerStatusEvent>, MMEventListener<CurrencyEvent>, MMEventListener<FuelEvent>
     {
         [FormerlySerializedAs("UpgradeFeedbacks")] [SerializeField]
         private MMFeedbacks upgradeFeedbacks;
 
         [SerializeField] private MMFeedbacks upgradeFailedFeedbacks;
-        [SerializeField] private MMFeedbacks outOfStaminaFeedbacks;
         [SerializeField] private MMFeedbacks currencyAddedFeedbacks;
+        [SerializeField] private MMFeedbacks lowOnFuelFeedbacks;
 
 
         private void OnEnable()
@@ -23,6 +23,7 @@ namespace Domains.Scripts_that_Need_Sorting
             this.MMEventStartListening<UpgradeEvent>();
             this.MMEventStartListening<PlayerStatusEvent>();
             this.MMEventStartListening<CurrencyEvent>();
+            this.MMEventStartListening<FuelEvent>();
         }
 
         private void OnDisable()
@@ -30,6 +31,7 @@ namespace Domains.Scripts_that_Need_Sorting
             this.MMEventStopListening<UpgradeEvent>();
             this.MMEventStopListening<PlayerStatusEvent>();
             this.MMEventStopListening<CurrencyEvent>();
+            this.MMEventStopListening<FuelEvent>();
         }
 
         public void OnMMEvent(CurrencyEvent eventType)
@@ -40,10 +42,14 @@ namespace Domains.Scripts_that_Need_Sorting
                 upgradeFailedFeedbacks.PlayFeedbacks();
         }
 
+        public void OnMMEvent(FuelEvent eventType)
+        {
+            if (eventType.EventType == FuelEventType.LowOnFuel)
+                lowOnFuelFeedbacks.PlayFeedbacks();
+        }
+
         public void OnMMEvent(PlayerStatusEvent eventType)
         {
-            if (eventType.EventType == PlayerStatusEventType.OutOfFuel)
-                outOfStaminaFeedbacks.PlayFeedbacks();
         }
 
         public void OnMMEvent(UpgradeEvent eventType)

@@ -21,6 +21,10 @@ namespace Domains.Audio
         [Tooltip("the ID to create this background music with")]
         public int ID = 255;
 
+        // Volume in range of 0-1
+        [Tooltip("Volume of the background music")] [Range(0f, 1f)]
+        public float volume = 1f;
+
 
         /// <summary>
         ///     Gets the AudioSource associated to that GameObject, and asks the GameManager to play it.
@@ -32,6 +36,7 @@ namespace Domains.Audio
             options.Loop = Loop;
             options.Location = Vector3.zero;
             options.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Music;
+            options.Volume = volume;
 
             MMSoundManagerSoundPlayEvent.Trigger(SoundClip, options);
         }

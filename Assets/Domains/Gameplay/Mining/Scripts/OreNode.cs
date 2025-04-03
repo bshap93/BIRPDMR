@@ -2,8 +2,6 @@ using System.Collections;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
 using MoreMountains.Feedbacks;
-using MoreMountains.Tools;
-using ThirdParty.Feel.MMTools.Core.MMUI;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -93,18 +91,10 @@ namespace Domains.Gameplay.Mining.Scripts
                 var position = transform.position;
                 var rotation = transform.rotation;
                 var spawnedPieces = Instantiate(pieces, position, rotation);
-                StartCoroutine(DoFadeAfterDelay(5f, spawnedPieces));
 
                 DestructableEvent.Trigger(DestructableEventType.Destroyed, UniqueID);
                 Destroy(gameObject);
             }
-        }
-
-        private IEnumerator DoFadeAfterDelay(float delay, GameObject pieces)
-        {
-            yield return new WaitForSeconds(delay);
-            // Fade out the object
-
         }
 
 

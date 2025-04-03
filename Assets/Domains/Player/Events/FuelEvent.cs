@@ -13,7 +13,8 @@ namespace Domains.Player.Events
 
         SetMaxFuel,
         SetCurrentFuel,
-        NotifyListeners
+        NotifyListeners,
+        LowOnFuel
     }
 
     public struct FuelEvent

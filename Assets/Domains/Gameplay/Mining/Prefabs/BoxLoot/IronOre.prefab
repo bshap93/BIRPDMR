@@ -280,12 +280,12 @@ GameObject:
   - component: {fileID: 4414847620587735356}
   - component: {fileID: 786840278057305753}
   - component: {fileID: 3246985764814434899}
-  - component: {fileID: 3469287837970184321}
   - component: {fileID: -1467628412705595505}
   - component: {fileID: 7657575816193114378}
   - component: {fileID: 8411026107220466431}
   - component: {fileID: -4061664199757022274}
   - component: {fileID: -2290751886586889473}
+  - component: {fileID: 5178713223211455656}
   m_Layer: 6
   m_Name: IronOre
   m_TagString: Untagged
@@ -364,27 +364,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &3469287837970184321
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3895437934998590342}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.12494227
-  m_Center: {x: 0.0055465996, y: -0.0000054091215, z: 0.00003860891}
 --- !u!96 &-1467628412705595505
 TrailRenderer:
   serializedVersion: 3
@@ -580,6 +559,8 @@ MonoBehaviour:
   promptTransformOffset: {x: 0, y: 1, z: 0}
   promptRotationOffset: {x: 0, y: 0, z: 0}
   activationFeedback: {fileID: 0}
+  PromptTextColor: {r: 1, g: 1, b: 1, a: 1}
+  PromptKeyStr: E
 --- !u!54 &-2290751886586889473
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -607,6 +588,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!64 &5178713223211455656
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3895437934998590342}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4208612138771336169, guid: 52772a0a4fd12a14e92cf28ee5df64d6, type: 3}
 --- !u!1001 &6454356825866939584
 PrefabInstance:
   m_ObjectHideFlags: 0

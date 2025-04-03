@@ -15,7 +15,8 @@ namespace Domains.UI_Global.Events
         SavingGame,
         DeletingDiggerData,
         Died,
-        CreditsAdded
+        CreditsAdded,
+        LowOnFuel
     }
 
     public struct AlertEvent

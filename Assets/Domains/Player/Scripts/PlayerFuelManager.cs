@@ -29,9 +29,8 @@ namespace Domains.Player.Scripts
         // ReSharper disable once FieldCanBeMadeReadOnly.Global
         public static float InitialCharacterFuel;
 
-        [Header("Debug Options")] public bool fuelNotConsumed;
+        [Header("Fuel Settings")] public static float lowAmount = 40f;
 
-        public float FuelPointsDebug;
 
         [FormerlySerializedAs("AmountFuelReturnedMultiplier")]
         public float amountFuelReturnedMultiplier = 0.1f;
@@ -80,11 +79,6 @@ namespace Domains.Player.Scripts
                 SetCurrentFuel(amtFuel); // Set to initial value if zero
                 FuelEvent.Trigger(FuelEventType.NotifyListeners, amtFuel, MaxFuelPoints);
             }
-        }
-
-        private void Update()
-        {
-            FuelPointsDebug = FuelPoints;
         }
 
 
@@ -146,6 +140,14 @@ namespace Domains.Player.Scripts
                 FuelPoints = 0; // Set to zero for consistent state
 
                 // Note: Don't worry about recovery here, let the PlayerDeathManager handle that
+            }
+            else if (FuelPoints - amount <= lowAmount && FuelPoints > lowAmount)
+            {
+                // Player is low on fuel
+                FuelEvent.Trigger(FuelEventType.LowOnFuel, FuelPoints, MaxFuelPoints);
+                AlertEvent.Trigger(AlertReason.LowOnFuel, "You are low on fuel!", "Low Fuel");
+
+                FuelPoints -= amount;
             }
             else
             {

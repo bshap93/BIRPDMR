@@ -5,6 +5,7 @@ using Domains.Items;
 using Domains.Items.Events;
 using Domains.Scripts;
 using Domains.UI;
+using Domains.UI_Global.Events;
 using Gameplay.Events;
 using JetBrains.Annotations;
 using MoreMountains.Tools;
@@ -26,13 +27,13 @@ namespace Domains.Scene.Scripts
         // UI updater reference
         [CanBeNull] public InventoryBarUpdater inventoryBarUpdater;
 
+        // Direct reference to the inventory
+        public Inventory PlayerInventory;
+
         private string _savePath;
 
         // Single instance for easy access
         public static PlayerInventoryManager Instance { get; private set; }
-
-        // Direct reference to the inventory
-        public Inventory PlayerInventory;
 
         private void Awake()
         {
@@ -143,6 +144,9 @@ namespace Domains.Scene.Scripts
             {
                 PlayerInventory.inventoryFullFeedbacks?.PlayFeedbacks();
                 UnityEngine.Debug.LogWarning("Inventory is full (weight limit reached)");
+                AlertEvent.Trigger(AlertReason.InventoryFull,
+                    "Your inventory is full. Please sell your items to make space.",
+                    "Inventory Full");
                 return false;
             }
 
