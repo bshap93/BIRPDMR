@@ -20,3 +20,5 @@ MonoBehaviour:
   InitialCurrency: 400
   InitialUpgradeState: 0
   InitialMiningToolSize: 0.3
+  SkipTutorial: 0
+  MiningToolWidth: 0.6410909

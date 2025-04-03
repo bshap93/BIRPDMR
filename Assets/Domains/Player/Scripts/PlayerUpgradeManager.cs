@@ -16,6 +16,7 @@ namespace Domains.Player.Scripts
         // ------------------------------------------------
         private static readonly Dictionary<string, int> UpgradeLevels = new();
         private static float miningToolSize = 0.3f;
+        private static float miningToolWidth = 0.6410909f; // Default mining tool width
         private static float fuelCapacity = 100f; // Default fuel capacity
 
         private static string currentToolId = "Shovel"; // Default starting tool
@@ -26,6 +27,7 @@ namespace Domains.Player.Scripts
         [SerializeField] private List<UpgradeData> availableUpgrades;
 
         public MMFeedbacks upgradeFeedback;
+        [SerializeField] private GameObject miningTool;
         private CharacterStatProfile characterStatProfile;
         private ShovelMiningState shovelMiningState;
 
@@ -46,9 +48,14 @@ namespace Domains.Player.Scripts
             // characterStatProfile =
             //     Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
             if (characterStatProfile != null)
+            {
                 miningToolSize = characterStatProfile.InitialMiningToolSize;
+                miningToolWidth = characterStatProfile.MiningToolWidth; // Use your default value here
+            }
             else
+            {
                 UnityEngine.Debug.LogError("CharacterStatProfile not set in PlayerStaminaManager");
+            }
         }
 
 
@@ -156,11 +163,13 @@ namespace Domains.Player.Scripts
             var effectType = upgrade.effectTypes[level];
             var effectValue = upgrade.effectValues[level];
             var toolId = effectType == UpgradeEffectType.ToolChange ? upgrade.toolChangeIDs[level] : null;
+            var secondaryEffectType = upgrade.secondaryEffectTypes[level];
+            var secondaryEffectValue = upgrade.secondaryEffectValues[level];
 
             switch (effectType)
             {
                 case UpgradeEffectType.Multiplier:
-                    ApplyMultiplierUpgrade(upgrade.upgradeTypeName, effectValue);
+                    ApplyMultiplierUpgrade(upgrade.upgradeTypeName, effectValue, secondaryEffectValue);
                     break;
                 case UpgradeEffectType.Addition:
                     ApplyAdditionUpgrade(upgrade.upgradeTypeName, effectValue);
@@ -171,7 +180,7 @@ namespace Domains.Player.Scripts
             }
         }
 
-        private void ApplyMultiplierUpgrade(string upgradeType, float multiplier)
+        private void ApplyMultiplierUpgrade(string upgradeType, float multiplier, float secondaryMultiplier = 0)
         {
             UnityEngine.Debug.Log($"Applying multiplier upgrade: x{multiplier} to {upgradeType}");
 
@@ -186,6 +195,7 @@ namespace Domains.Player.Scripts
             {
                 // Calculate new size
                 var newSize = shovelMiningState.GetSize() * multiplier;
+                var newWidth = miningToolWidth * multiplier;
 
                 // Establish size limits to prevent excessive growth
                 var minSize = 0.1f;
@@ -194,11 +204,16 @@ namespace Domains.Player.Scripts
                 // Clamp the value
                 newSize = Mathf.Clamp(newSize, minSize, maxSize);
 
+                newWidth = Mathf.Clamp(newWidth, 1f, 2f);
+
                 // Apply the clamped size
                 if (shovelMiningState != null)
                 {
                     shovelMiningState.SetMiningSize(newSize);
                     miningToolSize = newSize;
+                    var oldScale = miningTool.transform.localScale;
+                    miningTool.transform.localScale = new Vector3(newWidth, oldScale.y, oldScale.z);
+                    miningToolWidth = newWidth; // Update the width as well
                 }
                 else
                 {
@@ -211,6 +226,7 @@ namespace Domains.Player.Scripts
 
                 // Save immediately
                 ES3.Save("MiningToolSize", miningToolSize, "UpgradeSave.es3");
+                ES3.Save("MiningToolWidth", miningToolSize, "UpgradeSave.es3");
             }
         }
 
@@ -250,6 +266,7 @@ namespace Domains.Player.Scripts
 
             // Save mining tool size
             ES3.Save("MiningToolSize", miningToolSize, "UpgradeSave.es3");
+            ES3.Save("MiningToolWidth", miningToolWidth, "UpgradeSave.es3");
 
             // Save current tool ID
             ES3.Save("CurrentToolID", currentToolId, "UpgradeSave.es3");
@@ -303,6 +320,15 @@ namespace Domains.Player.Scripts
                 {
                     UnityEngine.Debug.LogWarning("ShovelMiningState reference is null during LoadUpgrades");
                 }
+            }
+
+            // Load mining tool width and apply directly
+            if (ES3.KeyExists("MiningToolWidth", "UpgradeSave.es3"))
+            {
+                miningToolWidth = ES3.Load<float>("MiningToolWidth", "UpgradeSave.es3");
+
+                var oldScale = miningTool.transform.localScale;
+                miningTool.transform.localScale = new Vector3(miningToolWidth, oldScale.y, oldScale.z);
             }
 
             // Load stamina
@@ -367,6 +393,7 @@ namespace Domains.Player.Scripts
             // Reset mining tool size to default value
 
             miningToolSize = characterStatProfile.InitialMiningToolSize; // Use your default value here
+            miningToolWidth = characterStatProfile.MiningToolWidth; // Use your default value here
 
             fuelCapacity = characterStatProfile.InitialMaxFuel;
 

@@ -23,5 +23,7 @@ namespace Domains.Player.Scripts.ScriptableObjects
         [Header("Tool Stats")] public float InitialMiningToolSize;
 
         [Header("Skip Tutorial")] public bool SkipTutorial;
+
+        [Header("Mining Tool Width")] public float MiningToolWidth;
     }
 }
