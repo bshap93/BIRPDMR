@@ -399,8 +399,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e2bd9f5befd9f4c8cb26008e447fba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieces: {fileID: 571559526548675538, guid: 9bee7fd801be1d643b7118e77444b2ba, type: 3}
-  refinedPickup: {fileID: 3895437934998590342, guid: f1710bc59782d904f90929fe98e902fc, type: 3}
+  pieces: {fileID: 2110138562625852592, guid: 40a5eaaebaadb7f4e94ea5da924cb812, type: 3}
+  itemTypeMined: {fileID: 11400000, guid: 651fb09ed9fe93e4a92c7e4a005b91ab, type: 2}
   dropOnHit: 1
   hitsToDestroy: 2
   dropOnDestroy: 1
@@ -442,7 +442,7 @@ MonoBehaviour:
   oreHitFeedback: {fileID: 8640104945982745857}
   oreDestroyFeedback: {fileID: 2687134068422912147}
   OreHitBehavior: {fileID: 1052840361668016853}
-  UniqueID: 
+  UniqueID: a7211565-852f-4821-9eca-45bb536e873f
 --- !u!114 &-5264020533336785524
 MonoBehaviour:
   m_ObjectHideFlags: 0

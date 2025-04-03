@@ -1,9 +1,11 @@
 using System.Collections;
+using Domains.Items;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
+using Domains.Scene.Scripts;
+using Gameplay.Events;
 using MoreMountains.Feedbacks;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Domains.Gameplay.Mining.Scripts
 
@@ -11,7 +13,7 @@ namespace Domains.Gameplay.Mining.Scripts
     public class OreNode : MonoBehaviour
     {
         [SerializeField] private GameObject pieces;
-        [SerializeField] private GameObject refinedPickup;
+        [SerializeField] private BaseItem itemTypeMined;
         [SerializeField] private int dropOnHit;
         [SerializeField] private int hitsToDestroy;
         [SerializeField] private int dropOnDestroy;
@@ -71,12 +73,15 @@ namespace Domains.Gameplay.Mining.Scripts
             var minZ = worldBounds.min.z;
             var maxZ = worldBounds.max.z;
 
-            for (var i = 0; i < dropIndex; i++)
-            {
-                var randomPosition = new Vector3(Random.Range(minX, maxX), centerY, Random.Range(minZ, maxZ));
-
-                Instantiate(refinedPickup, randomPosition, Quaternion.Euler(0, Random.Range(0, 360), 0));
-            }
+            var inventoryManager = PlayerInventoryManager.Instance;
+            if (inventoryManager != null)
+                for (var i = 0; i < dropIndex; i++)
+                {
+                    var entry = new Inventory.InventoryEntry(UniqueID, itemTypeMined);
+                    if (inventoryManager.AddItem(entry)) ItemEvent.Trigger(ItemEventType.Picked, entry, transform);
+                    else
+                        UnityEngine.Debug.LogWarning("Inventory full! Cannot pick up item.");
+                }
 
             if (hitIndex < hitsToDestroy) //Controls when to shatter.
             {
