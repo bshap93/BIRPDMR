@@ -147,7 +147,7 @@ namespace Domains.Scene.Scripts
 
         public bool LoadAll()
         {
-            var staminaLoaded = playerFuelManager != null && playerFuelManager.HasSavedData();
+            var fuelLoaded = playerFuelManager != null && playerFuelManager.HasSavedData();
             var healthLoaded = playerHealthManager != null && playerHealthManager.HasSavedData();
             var inventoryLoaded = playerInventoryManager != null && playerInventoryManager.HasSavedData();
             var currencyLoaded = playerCurrencyManager != null && playerCurrencyManager.HasSavedData();
@@ -158,7 +158,7 @@ namespace Domains.Scene.Scripts
             // Digger has no Load method
 
 
-            if (staminaLoaded) playerFuelManager.LoadPlayerFuel();
+            if (fuelLoaded) playerFuelManager.LoadPlayerFuel();
             if (healthLoaded) playerHealthManager.LoadPlayerHealth();
             if (inventoryLoaded) playerInventoryManager.LoadInventory();
             if (currencyLoaded) playerCurrencyManager.LoadPlayerCurrency();
@@ -167,7 +167,7 @@ namespace Domains.Scene.Scripts
             if (destructablesLoaded) destructableManager.LoadDestructables();
 
 
-            return staminaLoaded ||
+            return fuelLoaded ||
                    healthLoaded || inventoryLoaded || currencyLoaded ||
                    upgradesLoaded || pickablesLoaded || destructablesLoaded;
         }

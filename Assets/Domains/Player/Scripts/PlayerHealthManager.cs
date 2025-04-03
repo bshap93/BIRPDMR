@@ -127,7 +127,7 @@ namespace Domains.Player.Scripts
                 HealthPoints -= healthToConsume;
             }
 
-            SavePlayerHealth();
+            // SavePlayerHealth();
         }
 
         public static void RecoverHealth(float amount)
@@ -138,20 +138,20 @@ namespace Domains.Player.Scripts
                 HealthPoints = MaxHealthPoints;
             else
                 HealthPoints = newHealth;
-            SavePlayerHealth();
+            // SavePlayerHealth();
         }
 
         public static void FullyRecoverHealth()
         {
             HealthPoints = MaxHealthPoints;
             PlayerStatusEvent.Trigger(PlayerStatusEventType.RegainedHealth);
-            SavePlayerHealth();
+            // SavePlayerHealth();
         }
 
         public static void SetCurrentHealth(float amount)
         {
             HealthPoints = amount;
-            SavePlayerHealth();
+            // SavePlayerHealth();
         }
 
         public static void IncreaseMaximumHealth(float amount)

@@ -62,7 +62,7 @@ namespace Domains.Scene.Scripts
             {
                 UnityEngine.Debug.Log("[PlayerInventoryManager] No save file found, initializing with defaults...");
                 weightLimit = PlayerInfoSheet.WeightLimit;
-                SaveInventory();
+                // SaveInventory();
             }
             else
             {
@@ -110,12 +110,12 @@ namespace Domains.Scene.Scripts
             switch (eventType.EventType)
             {
                 case InventoryEventType.ContentChanged:
-                    SaveInventory();
+                    // SaveInventory();
                     break;
 
                 case InventoryEventType.SellAllItems:
                     PlayerInventory.SellAllItems();
-                    SaveInventory();
+                    // SaveInventory();
                     break;
 
                 case InventoryEventType.UpgradedWeightLimit:
@@ -127,10 +127,8 @@ namespace Domains.Scene.Scripts
         public void OnMMEvent(ItemEvent eventType)
         {
             if (eventType.EventType == ItemEventType.Picked)
-            {
                 UnityEngine.Debug.Log($"Item added to inventory: {eventType.Item.BaseItem.ItemName}");
-                SaveInventory();
-            }
+            // SaveInventory();
         }
 
         #endregion
@@ -302,7 +300,7 @@ namespace Domains.Scene.Scripts
                 return;
 
             weightLimit += amount;
-            SaveInventory();
+            // SaveInventory();
 
             InventoryEvent.Trigger(InventoryEventType.ContentChanged, PlayerInventory, weightLimit);
         }
@@ -310,7 +308,7 @@ namespace Domains.Scene.Scripts
         public void SetWeightLimit(float newLimit)
         {
             weightLimit = newLimit;
-            SaveInventory();
+            // SaveInventory();
         }
 
         #endregion
