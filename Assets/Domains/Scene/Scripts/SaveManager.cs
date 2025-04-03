@@ -17,6 +17,7 @@ namespace Domains.Scene.Scripts
     {
         public const string SaveFileName = "GameSave.es3";
         public const string SavePickablesFileName = "Pickables.es3";
+        public const string SaveProgressionFilePath = "Progression.es3";
 
         // [Header("Persistence Managers")] [SerializeField]
         // InventoryPersistenceManager inventoryManager;
