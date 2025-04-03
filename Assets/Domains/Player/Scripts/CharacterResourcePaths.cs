@@ -7,5 +7,8 @@ namespace Domains.Player.Scripts
     {
         public static string CharacterStatProfileFilePath =>
             "CharacterStatsProfiles/BasicProfile";
+
+        public static string GameLevelStatProfileFilePath =>
+            "GameLevelStatsProfiles/MainSceneLevelStats";
     }
 }

@@ -21,5 +21,7 @@ namespace Domains.Player.Scripts.ScriptableObjects
         [Header("Upgrades")] public int InitialUpgradeState;
 
         [Header("Tool Stats")] public float InitialMiningToolSize;
+
+        [Header("Skip Tutorial")] public bool SkipTutorial;
     }
 }
