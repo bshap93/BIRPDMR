@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Domains.Scene.Scripts;
 using Gameplay.Events;
@@ -41,12 +40,6 @@ namespace Domains.Player.Scripts
 
             LoadPickedItems();
         }
-
-        // private void Update()
-        // {
-        //     if (UnityEngine.Input.GetKeyDown(KeyCode.F5)) // Press F5 to force save
-        //         AddPickedItem("test", true);
-        // }
 
 
         private void OnEnable()
@@ -121,7 +114,7 @@ namespace Domains.Player.Scripts
 
             UnityEngine.Debug.Log($"Item {uniqueID} marked as picked: {b}");
 
-            SaveAllPickedItems();
+            // SaveAllPickedItems();
         }
 
 
@@ -135,11 +128,6 @@ namespace Domains.Player.Scripts
             // Also save individual items for backwards compatibility
             foreach (var uniqueID in PickedItems)
                 ES3.Save(uniqueID, true, saveFilePath);
-        }
-
-        public static void SaveItemPosition(string itemPickerUniqueID, Vector3 transformPosition, string prefabName)
-        {
-            throw new NotImplementedException();
         }
 
         public bool HasSavedData()

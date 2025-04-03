@@ -101,7 +101,7 @@ namespace Domains.Player.Scripts
 
             UnityEngine.Debug.Log($"Item {uniqueID} marked as destroyed: {b}");
 
-            SaveAllDestructables();
+            // SaveAllDestructables();
         }
 
         public static void SaveAllDestructables()
