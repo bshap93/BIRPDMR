@@ -31,3 +31,9 @@ MonoBehaviour:
   - Drill
   - 
   - Atomizer
+  secondaryEffectTypes: 00000000000000000000000000000000
+  secondaryEffectValues:
+  - 2
+  - 0
+  - 0
+  - 0

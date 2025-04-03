@@ -14,5 +14,8 @@ namespace Domains.Player.Scripts.ScriptableObjects
         [Header("Upgrade Effects")] public UpgradeEffectType[] effectTypes;
         public float[] effectValues; // Only relevant for multipliers/additions
         public string[] toolChangeIDs; // Only relevant for tool changes (leave empty otherwise)
+
+        [Header("Secondary Effects")] public UpgradeEffectType[] secondaryEffectTypes;
+        public float[] secondaryEffectValues; // Only relevant for multipliers/additions
     }
 }
