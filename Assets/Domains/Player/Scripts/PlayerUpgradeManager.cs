@@ -19,7 +19,6 @@ namespace Domains.Player.Scripts
         private static float fuelCapacity = 100f; // Default fuel capacity
 
         private static string currentToolId = "Shovel"; // Default starting tool
-        private  ShovelMiningState shovelMiningState;
 
         // ---------------------------------------------------------
         // 2) Instance Fields: references to scene objects
@@ -28,6 +27,7 @@ namespace Domains.Player.Scripts
 
         public MMFeedbacks upgradeFeedback;
         private CharacterStatProfile characterStatProfile;
+        private ShovelMiningState shovelMiningState;
 
         private void Awake()
         {
@@ -368,8 +368,11 @@ namespace Domains.Player.Scripts
 
             miningToolSize = characterStatProfile.InitialMiningToolSize; // Use your default value here
 
+            fuelCapacity = characterStatProfile.InitialMaxFuel;
 
-            shovelMiningState.SetMiningSize(miningToolSize);
+
+            UpgradeEvent.Trigger(UpgradeType.Mining, UpgradeEventType.ShovelMiningSizeSet, null, 0,
+                UpgradeEffectType.None, miningToolSize);
         }
     }
 }

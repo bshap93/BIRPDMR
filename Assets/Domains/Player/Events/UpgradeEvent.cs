@@ -1,13 +1,13 @@
 ﻿using Domains.Player.Scripts.ScriptableObjects;
 using MoreMountains.Tools;
-using UnityEngine;
 
 namespace Domains.Player.Events
 {
     public enum UpgradeEventType
     {
         UpgradePurchased,
-        UpgradeFailed
+        UpgradeFailed,
+        ShovelMiningSizeSet
     }
 
     public enum UpgradeType

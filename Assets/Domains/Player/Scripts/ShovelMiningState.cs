@@ -1,10 +1,12 @@
 ﻿using Digger.Modules.Core.Sources;
 using Domains.Gameplay.Mining.Scripts;
+using Domains.Player.Events;
+using MoreMountains.Tools;
 using UnityEngine;
 
 namespace Domains.Player.Scripts
 {
-    public class ShovelMiningState : MiningState
+    public class ShovelMiningState : MiningState, MMEventListener<UpgradeEvent>
     {
         [Header("Shovel-Specific Parameters")] public int strokeCount = 1;
         public float opacity = 1f;
@@ -17,6 +19,21 @@ namespace Domains.Player.Scripts
 
 
         private float size;
+
+        private void OnEnable()
+        {
+            this.MMEventStartListening();
+        }
+
+        private void OnDisable()
+        {
+            this.MMEventStopListening();
+        }
+
+        public void OnMMEvent(UpgradeEvent eventType)
+        {
+            if (eventType.EventType == UpgradeEventType.ShovelMiningSizeSet) SetMiningSize(eventType.EffectValue);
+        }
 
         public float GetSize()
         {
