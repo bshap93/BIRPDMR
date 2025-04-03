@@ -28,16 +28,8 @@ namespace Domains.Debug
             PlayerHealthManager.SavePlayerHealth();
 
             // Reset inventory
-            if (PlayerInventoryManager.Instance != null)
-            {
-                PlayerInventoryManager.ResetInventory();
-
-                PlayerInventoryManager.Instance.SaveInventory();
-            }
-            else
-            {
-                UnityEngine.Debug.LogError("PlayerInventoryManager.Instance is null. Skipping inventory reset.");
-            }
+            PlayerInventoryManager.ResetInventory();
+            PlayerInventoryManager.SaveInventory();
 
             // Reset currency
             PlayerCurrencyManager.ResetPlayerCurrency();

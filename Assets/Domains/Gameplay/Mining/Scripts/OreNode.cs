@@ -76,12 +76,13 @@ namespace Domains.Gameplay.Mining.Scripts
             var minZ = worldBounds.min.z;
             var maxZ = worldBounds.max.z;
 
-            var inventoryManager = PlayerInventoryManager.Instance;
-            if (inventoryManager != null)
+            // var inventoryManager = PlayerInventoryManager.Instance;
+            if (PlayerInventoryManager.PlayerInventory != null)
                 for (var i = 0; i < dropIndex; i++)
                 {
                     var entry = new Inventory.InventoryEntry(UniqueID, itemTypeMined);
-                    if (inventoryManager.AddItem(entry)) ItemEvent.Trigger(ItemEventType.Picked, entry, transform);
+                    if (PlayerInventoryManager.AddItem(entry))
+                        ItemEvent.Trigger(ItemEventType.Picked, entry, transform);
                     else
                         UnityEngine.Debug.LogWarning("Inventory full! Cannot pick up item.");
                 }

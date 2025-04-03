@@ -30,8 +30,9 @@ namespace Domains.Gameplay.Mining.Scripts
 
         [SerializeField] private MMFeedbacks chunkFootstepFeedbacks;
         [SerializeField] private MMFeedbacks defaultFootstepFeedbacks;
+
         [SerializeField] private float baseStepInterval = 0.5f;
-        [SerializeField] private float maxSpeed = 5f; // used for scaling
+        // [SerializeField] private float maxSpeed = 5f; // used for scaling
 
 
         [Space(10)] public PlanarMovementParameters planarMovementParameters = new();

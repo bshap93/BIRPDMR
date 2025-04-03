@@ -22,25 +22,25 @@ namespace Domains.Scene.Scripts
 
         // Weight-related properties
         [FormerlySerializedAs("_weightLimit")] [SerializeField]
-        private float weightLimit = 100f; // Default value
+        private static float weightLimit = 100f; // Default value
+
+        // Direct reference to the inventory
+        public static Inventory PlayerInventory;
+
+        private static string _savePath;
 
         // UI updater reference
         [CanBeNull] public InventoryBarUpdater inventoryBarUpdater;
 
-        // Direct reference to the inventory
-        public Inventory PlayerInventory;
-
-        private string _savePath;
-
         // Single instance for easy access
-        public static PlayerInventoryManager Instance { get; private set; }
+        // public static PlayerInventoryManager Instance { get; private set; }
 
         private void Awake()
         {
-            // Singleton pattern
-            if (Instance == null)
-                Instance = this;
-            else if (Instance != this) Destroy(gameObject);
+            // // Singleton pattern
+            // if (Instance == null)
+            //     Instance = this;
+            // else if (Instance != this) Destroy(gameObject);
         }
 
         private void Start()
@@ -135,7 +135,7 @@ namespace Domains.Scene.Scripts
 
         #region Inventory Operations
 
-        public bool AddItem(Inventory.InventoryEntry item)
+        public static bool AddItem(Inventory.InventoryEntry item)
         {
             // Check weight limit
             if (GetCurrentWeight() + item.BaseItem.ItemWeight > weightLimit)
@@ -157,7 +157,7 @@ namespace Domains.Scene.Scripts
             return true;
         }
 
-        public bool RemoveItem(string uniqueID)
+        public static bool RemoveItem(string uniqueID)
         {
             var item = PlayerInventory.content.Find(i => i.uniqueID == uniqueID);
             if (item == null)
@@ -172,12 +172,12 @@ namespace Domains.Scene.Scripts
             return true;
         }
 
-        public Inventory.InventoryEntry GetItem(string uniqueID)
+        public static Inventory.InventoryEntry GetItem(string uniqueID)
         {
             return PlayerInventory.content.Find(i => i.uniqueID == uniqueID);
         }
 
-        public void ClearInventory()
+        public static void ClearInventory()
         {
             PlayerInventory.content.Clear();
             InventoryEvent.Trigger(InventoryEventType.ContentChanged, PlayerInventory, 0);
@@ -187,7 +187,7 @@ namespace Domains.Scene.Scripts
 
         #region Save & Load
 
-        public void SaveInventory()
+        public static void SaveInventory()
         {
             if (!Application.isPlaying)
             {
@@ -258,13 +258,13 @@ namespace Domains.Scene.Scripts
 
         public static void ResetInventory()
         {
-            if (Instance != null)
+            if (Application.isPlaying)
             {
-                Instance.ClearInventory();
-                Instance.weightLimit = PlayerInfoSheet.WeightLimit;
-                Instance.SaveInventory();
+                ClearInventory();
+                weightLimit = PlayerInfoSheet.WeightLimit;
+                SaveInventory();
             }
-            else if (!Application.isPlaying)
+            else
             {
                 // Edge case for when called from Editor
                 var saveFilePath = SaveManager.SaveFileName;
@@ -277,6 +277,9 @@ namespace Domains.Scene.Scripts
 
                     UnityEngine.Debug.Log($"Deleted inventory data from {saveFilePath}");
                 }
+
+                ClearInventory();
+                weightLimit = PlayerInfoSheet.WeightLimit;
             }
         }
 
@@ -284,17 +287,17 @@ namespace Domains.Scene.Scripts
 
         #region Weight Management
 
-        public float GetMaxWeight()
+        public static float GetMaxWeight()
         {
             return weightLimit;
         }
 
-        public float GetCurrentWeight()
+        public static float GetCurrentWeight()
         {
             return PlayerInventory.content.Sum(entry => entry.BaseItem.ItemWeight);
         }
 
-        public void IncreaseWeightLimit(float amount)
+        public static void IncreaseWeightLimit(float amount)
         {
             if (float.IsInfinity(weightLimit) || float.IsNaN(amount))
                 return;
@@ -305,7 +308,7 @@ namespace Domains.Scene.Scripts
             InventoryEvent.Trigger(InventoryEventType.ContentChanged, PlayerInventory, weightLimit);
         }
 
-        public void SetWeightLimit(float newLimit)
+        public static void SetWeightLimit(float newLimit)
         {
             weightLimit = newLimit;
             // SaveInventory();

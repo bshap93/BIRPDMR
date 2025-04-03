@@ -134,7 +134,7 @@ namespace Domains.Scene.Scripts
             PlayerFuelManager.SavePlayerFuel();
             PlayerHealthManager.SavePlayerHealth();
             if (playerInventoryManager != null)
-                PlayerInventoryManager.Instance.SaveInventory();
+                PlayerInventoryManager.SaveInventory();
             else
                 UnityEngine.Debug.LogError("PlayerInventoryManager.Instance is null. Skipping inventory save.");
             PlayerCurrencyManager.SavePlayerCurrency();

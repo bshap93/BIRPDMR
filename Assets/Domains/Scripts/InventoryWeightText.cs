@@ -32,8 +32,8 @@ namespace Domains.Scripts
         {
             if (eventType.EventType == InventoryEventType.ContentChanged)
             {
-                var currentWeight = PlayerInventoryManager.Instance.GetCurrentWeight();
-                var maxWeight = PlayerInventoryManager.Instance.GetMaxWeight();
+                var currentWeight = PlayerInventoryManager.GetCurrentWeight();
+                var maxWeight = PlayerInventoryManager.GetMaxWeight();
                 if (_text == null || _text.text == null) return;
                 _text.text =
                     $"{currentWeight.ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
@@ -41,9 +41,9 @@ namespace Domains.Scripts
             }
             else if (eventType.EventType == InventoryEventType.UpgradedWeightLimit)
             {
-                var maxWeight = PlayerInventoryManager.Instance.GetMaxWeight();
+                var maxWeight = PlayerInventoryManager.GetMaxWeight();
                 _text.text =
-                    $"{PlayerInventoryManager.Instance.GetCurrentWeight().ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
+                    $"{PlayerInventoryManager.GetCurrentWeight().ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
             }
         }
     }

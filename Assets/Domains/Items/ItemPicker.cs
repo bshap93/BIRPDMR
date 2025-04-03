@@ -107,35 +107,31 @@ namespace Domains.Items
         // In the PickItem method of ItemPicker.cs
         public void PickItem()
         {
-            var inventoryManager = PlayerInventoryManager.Instance;
-            if (inventoryManager != null)
+            // Check if item is already in inventory
+            if (PlayerInventoryManager.GetItem(uniqueID) != null)
             {
-                // Check if item is already in inventory
-                if (inventoryManager.GetItem(uniqueID) != null)
-                {
-                    UnityEngine.Debug.LogWarning("Item already in inventory! Skipping pickup.");
-                    return;
-                }
+                UnityEngine.Debug.LogWarning("Item already in inventory! Skipping pickup.");
+                return;
+            }
 
-                var entry = new Inventory.InventoryEntry(uniqueID, itemType);
-                if (inventoryManager.AddItem(entry))
-                {
-                    // Play feedback
-                    pickedMmFeedbacks?.PlayFeedbacks();
+            var entry = new Inventory.InventoryEntry(uniqueID, itemType);
+            if (PlayerInventoryManager.AddItem(entry))
+            {
+                // Play feedback
+                pickedMmFeedbacks?.PlayFeedbacks();
 
-                    // Save item as picked
-                    PickableManager.AddPickedItem(uniqueID, true);
+                // Save item as picked
+                PickableManager.AddPickedItem(uniqueID, true);
 
-                    // Trigger item picked event
-                    ItemEvent.Trigger(ItemEventType.Picked, entry, transform);
+                // Trigger item picked event
+                ItemEvent.Trigger(ItemEventType.Picked, entry, transform);
 
-                    // Destroy game object
-                    Destroy(gameObject);
-                }
-                else
-                {
-                    UnityEngine.Debug.LogWarning("Inventory full! Cannot pick up item.");
-                }
+                // Destroy game object
+                Destroy(gameObject);
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning("Inventory full! Cannot pick up item.");
             }
         }
     }

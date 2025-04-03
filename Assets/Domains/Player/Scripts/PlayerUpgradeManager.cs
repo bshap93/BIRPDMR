@@ -11,34 +11,28 @@ namespace Domains.Player.Scripts
 {
     public class PlayerUpgradeManager : MonoBehaviour, MMEventListener<UpgradeEvent>
     {
-        private static PlayerUpgradeManager _instance;
+        // ---------------------------------------------------------
+        // 1) Static Fields: actual data you want to keep globally
+        // ------------------------------------------------
         private static readonly Dictionary<string, int> UpgradeLevels = new();
+        private static float miningToolSize = 0.3f;
+        private static float fuelCapacity = 100f; // Default fuel capacity
+
+        private static string currentToolId = "Shovel"; // Default starting tool
+        private  ShovelMiningState shovelMiningState;
+
+        // ---------------------------------------------------------
+        // 2) Instance Fields: references to scene objects
+        // --------------------------------------------
         [SerializeField] private List<UpgradeData> availableUpgrades;
-        [SerializeField] private ShovelMiningState shovelMiningState;
 
         public MMFeedbacks upgradeFeedback;
-
-        [SerializeField] private string currentToolId = "Shovel"; // Default starting tool
-
-
-        [SerializeField] private float miningToolSize;
-
-
-        [SerializeField] private float fuelCapacity = 100f; // Default fuel capacity
         private CharacterStatProfile characterStatProfile;
 
         private void Awake()
         {
-            if (_instance == null)
-            {
-                _instance = this;
-            }
-            else if (_instance != this)
-            {
-                UnityEngine.Debug.LogWarning("Duplicate PlayerUpgradeManager detected. Destroying the extra instance.");
-                Destroy(gameObject);
-            }
-
+            characterStatProfile =
+                Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
 
             // Find ShovelMiningState if not assigned
             if (shovelMiningState == null)
@@ -49,8 +43,8 @@ namespace Domains.Player.Scripts
                         "ShovelMiningState not found. Mining upgrades may not apply correctly.");
             }
 
-            characterStatProfile =
-                Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
+            // characterStatProfile =
+            //     Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
             if (characterStatProfile != null)
                 miningToolSize = characterStatProfile.InitialMiningToolSize;
             else
@@ -226,13 +220,9 @@ namespace Domains.Player.Scripts
 
             if (upgradeType == "Inventory")
             {
-                var inventoryManager = PlayerInventoryManager.Instance;
-                if (inventoryManager != null)
-                {
-                    inventoryManager.IncreaseWeightLimit(addition);
-                    InventoryEvent.Trigger(InventoryEventType.UpgradedWeightLimit, inventoryManager.PlayerInventory,
-                        addition);
-                }
+                PlayerInventoryManager.IncreaseWeightLimit(addition);
+                InventoryEvent.Trigger(InventoryEventType.UpgradedWeightLimit, PlayerInventoryManager.PlayerInventory,
+                    addition);
             }
             else if (upgradeType == "Endurance")
             {
@@ -255,28 +245,22 @@ namespace Domains.Player.Scripts
 
         public static void SaveUpgrades()
         {
-            if (_instance == null)
-            {
-                UnityEngine.Debug.LogWarning("PlayerUpgradeManager.Instance is null. Skipping SaveUpgrades.");
-                return;
-            }
-
             foreach (var upgrade in UpgradeLevels)
                 ES3.Save(upgrade.Key, upgrade.Value, "UpgradeSave.es3");
 
             // Save mining tool size
-            ES3.Save("MiningToolSize", _instance.miningToolSize, "UpgradeSave.es3");
+            ES3.Save("MiningToolSize", miningToolSize, "UpgradeSave.es3");
 
             // Save current tool ID
-            ES3.Save("CurrentToolID", _instance.currentToolId, "UpgradeSave.es3");
+            ES3.Save("CurrentToolID", currentToolId, "UpgradeSave.es3");
 
             // Save stamina
             ES3.Save("MaxStamina", PlayerFuelManager.MaxFuelPoints, "UpgradeSave.es3");
 
             // Save fuel capacity
-            ES3.Save("MaxFuelCapacity", _instance.fuelCapacity, "UpgradeSave.es3");
+            ES3.Save("MaxFuelCapacity", fuelCapacity, "UpgradeSave.es3");
 
-            ES3.Save("InventoryMaxWeight", PlayerInventoryManager.Instance.GetMaxWeight(), "GameSave.es3");
+            ES3.Save("InventoryMaxWeight", PlayerInventoryManager.GetMaxWeight(), "GameSave.es3");
         }
 
 
@@ -333,7 +317,7 @@ namespace Domains.Player.Scripts
             if (ES3.KeyExists("InventoryMaxWeight", "GameSave.es3"))
             {
                 var savedWeight = ES3.Load<float>("InventoryMaxWeight", "GameSave.es3");
-                PlayerInventoryManager.Instance.SetWeightLimit(savedWeight);
+                PlayerInventoryManager.SetWeightLimit(savedWeight);
             }
 
             // Load tool ID if necessary
@@ -381,14 +365,11 @@ namespace Domains.Player.Scripts
             }
 
             // Reset mining tool size to default value
-            if (_instance != null)
-            {
-                _instance.miningToolSize = characterStatProfile.InitialMiningToolSize; // Use your default value here
 
-                // Also update the shovel mining state if available
-                if (_instance.shovelMiningState != null)
-                    _instance.shovelMiningState.SetMiningSize(_instance.miningToolSize);
-            }
+            miningToolSize = characterStatProfile.InitialMiningToolSize; // Use your default value here
+
+
+            shovelMiningState.SetMiningSize(miningToolSize);
         }
     }
 }
