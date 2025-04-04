@@ -402,7 +402,7 @@ MonoBehaviour:
   itemTypeMined: {fileID: 11400000, guid: a719b9f4b542db34abd5856a06fd8f15, type: 2}
   dropOnHit: 1
   hitsToDestroy: 3
-  dropOnDestroy: 3
+  dropOnDestroy: 1
   knockAngle: {x: 0, y: 0, z: 10}
   knockCurve:
     serializedVersion: 2
@@ -440,8 +440,8 @@ MonoBehaviour:
   knockDuration: 0.25
   oreHitFeedback: {fileID: 4387118057940184018}
   oreDestroyFeedback: {fileID: 8422469489274627456}
-  OreHitBehavior: {fileID: 6744317757069056925}
-  UniqueID: 494583b8-18a1-4b7f-b3d9-6ea80c793e18
+  oreHitBehavior: {fileID: 6744317757069056925}
+  UniqueID: 10107a91-ee69-49c4-99ee-a0882f015a67
 --- !u!114 &-2297433984325193803
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,6 +11,8 @@ namespace Domains.Player.Scripts.ScriptableObjects
         public string description;
         public int[] upgradeCosts;
 
+        public AudioClip[] upgradeSounds;
+
         [Header("Upgrade Effects")] public UpgradeEffectType[] effectTypes;
         public float[] effectValues; // Only relevant for multipliers/additions
         public string[] toolChangeIDs; // Only relevant for tool changes (leave empty otherwise)

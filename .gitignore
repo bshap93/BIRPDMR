@@ -51,6 +51,7 @@ crashlytics-build.properties
 /[Aa]ssets/GSpawn - Level Designer (PRO)/*
 /[Aa]ssets/ThirdParty/SineVFX/*
 /[Aa]ssets/ThirdParty/Audio/*
+/[Aa]ssets/_DLNK/*
 
 *.vom_v*
 *.vox_v*

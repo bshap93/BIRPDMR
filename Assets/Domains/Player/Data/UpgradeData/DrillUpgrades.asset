@@ -20,6 +20,11 @@ MonoBehaviour:
   - Null Ray Atomizer
   description: 
   upgradeCosts: 2c01000040060000800c0000581b0000
+  upgradeSounds:
+  - {fileID: 8300000, guid: aa76393b307c859428fa0d6a35c36365, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   effectTypes: 00000000000000000000000000000000
   effectValues:
   - 2

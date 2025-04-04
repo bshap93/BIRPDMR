@@ -20,6 +20,11 @@ MonoBehaviour:
   - Robotic Assistants
   description: 
   upgradeCosts: 2c01000040060000800c000000190000
+  upgradeSounds:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   effectTypes: 01000000010000000100000001000000
   effectValues:
   - 5
@@ -31,3 +36,9 @@ MonoBehaviour:
   - 
   - 
   - 
+  secondaryEffectTypes: 00000000000000000000000000000000
+  secondaryEffectValues:
+  - 1
+  - 1
+  - 1
+  - 1

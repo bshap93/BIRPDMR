@@ -20,6 +20,11 @@ MonoBehaviour:
   - Deuterium Hybrid Fuel Tank
   description: 
   upgradeCosts: 2c01000040060000800c0000581b0000
+  upgradeSounds:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   effectTypes: 00000000000000000000000000000000
   effectValues:
   - 2
@@ -31,3 +36,9 @@ MonoBehaviour:
   - 
   - FuelBurner
   - HybridBurner
+  secondaryEffectTypes: 00000000000000000000000000000000
+  secondaryEffectValues:
+  - 1
+  - 1
+  - 1
+  - 1

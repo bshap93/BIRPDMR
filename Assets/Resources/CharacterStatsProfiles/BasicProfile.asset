@@ -17,7 +17,7 @@ MonoBehaviour:
   InitialEnduranceLevel: 1
   InitialEnduranceExperiencePoints: 0
   InitialWeightLimit: 10
-  InitialCurrency: 400
+  InitialCurrency: 0
   InitialUpgradeState: 0
   InitialMiningToolSize: 0.3
   SkipTutorial: 0
