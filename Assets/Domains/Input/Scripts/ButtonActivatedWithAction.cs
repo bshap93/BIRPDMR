@@ -40,6 +40,16 @@ namespace Domains.Input.Scripts
             }
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player")) ShowInteractablePrompt();
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Player")) HideInteractablePrompt();
+        }
+
         public void Interact()
         {
             ActivateButton();

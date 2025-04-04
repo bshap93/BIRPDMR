@@ -1,4 +1,5 @@
-﻿using Domains.Gameplay.Mining.Scripts;
+﻿using CompassNavigatorPro;
+using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Events;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
@@ -13,6 +14,25 @@ namespace Domains.Items
         [SerializeField] private bool hasBeenInteractedWith;
 
         public MMFeedbacks interactFeedbacks;
+
+        private CompassPro compassPro;
+
+        private CompassProPOI compassProPOI;
+
+        private void Start()
+        {
+            compassProPOI = GetComponent<CompassProPOI>();
+            if (compassProPOI != null)
+            {
+                compassProPOI.ToggleIndicatorVisibility(false);
+
+
+                UnityEngine.Debug.Log("POI visibility set to always hidden");
+            }
+
+            compassPro = FindFirstObjectByType<CompassPro>();
+            if (compassPro != null) compassPro.UpdateSettings();
+        }
 
         public void Interact()
         {
