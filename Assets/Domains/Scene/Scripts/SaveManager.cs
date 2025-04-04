@@ -144,6 +144,7 @@ namespace Domains.Scene.Scripts
             PickableManager.SaveAllPickedItems();
             DestructableManager.SaveAllDestructables();
             DiggerEvent.Trigger(DiggerEventType.Persist);
+            SaveSystem.SaveToSlot(0);
             UnityEngine.Debug.Log("All data saved");
         }
 
