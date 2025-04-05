@@ -13,6 +13,7 @@ TagManager:
   - Boost
   - WallSlide
   - JumpDown
+  - OreNode
   layers:
   - Default
   - TransparentFX
@@ -26,7 +27,7 @@ TagManager:
   - DiggableTerrain
   - SpacingPlane
   - Obstacle
-  - 
+  - Player
   - 
   - 
   - 

@@ -7,7 +7,6 @@ using Domains.SaveLoad;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
-using PixelCrushers;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -144,7 +143,6 @@ namespace Domains.Scene.Scripts
             PickableManager.SaveAllPickedItems();
             DestructableManager.SaveAllDestructables();
             DiggerEvent.Trigger(DiggerEventType.Persist);
-            SaveSystem.SaveToSlot(0);
             UnityEngine.Debug.Log("All data saved");
         }
 
@@ -157,7 +155,6 @@ namespace Domains.Scene.Scripts
             var upgradesLoaded = playerUpgradeManager != null && playerUpgradeManager.HasSavedData();
             var pickablesLoaded = pickableManager != null && pickableManager.HasSavedData();
             var destructablesLoaded = destructableManager != null && destructableManager.HasSavedData();
-            var saveSystemLoaded = SaveSystem.HasSavedGameInSlot(0);
 
 
             // Digger has no Load method
@@ -169,12 +166,11 @@ namespace Domains.Scene.Scripts
             if (upgradesLoaded) playerUpgradeManager.LoadUpgrades();
             if (pickablesLoaded) pickableManager.LoadPickedItems();
             if (destructablesLoaded) destructableManager.LoadDestructables();
-            if (saveSystemLoaded) SaveSystem.LoadFromSlot(0);
 
 
             return fuelLoaded ||
                    healthLoaded || inventoryLoaded || currencyLoaded ||
-                   upgradesLoaded || pickablesLoaded || destructablesLoaded || saveSystemLoaded;
+                   upgradesLoaded || pickablesLoaded || destructablesLoaded;
         }
 
         public void CallSaveThenWait()

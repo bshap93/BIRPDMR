@@ -60,8 +60,11 @@ namespace Domains.Player.Scripts
         {
             if (playerInteraction == null) return;
 
+            var notPlayerMask = ~playerInteraction.playerLayerMask;
+
+
             RaycastHit hit;
-            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, miningRange))
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, miningRange, notPlayerMask))
             {
                 var interactable = hit.collider.GetComponent<IInteractable>();
                 if (interactable != null) interactable.Interact();

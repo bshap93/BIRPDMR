@@ -2,7 +2,7 @@ using System.Collections;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 
-namespace Domains.Gameplay.Equipment
+namespace Domains.Gameplay.Equipment.Scripts
 {
     public class ShovelSpringController : MonoBehaviour
     {

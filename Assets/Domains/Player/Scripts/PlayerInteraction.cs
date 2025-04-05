@@ -19,6 +19,8 @@ namespace Domains.Player.Scripts
         public Color defaultReticleColor = Color.white;
         public Color interactReticleColor = Color.green;
 
+        public LayerMask playerLayerMask;
+
         public bool[] diggableLayers;
 
         public string[] layerStrings;
@@ -120,15 +122,19 @@ namespace Domains.Player.Scripts
             var rayOrigin = playerCamera.transform.position;
             var rayDirection = playerCamera.transform.forward;
 
+            var terrMask = terrainLayer & ~playerLayerMask;
+
             // First check if there's terrain blocking the view
             RaycastHit terrainHit;
             var terrainBlocking = Physics.Raycast(
-                rayOrigin, rayDirection, out terrainHit, interactionDistance, terrainLayer);
+                rayOrigin, rayDirection, out terrainHit, interactionDistance, terrMask);
+
+            var interactMask = interactableLayer & ~playerLayerMask;
 
             // Then check for interactables
             RaycastHit interactableHit;
             var hitInteractable = Physics.Raycast(
-                rayOrigin, rayDirection, out interactableHit, interactionDistance, interactableLayer);
+                rayOrigin, rayDirection, out interactableHit, interactionDistance, interactMask);
 
             // If we hit both, check if the terrain is in front of the interactable
             if (terrainBlocking && hitInteractable)
@@ -241,15 +247,18 @@ namespace Domains.Player.Scripts
             var rayOrigin = playerCamera.transform.position;
             var rayDirection = playerCamera.transform.forward;
 
+            var interactMask = interactableLayer & ~playerLayerMask;
+            var terrMask = terrainLayer & ~playerLayerMask;
+
             // First check if terrain is blocking
             RaycastHit terrainHit;
             var terrainBlocking = Physics.Raycast(
-                rayOrigin, rayDirection, out terrainHit, interactionDistance, terrainLayer);
+                rayOrigin, rayDirection, out terrainHit, interactionDistance, terrMask);
 
             // Then check for interactables
             RaycastHit interactableHit;
             var hitInteractable = Physics.Raycast(
-                rayOrigin, rayDirection, out interactableHit, interactionDistance, interactableLayer);
+                rayOrigin, rayDirection, out interactableHit, interactionDistance, interactMask);
 
             // Only interact if:
             // 1. We hit an interactable AND
