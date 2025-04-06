@@ -14,6 +14,7 @@ TagManager:
   - WallSlide
   - JumpDown
   - OreNode
+  - DiggerChunk
   layers:
   - Default
   - TransparentFX
