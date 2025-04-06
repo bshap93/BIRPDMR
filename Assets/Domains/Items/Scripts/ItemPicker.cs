@@ -41,7 +41,7 @@ namespace Domains.Items
 
         // Track interaction state
 
-        private Inventory _targetInventory;
+        private Inventory.Inventory _targetInventory;
 
         private void Awake()
         {
@@ -53,7 +53,7 @@ namespace Domains.Items
             // Wait for the PickableManager to finish loading before checking if this item is picked
             StartCoroutine(InitializeAfterPickableManager());
 
-            _targetInventory = FindFirstObjectByType<Inventory>();
+            _targetInventory = FindFirstObjectByType<Inventory.Inventory>();
 
             if (_targetInventory == null) UnityEngine.Debug.LogWarning("No inventory found in scene");
 
@@ -114,7 +114,7 @@ namespace Domains.Items
                 return;
             }
 
-            var entry = new Inventory.InventoryEntry(uniqueID, itemType);
+            var entry = new Inventory.Inventory.InventoryEntry(uniqueID, itemType);
             if (PlayerInventoryManager.AddItem(entry))
             {
                 // Play feedback

@@ -1,5 +1,4 @@
-﻿using Domains.Scene.Scripts;
-using MoreMountains.Tools;
+﻿using MoreMountains.Tools;
 
 namespace Domains.Items.Events
 {
@@ -17,13 +16,13 @@ namespace Domains.Items.Events
 
         public InventoryEventType EventType;
 
-        public Inventory Inventory;
+        public Inventory.Inventory Inventory;
 
         public float CurrentWeight;
 
         public float WeightLimitIncrease;
 
-        public static void Trigger(InventoryEventType eventType, Inventory inventory, float weightLimit)
+        public static void Trigger(InventoryEventType eventType, Inventory.Inventory inventory, float weightLimit)
         {
             E.EventType = eventType;
             E.Inventory = inventory;

@@ -1,4 +1,4 @@
-﻿using Domains.Items;
+﻿using Domains.Items.Inventory;
 using MoreMountains.Tools;
 using UnityEngine;
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Domains.Items;
 using Domains.Items.Events;
+using Domains.Items.Inventory;
 using MoreMountains.Tools;
 using UnityEngine;
 

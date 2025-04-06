@@ -7,7 +7,7 @@ using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Domains.Items
+namespace Domains.Items.Inventory
 {
     public class Inventory : MonoBehaviour
     {

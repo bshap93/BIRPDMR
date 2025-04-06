@@ -1,5 +1,6 @@
 using System.Collections;
 using Domains.Items;
+using Domains.Items.Inventory;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
 using Domains.Scene.Scripts;

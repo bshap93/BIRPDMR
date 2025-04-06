@@ -1,5 +1,5 @@
-using Domains.Items;
 using Domains.Items.Events;
+using Domains.Items.Inventory;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
 using UnityEngine;
