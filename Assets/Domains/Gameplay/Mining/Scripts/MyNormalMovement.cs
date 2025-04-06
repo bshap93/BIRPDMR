@@ -1,5 +1,6 @@
 ﻿using System;
 using Domains.Gameplay.Equipment.Scripts;
+using Domains.Gameplay.Tools;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
@@ -196,8 +197,6 @@ namespace Domains.Gameplay.Mining.Scripts
         {
             if (CustomInputBindings.IsMineMouseButtonPressed() && !PlayerFuelManager.IsPlayerOutOfFuel())
             {
-                // CharacterStateController.EnqueueTransition<ShovelMiningState>();
-                // return;
                 if (playerInteraction == null)
                     return;
 
@@ -208,20 +207,8 @@ namespace Domains.Gameplay.Mining.Scripts
 
                 if (playerInteraction.diggableLayers[textureIndex])
                 {
-                    var currentTool = PlayerEquipment.Instance.currentToolType;
-
-
-                    // Send the player to different mining states based on tool
-                    switch (currentTool)
-                    {
-                        case ToolType.MiningTool:
-                            CharacterStateController.EnqueueTransition<ShovelMiningState>();
-                            break;
-
-                        case ToolType.Scanner:
-                            CharacterStateController.EnqueueTransition<ScanningState>();
-                            break;
-                    }
+                    var currentTool = PlayerEquipment.Instance.currentToolComponent;
+                    if (currentTool != null) CharacterStateController.EnqueueTransition<UsingToolState>();
                 }
             }
         }
