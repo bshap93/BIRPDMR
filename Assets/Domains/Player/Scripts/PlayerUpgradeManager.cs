@@ -15,7 +15,11 @@ namespace Domains.Player.Scripts
         // 1) Static Fields: actual data you want to keep globally
         // ------------------------------------------------
         private static readonly Dictionary<string, int> UpgradeLevels = new();
-        private static float miningToolSize = 0.3f;
+
+        private static float shovelToolEffectRadius = 0.8f;
+        private static float shovelToolEffectOpacity = 10f;
+
+        // Literally the width of the onscreen tool
         private static float miningToolWidth = 0.6410909f; // Default mining tool width
         private static float fuelCapacity = 100f; // Default fuel capacity
 
@@ -45,11 +49,12 @@ namespace Domains.Player.Scripts
                         "ShovelMiningState not found. Mining upgrades may not apply correctly.");
             }
 
-            // characterStatProfile =
-            //     Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
+
             if (characterStatProfile != null)
             {
-                miningToolSize = characterStatProfile.InitialMiningToolSize;
+                shovelToolEffectRadius = characterStatProfile.initialShovelToolEffectRadius;
+                shovelToolEffectOpacity = characterStatProfile.initialShovelToolEffectOpacity;
+                // Literally the width of the onscreen tool
                 miningToolWidth = characterStatProfile.MiningToolWidth; // Use your default value here
             }
             else
@@ -180,7 +185,7 @@ namespace Domains.Player.Scripts
             }
         }
 
-        private void ApplyMultiplierUpgrade(string upgradeType, float multiplier, float secondaryMultiplier = 0)
+        private void ApplyMultiplierUpgrade(string upgradeType, float multiplier, float secondaryMultiplier = 1)
         {
             UnityEngine.Debug.Log($"Applying multiplier upgrade: x{multiplier} to {upgradeType}");
 
@@ -196,21 +201,16 @@ namespace Domains.Player.Scripts
                 // Calculate new size
                 var newSize = shovelMiningState.GetSize() * multiplier;
                 var newWidth = miningToolWidth * multiplier;
-
-                // Establish size limits to prevent excessive growth
-                var minSize = 0.1f;
-                var maxSize = 0.8f;
+                var newOpacity = shovelToolEffectOpacity * secondaryMultiplier;
 
                 // Clamp the value
-                newSize = Mathf.Clamp(newSize, minSize, maxSize);
-
                 newWidth = Mathf.Clamp(newWidth, 1f, 2f);
 
                 // Apply the clamped size
                 if (shovelMiningState != null)
                 {
-                    shovelMiningState.SetMiningSize(newSize);
-                    miningToolSize = newSize;
+                    shovelMiningState.SetShovelEffectSize(newSize, newOpacity);
+                    shovelToolEffectRadius = newSize;
                     var oldScale = miningTool.transform.localScale;
                     miningTool.transform.localScale = new Vector3(newWidth, oldScale.y, oldScale.z);
                     miningToolWidth = newWidth; // Update the width as well
@@ -222,11 +222,12 @@ namespace Domains.Player.Scripts
 
 
                 // Log the size change for debugging
-                UnityEngine.Debug.Log($"Mining size changed to: {miningToolSize}");
+                UnityEngine.Debug.Log($"Mining size changed to: {shovelToolEffectRadius}");
 
                 // Save immediately
-                ES3.Save("MiningToolSize", miningToolSize, "UpgradeSave.es3");
-                ES3.Save("MiningToolWidth", miningToolSize, "UpgradeSave.es3");
+                ES3.Save("MiningToolSize", shovelToolEffectRadius, "UpgradeSave.es3");
+                ES3.Save("MiningToolOpacity", shovelToolEffectOpacity, "UpgradeSave.es3");
+                ES3.Save("MiningToolWidth", shovelToolEffectRadius, "UpgradeSave.es3");
             }
         }
 
@@ -265,7 +266,8 @@ namespace Domains.Player.Scripts
                 ES3.Save(upgrade.Key, upgrade.Value, "UpgradeSave.es3");
 
             // Save mining tool size
-            ES3.Save("MiningToolSize", miningToolSize, "UpgradeSave.es3");
+            ES3.Save("MiningToolSize", shovelToolEffectRadius, "UpgradeSave.es3");
+            ES3.Save("MiningToolOpacity", shovelToolEffectOpacity, "UpgradeSave.es3");
             ES3.Save("MiningToolWidth", miningToolWidth, "UpgradeSave.es3");
 
             // Save current tool ID
@@ -306,15 +308,18 @@ namespace Domains.Player.Scripts
             // Load saved values directly without re-applying effects
 
             // Load mining tool size and apply directly
-            if (ES3.KeyExists("MiningToolSize", "UpgradeSave.es3"))
+            if (ES3.KeyExists("MiningToolSize", "UpgradeSave.es3") &&
+                ES3.KeyExists("MiningToolOpacity", "UpgradeSave.es3"))
             {
-                miningToolSize = ES3.Load<float>("MiningToolSize", "UpgradeSave.es3");
+                shovelToolEffectRadius = ES3.Load<float>("MiningToolSize", "UpgradeSave.es3");
+                shovelToolEffectOpacity =
+                    ES3.Load<float>("MiningToolOpacity", "UpgradeSave.es3");
 
                 // Directly update the ShovelMiningState
                 if (shovelMiningState != null)
                 {
-                    shovelMiningState.SetMiningSize(miningToolSize);
-                    UnityEngine.Debug.Log($"Setting shovel mining size to {miningToolSize}");
+                    shovelMiningState.SetShovelEffectSize(shovelToolEffectRadius, shovelToolEffectOpacity);
+                    UnityEngine.Debug.Log($"Setting shovel mining size to {shovelToolEffectRadius}");
                 }
                 else
                 {
@@ -392,14 +397,16 @@ namespace Domains.Player.Scripts
 
             // Reset mining tool size to default value
 
-            miningToolSize = characterStatProfile.InitialMiningToolSize; // Use your default value here
+            shovelToolEffectRadius = characterStatProfile.initialShovelToolEffectRadius; // Use your default value here
             miningToolWidth = characterStatProfile.MiningToolWidth; // Use your default value here
+            shovelToolEffectOpacity =
+                characterStatProfile.initialShovelToolEffectOpacity; // Use your default value here
 
             fuelCapacity = characterStatProfile.InitialMaxFuel;
 
 
             UpgradeEvent.Trigger(UpgradeType.Mining, UpgradeEventType.ShovelMiningSizeSet, null, 0,
-                UpgradeEffectType.None, miningToolSize);
+                UpgradeEffectType.None, shovelToolEffectRadius, null, shovelToolEffectOpacity);
         }
     }
 }

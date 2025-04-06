@@ -3,13 +3,13 @@ using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Events;
 using MoreMountains.Tools;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Player.Scripts
 {
     public class ShovelMiningState : MiningState, MMEventListener<UpgradeEvent>
     {
-        [Header("Shovel-Specific Parameters")] public int strokeCount = 1;
-        public float opacity = 1f;
+        [FormerlySerializedAs("opacity")] public float shovelToolEffectOpacity;
         public BrushType brush = BrushType.Stalagmite;
         public ActionType action = ActionType.Dig;
         public float stalagmiteHeight = 10F;
@@ -18,7 +18,8 @@ namespace Domains.Player.Scripts
         [SerializeField] private GameObject debrisEffectPrefab;
 
 
-        private float size;
+        [FormerlySerializedAs("size")] [SerializeField]
+        private float shovelToolEffectRadius;
 
         private void OnEnable()
         {
@@ -32,27 +33,26 @@ namespace Domains.Player.Scripts
 
         public void OnMMEvent(UpgradeEvent eventType)
         {
-            if (eventType.EventType == UpgradeEventType.ShovelMiningSizeSet) SetMiningSize(eventType.EffectValue);
+            if (eventType.EventType == UpgradeEventType.ShovelMiningSizeSet)
+                SetShovelEffectSize(eventType.EffectValue, eventType.EffectValue2);
         }
 
         public float GetSize()
         {
-            return size;
+            return shovelToolEffectRadius;
         }
 
         protected override void ModifyTerrain(Vector3 position, Vector3 direction, int textureIndex)
         {
-            for (var i = 0; i < strokeCount; i++)
-            {
-                var strokePosition = position + direction * i;
+            var strokePosition = position + direction;
 
-                if (editAsynchronously)
-                    _diggerMasterRuntime.ModifyAsyncBuffured(
-                        strokePosition, brush, action, textureIndex, opacity, size, stalagmiteHeight);
-                else
-                    _diggerMasterRuntime.Modify(
-                        strokePosition, brush, action, textureIndex, opacity, size);
-            }
+            if (editAsynchronously)
+                _diggerMasterRuntime.ModifyAsyncBuffured(
+                    strokePosition, brush, action, textureIndex, shovelToolEffectOpacity, shovelToolEffectRadius,
+                    stalagmiteHeight);
+            else
+                _diggerMasterRuntime.Modify(
+                    strokePosition, brush, action, textureIndex, shovelToolEffectOpacity, shovelToolEffectRadius);
         }
 
         // Implementation of the main mining loop
@@ -86,17 +86,18 @@ namespace Domains.Player.Scripts
             }
         }
 
-        public void SetMiningSize(float newSize)
+        public void SetShovelEffectSize(float newEffectRadius, float newEffectOpacity)
         {
             // Apply safety limits
-            var minSize = 0.1f;
-            var maxSize = 0.8f;
+            var minSize = 0.4f;
+            var maxSize = 1.2f;
 
             // Validate and apply size
-            size = Mathf.Clamp(newSize, minSize, maxSize);
+            shovelToolEffectRadius = Mathf.Clamp(newEffectRadius, minSize, maxSize);
+            shovelToolEffectOpacity = Mathf.Clamp(newEffectOpacity, 5f, 15f);
 
             // Log the assigned size for debugging
-            UnityEngine.Debug.Log($"ShovelMiningState.size set to: {size}");
+            UnityEngine.Debug.Log($"ShovelMiningState.size set to: {shovelToolEffectRadius}");
         }
 
         public override void UpdateBehaviour(float dt)

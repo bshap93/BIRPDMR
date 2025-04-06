@@ -12,7 +12,6 @@ namespace Domains.Player.Scripts
     public abstract class MiningState : CharacterState
     {
         [SerializeField] protected float miningRange = 5f;
-        [SerializeField] protected GameObject effectPrefab; // Generic effect prefab
         public Transform cameraTransform;
         public float currentDigDepth;
 
@@ -76,11 +75,6 @@ namespace Domains.Player.Scripts
             // Track digging depth and update environment effects
             UpdateDepthEffects(hit.point);
 
-            // Update light effects based on depth
-
-            // Spawn effects at impact point
-            SpawnMiningEffect(hit);
-
             // Apply the digging operation
             var strokeStart = hit.point;
             var strokeDirection = cameraTransform.forward * 0.3f;
@@ -101,11 +95,11 @@ namespace Domains.Player.Scripts
         // Methods to be overridden by specific tools
         protected virtual void SpawnMiningEffect(RaycastHit hit)
         {
-            if (effectPrefab == null) return;
-
-            var spawnPosition = hit.point + hit.normal * 0.05f;
-            var effect = Instantiate(effectPrefab, spawnPosition, Quaternion.identity);
-            effect.transform.rotation = Quaternion.LookRotation(hit.normal);
+            // if (effectPrefab == null) return;
+            //
+            // var spawnPosition = hit.point + hit.normal * 0.05f;
+            // var effect = Instantiate(effectPrefab, spawnPosition, Quaternion.identity);
+            // effect.transform.rotation = Quaternion.LookRotation(hit.normal);
         }
 
         protected virtual void ModifyTerrain(Vector3 position, Vector3 direction, int textureIndex)

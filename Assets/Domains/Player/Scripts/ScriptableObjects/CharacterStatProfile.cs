@@ -20,10 +20,14 @@ namespace Domains.Player.Scripts.ScriptableObjects
 
         [Header("Upgrades")] public int InitialUpgradeState;
 
-        [Header("Tool Stats")] public float InitialMiningToolSize;
+        [FormerlySerializedAs("InitialMiningToolSize")] [Header("Tool Stats")]
+        public float initialShovelToolEffectRadius;
 
         [Header("Skip Tutorial")] public bool SkipTutorial;
 
         [Header("Mining Tool Width")] public float MiningToolWidth;
+
+        [FormerlySerializedAs("MiningToolOpacity")] [Header("Mining Tool Height")]
+        public float initialShovelToolEffectOpacity;
     }
 }

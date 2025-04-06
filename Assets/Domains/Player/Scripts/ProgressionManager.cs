@@ -65,18 +65,17 @@ namespace Domains.Player.Scripts
         {
             if (b)
                 UsedBeacons.Add(uniqueID);
-            
+
             UnityEngine.Debug.Log($"Beacon {uniqueID} used: {b}");
         }
 
         public static void ResetProgression()
         {
-            throw new NotImplementedException();
         }
 
         public bool HasSavedData()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public static void SaveAllProgression()
@@ -86,7 +85,6 @@ namespace Domains.Player.Scripts
 
         public static void LoadProgression()
         {
-            throw new NotImplementedException();
         }
 
         private static string GetSaveFilePath()

@@ -27,7 +27,7 @@ MonoBehaviour:
   - {fileID: 0}
   effectTypes: 00000000000000000000000000000000
   effectValues:
-  - 2
+  - 1.5
   - 2
   - 2
   - 2

@@ -38,11 +38,12 @@ namespace Domains.Player.Events
 
         public UpgradeEffectType EffectType;
         public float EffectValue; // Used for multipliers and additions
+        public float EffectValue2; // Used for multipliers and additions
         public string ToolId; // Only used if EffectType == ToolChange
 
         public static void Trigger(UpgradeType upgradeType, UpgradeEventType upgradeEventType,
             UpgradeData upgradeData, int upgradeLevel, UpgradeEffectType effectType, float effectValue = 1,
-            string toolId = null)
+            string toolId = null, float effectValue2 = 1)
         {
             _e.EventType = upgradeEventType;
             _e.UpgradeType = upgradeType;
