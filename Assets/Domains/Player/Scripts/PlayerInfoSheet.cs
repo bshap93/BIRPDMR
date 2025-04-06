@@ -1,9 +1,8 @@
-using Domains.Player.Scripts;
 using Domains.Player.Scripts.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Domains.Scripts
+namespace Domains.Player.Scripts
 {
     public class PlayerInfoSheet : MonoBehaviour
     {
