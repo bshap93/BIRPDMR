@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Domains.Gameplay.Tools.ToolSpecifics;
 using Domains.Items.Events;
 using Domains.Player.Events;
 using Domains.Player.Scripts.ScriptableObjects;
@@ -33,7 +34,7 @@ namespace Domains.Player.Scripts
         public MMFeedbacks upgradeFeedback;
         [SerializeField] private GameObject miningTool;
         private CharacterStatProfile characterStatProfile;
-        private ShovelMiningState shovelMiningState;
+        private ShovelTool shovelTool;
 
         private void Awake()
         {
@@ -41,10 +42,10 @@ namespace Domains.Player.Scripts
                 Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
 
             // Find ShovelMiningState if not assigned
-            if (shovelMiningState == null)
+            if (shovelTool == null)
             {
-                shovelMiningState = FindFirstObjectByType<ShovelMiningState>();
-                if (shovelMiningState == null)
+                shovelTool = FindFirstObjectByType<ShovelTool>();
+                if (shovelTool == null)
                     UnityEngine.Debug.LogWarning(
                         "ShovelMiningState not found. Mining upgrades may not apply correctly.");
             }
@@ -199,7 +200,7 @@ namespace Domains.Player.Scripts
             else if (upgradeType == "Mining") // Example: Multiply mining speed
             {
                 // Calculate new size
-                var newSize = shovelMiningState.GetSize() * multiplier;
+                var newSize = shovelTool.effectRadius * multiplier;
                 var newWidth = miningToolWidth * multiplier;
                 var newOpacity = shovelToolEffectOpacity * secondaryMultiplier;
 
@@ -207,9 +208,9 @@ namespace Domains.Player.Scripts
                 newWidth = Mathf.Clamp(newWidth, 1f, 2f);
 
                 // Apply the clamped size
-                if (shovelMiningState != null)
+                if (shovelTool != null)
                 {
-                    shovelMiningState.SetShovelEffectSize(newSize, newOpacity);
+                    shovelTool.SetShovelEffectSize(newSize, newOpacity);
                     shovelToolEffectRadius = newSize;
                     var oldScale = miningTool.transform.localScale;
                     miningTool.transform.localScale = new Vector3(newWidth, oldScale.y, oldScale.z);
@@ -316,9 +317,9 @@ namespace Domains.Player.Scripts
                     ES3.Load<float>("MiningToolOpacity", "UpgradeSave.es3");
 
                 // Directly update the ShovelMiningState
-                if (shovelMiningState != null)
+                if (shovelTool != null)
                 {
-                    shovelMiningState.SetShovelEffectSize(shovelToolEffectRadius, shovelToolEffectOpacity);
+                    shovelTool.SetShovelEffectSize(shovelToolEffectRadius, shovelToolEffectOpacity);
                     UnityEngine.Debug.Log($"Setting shovel mining size to {shovelToolEffectRadius}");
                 }
                 else

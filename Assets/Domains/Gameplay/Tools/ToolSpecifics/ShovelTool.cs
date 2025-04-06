@@ -14,6 +14,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
     {
         [Header("Dig Settings")] public float miningRange = 5f;
 
+        [SerializeField] private float miningCooldown = 1f; // seconds between digs
+
         public float effectRadius = 1f;
         public float effectOpacity = 10f;
         public float stalagmiteHeight = 10f;
@@ -28,6 +30,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         [Header("FX")] public GameObject debrisEffectPrefab;
 
         private DiggerMasterRuntime digger;
+        private float lastDigTime = -999f;
+        private RaycastHit lastHit;
         private PlayerInteraction playerInteraction;
 
         private void Awake()
@@ -50,18 +54,33 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         public void UseTool(RaycastHit hit)
         {
+            lastHit = hit;
+            PerformToolAction();
+        }
+
+
+        public void PerformToolAction()
+        {
+            if (Time.time < lastDigTime + miningCooldown)
+                return;
+
+            lastDigTime = Time.time;
+
             if (playerInteraction == null || digger == null)
                 return;
 
             var notPlayerMask = ~playerInteraction.playerLayerMask;
-            if (!Physics.Raycast(Camera.main.transform.position, mainCamera.transform.forward, out hit, miningRange,
+            if (!Physics.Raycast(Camera.main.transform.position, mainCamera.transform.forward, out var hit, miningRange,
                     notPlayerMask))
                 return;
 
-            // Interact if possible
+            // Cache hit for external access
+            lastHit = hit;
+
+            // Interact
             hit.collider.GetComponent<IInteractable>()?.Interact();
 
-            // Play debris effect
+            // Debris FX
             if (debrisEffectPrefab)
             {
                 var pos = hit.point + hit.normal * 0.1f;
@@ -70,12 +89,12 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 Destroy(fx, 2f);
             }
 
-            GetComponentInChildren<MiningBehavior>()?.OnMining();
+            // Feedback trigger (from PerformToolAction, not MMFeedbacks directly)
+            if (diggingFeedbacks != null) diggingFeedbacks.PlayFeedbacks(hit.point);
 
-
-            // Perform digging
+            // Dig!
             var digPosition = hit.point + mainCamera.transform.forward * 0.3f;
-            var textureIndex = 1; // Hardcoded for now — you can layer based on depth later
+            var textureIndex = 1;
 
             if (editAsynchronously)
                 digger.ModifyAsyncBuffured(digPosition, brush, action, textureIndex, effectOpacity, effectRadius,
@@ -83,7 +102,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             else
                 digger.Modify(digPosition, brush, action, textureIndex, effectOpacity, effectRadius);
 
-            // Consume fuel
             FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
         }
 

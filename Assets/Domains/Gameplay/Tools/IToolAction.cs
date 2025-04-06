@@ -7,5 +7,6 @@ namespace Domains.Gameplay.Tools
     {
         ToolType ToolType { get; }
         void UseTool(RaycastHit hit);
+        void PerformToolAction();
     }
 }

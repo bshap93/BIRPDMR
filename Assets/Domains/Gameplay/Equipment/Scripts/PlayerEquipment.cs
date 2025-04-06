@@ -1,5 +1,6 @@
 using Domains.Gameplay.Equipment.Events;
 using Domains.Gameplay.Tools;
+using Domains.Gameplay.Tools.ToolSpecifics;
 using Domains.Input.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using MoreMountains.Feedbacks;
@@ -11,8 +12,8 @@ namespace Domains.Gameplay.Equipment.Scripts
     {
         public static PlayerEquipment Instance;
 
-        public GameObject miningTool;
-        public GameObject scanningTool;
+        public ShovelTool shovelTool;
+        public ScannerTool scannerTool;
 
         [SerializeField] private MMFeedbacks equipMinerFeedbacks;
         [SerializeField] private MMFeedbacks equipScannerFeedbacks;
@@ -21,9 +22,9 @@ namespace Domains.Gameplay.Equipment.Scripts
 
         public ToolType currentToolType;
         public ToolIteration currentToolIteration;
-        public IToolAction currentToolComponent;
 
-        private int currentToolIndex;
+        [SerializeField] private int currentToolIndex;
+        public IToolAction CurrentToolComponent;
 
 
         private void Awake()
@@ -33,6 +34,7 @@ namespace Domains.Gameplay.Equipment.Scripts
 
         private void Start()
         {
+            CurrentToolComponent = shovelTool;
         }
 
         private void Update()
@@ -47,14 +49,14 @@ namespace Domains.Gameplay.Equipment.Scripts
 
         private void SwitchTool(int index)
         {
-            if (currentToolComponent == null)
+            if (CurrentToolComponent == null)
                 UnityEngine.Debug.LogWarning($"Tool at index {index} is missing an IToolAction component.");
             currentToolIndex = index;
 
             if (index == 0)
             {
-                miningTool.SetActive(true);
-                scanningTool.SetActive(false);
+                shovelTool.gameObject.SetActive(true);
+                scannerTool.gameObject.SetActive(false);
                 currentToolType = ToolType.MiningTool;
                 currentToolIteration = ToolIteration.First;
                 EquipmentEvent.Trigger(EquipmentEventType.SwitchFromScanner);
@@ -62,12 +64,12 @@ namespace Domains.Gameplay.Equipment.Scripts
                 equipMinerFeedbacks?.PlayFeedbacks();
 
                 // Set the current tool component
-                currentToolComponent = miningTool.GetComponentInChildren<IToolAction>();
+                CurrentToolComponent = shovelTool;
             }
             else if (index == 1)
             {
-                miningTool.SetActive(false);
-                scanningTool.SetActive(true);
+                shovelTool.gameObject.SetActive(false);
+                scannerTool.gameObject.SetActive(true);
                 currentToolType = ToolType.Scanner;
                 currentToolIteration = ToolIteration.First;
                 EquipmentEvent.Trigger(EquipmentEventType.SwitchFromMiner);
@@ -75,7 +77,7 @@ namespace Domains.Gameplay.Equipment.Scripts
                 equipScannerFeedbacks?.PlayFeedbacks();
 
                 // Set the current tool component
-                currentToolComponent = scanningTool.GetComponentInChildren<IToolAction>();
+                CurrentToolComponent = scannerTool;
             }
         }
     }

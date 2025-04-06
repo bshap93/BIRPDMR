@@ -15,5 +15,9 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         public void UseTool(RaycastHit hit)
         {
         }
+
+        public void PerformToolAction()
+        {
+        }
     }
 }

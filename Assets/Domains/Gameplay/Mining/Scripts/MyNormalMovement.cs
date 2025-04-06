@@ -207,7 +207,7 @@ namespace Domains.Gameplay.Mining.Scripts
 
                 if (playerInteraction.diggableLayers[textureIndex])
                 {
-                    var currentTool = PlayerEquipment.Instance.currentToolComponent;
+                    var currentTool = PlayerEquipment.Instance.CurrentToolComponent;
                     if (currentTool != null) CharacterStateController.EnqueueTransition<UsingToolState>();
                 }
             }

@@ -18,7 +18,7 @@ namespace Domains.Gameplay.Tools
                 RaycastHit hit;
                 if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit))
                 {
-                    var tool = PlayerEquipment.Instance.currentToolComponent;
+                    var tool = PlayerEquipment.Instance.CurrentToolComponent;
                     tool?.UseTool(hit);
                 }
             }
