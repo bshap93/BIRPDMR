@@ -17,9 +17,15 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         [SerializeField] private float miningCooldown = 1f; // seconds between digs
 
+        [Header("Effect Settings")] public float minEffectRadius = 0.4f;
+
+        public float maxEffectRadius = 1.2f;
+        public float minEffectOpacity = 5f;
+        public float maxEffectOpacity = 150f;
+
         public float effectRadius = 1f;
         public float effectOpacity = 10f;
-        public float stalagmiteHeight = 10f;
+        public float stalagmiteHeight = 100f;
         public BrushType brush = BrushType.Stalagmite;
         public ActionType action = ActionType.Dig;
         public bool editAsynchronously = true;
@@ -157,12 +163,11 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         public void SetShovelEffectSize(float newEffectRadius, float newEffectOpacity)
         {
             // Apply safety limits
-            var minSize = 0.4f;
-            var maxSize = 1.2f;
+
 
             // Validate and apply size
-            effectRadius = Mathf.Clamp(newEffectRadius, minSize, maxSize);
-            effectOpacity = Mathf.Clamp(newEffectOpacity, 5f, 25f);
+            effectRadius = Mathf.Clamp(newEffectRadius, minEffectRadius, maxEffectRadius);
+            effectOpacity = Mathf.Clamp(newEffectOpacity, minEffectOpacity, maxEffectOpacity);
 
             // Log the assigned size for debugging
             UnityEngine.Debug.Log($"ShovelMiningState.size set to: {effectRadius}, {effectOpacity}");
