@@ -10,13 +10,18 @@ namespace Domains.Gameplay.Tools
     {
         public Camera mainCamera;
         [SerializeField] private TextureDetector textureDetector;
+        [SerializeField] private LayerMask playerMask;
+        [SerializeField] private float maxToolRange = 5f;
 
 
         public override void UpdateBehaviour(float dt)
         {
             // Check for tool usage input
             if (CustomInputBindings.IsMineMouseButtonPressed())
-                if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out var hit))
+            {
+                var notPlayerMask = ~playerMask;
+                if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out var hit,
+                        maxToolRange, notPlayerMask))
                 {
                     var tool = PlayerEquipment.Instance.CurrentToolComponent;
                     if (tool == null) return;
@@ -35,6 +40,7 @@ namespace Domains.Gameplay.Tools
                         // Optional: play denied feedback
                         UnityEngine.Debug.Log("Tool not valid for this surface or object.");
                 }
+            }
         }
     }
 }
