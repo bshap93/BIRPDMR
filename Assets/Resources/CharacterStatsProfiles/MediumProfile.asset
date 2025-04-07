@@ -22,4 +22,4 @@ MonoBehaviour:
   initialShovelToolEffectRadius: 0.8
   SkipTutorial: 0
   MiningToolWidth: 0
-  initialShovelToolEffectOpacity: 10
+  initialShovelToolEffectOpacity: 20

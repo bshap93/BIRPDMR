@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8729684978220957379}
   - component: {fileID: 1277248301386597315}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: OreHitF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,7 +279,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1993811425603486950}
   - component: {fileID: 5709700749129327246}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: OreHitBehavior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -522,7 +522,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3058547095775056331}
   - component: {fileID: 6017877751092101060}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: OreDestroyFB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -795,7 +795,7 @@ GameObject:
   - component: {fileID: 7128684240143789355}
   - component: {fileID: 5466057757064491444}
   - component: {fileID: 4375252831640017369}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Darkstone
   m_TagString: OreNode
   m_Icon: {fileID: 0}
@@ -952,8 +952,8 @@ MonoBehaviour:
   knockDuration: 0.25
   oreHitFeedback: {fileID: 1277248301386597315}
   oreDestroyFeedback: {fileID: 6017877751092101060}
-  OreHitBehavior: {fileID: 5709700749129327246}
-  UniqueID: 5ac6217d-e5c6-4f6f-af4e-88318ba91740
+  oreHitBehavior: {fileID: 5709700749129327246}
+  UniqueID: 90f92a2e-fd74-4187-a1ba-822fbf0374c2
 --- !u!114 &4375252831640017369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -980,7 +980,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7870726743665412337, guid: 5c4e377d6045a87449041ac0b5546f07, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 8281924629798770041, guid: 5c4e377d6045a87449041ac0b5546f07, type: 3}
       propertyPath: ShapeModule.type
@@ -1106,7 +1106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4915262749889565103, guid: 7036b5930e6d8e5469de757dba460520, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5309685689194970419, guid: 7036b5930e6d8e5469de757dba460520, type: 3}
       propertyPath: ShapeModule.type
@@ -1164,7 +1164,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1503459439250605579, guid: 0269436ed34372f488d7fa97fe2f470a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6865631078908948581, guid: 0269436ed34372f488d7fa97fe2f470a, type: 3}
       propertyPath: m_RootOrder

@@ -29,6 +29,12 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         [Header("FX")] public GameObject debrisEffectPrefab;
 
+        [Header("Allowed Layers")] [Tooltip("Allowed Unity layers for GameObjects (e.g., ore nodes)")]
+        public LayerMask interactableLayers;
+
+        [Tooltip("Allowed texture indices on terrain")]
+        public int[] allowedTerrainTextureIndices;
+
         private DiggerMasterRuntime digger;
         private float lastDigTime = -999f;
         private RaycastHit lastHit;
@@ -105,6 +111,19 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
         }
 
+        public bool CanInteractWithTextureIndex(int index)
+        {
+            foreach (var allowed in allowedTerrainTextureIndices)
+                if (index == allowed)
+                    return true;
+            return false;
+        }
+
+        public bool CanInteractWithObject(GameObject target)
+        {
+            return (interactableLayers.value & (1 << target.layer)) != 0;
+        }
+
         public void OnMMEvent(UpgradeEvent eventType)
         {
             if (eventType.EventType == UpgradeEventType.ShovelMiningSizeSet)
@@ -119,7 +138,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
             // Validate and apply size
             effectRadius = Mathf.Clamp(newEffectRadius, minSize, maxSize);
-            effectOpacity = Mathf.Clamp(newEffectOpacity, 5f, 15f);
+            effectOpacity = Mathf.Clamp(newEffectOpacity, 5f, 25f);
 
             // Log the assigned size for debugging
             UnityEngine.Debug.Log($"ShovelMiningState.size set to: {effectRadius}, {effectOpacity}");

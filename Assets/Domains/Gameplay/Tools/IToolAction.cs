@@ -8,5 +8,8 @@ namespace Domains.Gameplay.Tools
         ToolType ToolType { get; }
         void UseTool(RaycastHit hit);
         void PerformToolAction();
+
+        bool CanInteractWithTextureIndex(int index);
+        bool CanInteractWithObject(GameObject target);
     }
 }

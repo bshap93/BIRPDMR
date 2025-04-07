@@ -19,5 +19,15 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         public void PerformToolAction()
         {
         }
+
+        public bool CanInteractWithTextureIndex(int index)
+        {
+            return false;
+        }
+
+        public bool CanInteractWithObject(GameObject target)
+        {
+            return false;
+        }
     }
 }

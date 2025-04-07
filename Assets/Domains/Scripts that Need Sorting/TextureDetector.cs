@@ -64,7 +64,7 @@ namespace Domains.Scripts_that_Need_Sorting
             }
         }
 
-        public static int GetTextureIndex(RaycastHit hit, out Terrain terrain)
+        public int GetTextureIndex(RaycastHit hit, out Terrain terrain)
         {
             terrain = null;
 

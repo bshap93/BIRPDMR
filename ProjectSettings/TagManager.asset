@@ -29,7 +29,7 @@ TagManager:
   - SpacingPlane
   - Obstacle
   - Player
-  - 
+  - CanBeMined
   - 
   - 
   - 
