@@ -708,10 +708,9 @@ MonoBehaviour:
   knockDuration: 0.25
   oreHitFeedback: {fileID: 1277248301386597315}
   oreDestroyFeedback: {fileID: 6017877751092101060}
-  oreHitFailedFeedback: {fileID: 2879248722755317898}
   UniqueID: 2de8240f-bd34-4d36-9fab-1ac9fae9119d
   failHitFeedbacks: {fileID: 2879248722755317898}
-  failHitParticles: {fileID: 0}
+  failHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
 --- !u!1 &8425722701829819162
 GameObject:
   m_ObjectHideFlags: 0
