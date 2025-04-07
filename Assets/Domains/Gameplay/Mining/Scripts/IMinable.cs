@@ -1,7 +1,10 @@
-﻿namespace Domains.Gameplay.Mining.Scripts
+﻿using UnityEngine;
+
+namespace Domains.Gameplay.Mining.Scripts
 {
     public interface IMinable
     {
-        void OreHit();
+        void MinableMineHit();
+        void MinableFailHit(Vector3 hitPoint);
     }
 }

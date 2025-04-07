@@ -678,7 +678,7 @@ MonoBehaviour:
             - m_Target: {fileID: 3845043461234623603}
               m_TargetAssemblyTypeName: Domains.Gameplay.Mining.Scripts.OreNode,
                 Assembly-CSharp
-              m_MethodName: OreHit
+              m_MethodName: MinableMineHit
               m_Mode: 1
               m_Arguments:
                 m_ObjectArgument: {fileID: 0}

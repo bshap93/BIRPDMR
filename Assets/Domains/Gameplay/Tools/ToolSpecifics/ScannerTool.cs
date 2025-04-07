@@ -25,6 +25,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             return false;
         }
 
+
         public bool CanInteractWithObject(GameObject target)
         {
             return false;

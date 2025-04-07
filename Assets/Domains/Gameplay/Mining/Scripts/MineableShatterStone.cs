@@ -16,7 +16,7 @@ namespace Domains.Gameplay.Mining.Scripts
 
         public void Interact()
         {
-            if (_oreNode != null) _oreNode.OreHit();
+            if (_oreNode != null) _oreNode.MinableMineHit();
         }
 
         public void ShowInteractablePrompt()

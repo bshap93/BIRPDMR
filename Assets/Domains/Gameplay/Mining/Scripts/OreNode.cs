@@ -28,6 +28,9 @@ namespace Domains.Gameplay.Mining.Scripts
 
         // Unique ID for the ore node.
         public string UniqueID;
+
+        [SerializeField] private MMFeedbacks failHitFeedbacks;
+        [SerializeField] private GameObject failHitParticles;
         private int dropIndex;
         private int hitIndex;
 
@@ -37,7 +40,7 @@ namespace Domains.Gameplay.Mining.Scripts
         }
 
         // Sets number of pickups to spawn.
-        public void OreHit()
+        public void MinableMineHit()
         {
             var currentFuel = PlayerFuelManager.FuelPoints;
             var maxFuel = PlayerFuelManager.MaxFuelPoints;
@@ -87,22 +90,17 @@ namespace Domains.Gameplay.Mining.Scripts
             }
         }
 
-
-        public void ShowInteractablePrompt()
+        public void MinableFailHit(Vector3 hitPoint)
         {
+            failHitFeedbacks?.PlayFeedbacks();
+
+            if (failHitParticles != null)
+            {
+                var fx = Instantiate(failHitParticles, hitPoint, Quaternion.identity);
+                Destroy(fx, 2f);
+            }
         }
 
-        public void HideInteractablePrompt()
-        {
-        }
-
-
-        // // On click trigger.
-        // private void OnMouseDown()
-        // {
-        //     if (!PlayerFuelManager.IsPlayerOutOfFuel())
-        //         oreHitBehavior?.PlayFeedbacks();
-        // }
 
         private IEnumerator InitializeAfterDestructableManager()
         {

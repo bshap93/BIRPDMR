@@ -7,6 +7,7 @@ using Domains.Scripts_that_Need_Sorting;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Gameplay.Tools.ToolSpecifics
 {
@@ -32,11 +33,15 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         [Header("FX")] public GameObject debrisEffectPrefab;
 
-        [Header("Allowed Layers")] [Tooltip("Allowed Unity layers for GameObjects (e.g., ore nodes)")]
-        public LayerMask interactableLayers;
+        [FormerlySerializedAs("interactableLayers")]
+        [Header("Allowed Layers")]
+        [Tooltip("Allowed Unity layers for GameObjects (e.g., ore nodes)")]
+        public LayerMask diggableLayers;
 
         [Tooltip("Allowed texture indices on terrain")]
         public int[] allowedTerrainTextureIndices;
+
+        [SerializeField] private MMFeedbacks moveShovelDespiteFailHitFeedbacks;
 
         private DiggerMasterRuntime digger;
         private float lastDigTime = -999f;
@@ -93,7 +98,13 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 hit.collider.GetComponent<IInteractable>()?.Interact();
 
 
-                hit.collider.GetComponent<IMinable>()?.OreHit();
+                var minable = hit.collider.GetComponent<IMinable>();
+                if (minable != null)
+                {
+                    minable.MinableFailHit(hit.point);
+                    moveShovelDespiteFailHitFeedbacks?.PlayFeedbacks();
+                    return;
+                }
             }
 
 
@@ -130,10 +141,12 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             return false;
         }
 
+
         public bool CanInteractWithObject(GameObject target)
         {
-            return (interactableLayers.value & (1 << target.layer)) != 0;
+            return (diggableLayers.value & (1 << target.layer)) != 0;
         }
+
 
         public void OnMMEvent(UpgradeEvent eventType)
         {
