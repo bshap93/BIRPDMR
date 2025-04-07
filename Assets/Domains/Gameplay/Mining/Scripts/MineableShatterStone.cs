@@ -1,5 +1,4 @@
-﻿using ShatterStone;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Domains.Gameplay.Mining.Scripts
 {
@@ -17,7 +16,7 @@ namespace Domains.Gameplay.Mining.Scripts
 
         public void Interact()
         {
-            if (_oreNode != null) _oreNode.oreHit();
+            if (_oreNode != null) _oreNode.OreHit();
         }
 
         public void ShowInteractablePrompt()

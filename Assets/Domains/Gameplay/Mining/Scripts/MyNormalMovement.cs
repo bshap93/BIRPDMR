@@ -201,17 +201,27 @@ namespace Domains.Gameplay.Mining.Scripts
                     return;
 
                 var textureIndex = ForwardTextureDetector.textureIndex;
+                var tool = PlayerEquipment.Instance.CurrentToolComponent;
 
-                if (textureIndex < 0 || textureIndex >= playerInteraction.diggableLayers.Length)
+                if (tool == null)
                     return;
 
-                if (playerInteraction.diggableLayers[textureIndex])
+                var canUseOnTerrain = textureIndex >= 0 &&
+                                      textureIndex < playerInteraction.diggableLayers.Length &&
+                                      playerInteraction.diggableLayers[textureIndex];
+
+                // Perform a raycast to detect non-terrain objects (e.g., OreNodes)
+                if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward,
+                        out var hit, 5f, ~playerInteraction.playerLayerMask))
                 {
-                    var currentTool = PlayerEquipment.Instance.CurrentToolComponent;
-                    if (currentTool != null) CharacterStateController.EnqueueTransition<UsingToolState>();
+                    var canUseOnObject = tool.CanInteractWithObject(hit.collider.gameObject);
+
+                    if (canUseOnTerrain || canUseOnObject)
+                        CharacterStateController.EnqueueTransition<UsingToolState>();
                 }
             }
         }
+
 
         public override void ExitBehaviour(float dt, CharacterState toState)
         {

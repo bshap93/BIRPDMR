@@ -493,7 +493,7 @@ MonoBehaviour:
             - m_Target: {fileID: 5466057757064491444}
               m_TargetAssemblyTypeName: Domains.Gameplay.Mining.Scripts.OreNode,
                 Assembly-CSharp
-              m_MethodName: oreHit
+              m_MethodName: OreHit
               m_Mode: 1
               m_Arguments:
                 m_ObjectArgument: {fileID: 0}
@@ -794,7 +794,6 @@ GameObject:
   - component: {fileID: 5743095053358368644}
   - component: {fileID: 7128684240143789355}
   - component: {fileID: 5466057757064491444}
-  - component: {fileID: 4375252831640017369}
   m_Layer: 13
   m_Name: Darkstone
   m_TagString: OreNode
@@ -953,19 +952,7 @@ MonoBehaviour:
   oreHitFeedback: {fileID: 1277248301386597315}
   oreDestroyFeedback: {fileID: 6017877751092101060}
   oreHitBehavior: {fileID: 5709700749129327246}
-  UniqueID: 90f92a2e-fd74-4187-a1ba-822fbf0374c2
---- !u!114 &4375252831640017369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3425872484700846920}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 578bcf0852aa7194388af9f7dacd7ca8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  UniqueID: 5ac6217d-e5c6-4f6f-af4e-88318ba91740
 --- !u!1001 &1149386557892557025
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -24,6 +24,9 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         public bool editAsynchronously = true;
         public Camera mainCamera;
 
+        [Header("Feedbacks")] [Tooltip("Feedbacks to play when the tool cannot interact with an object")]
+        public MMFeedbacks cannotInteractFeedbacks;
+
         public MMFeedbacks diggingFeedbacks;
 
 
@@ -84,7 +87,15 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             lastHit = hit;
 
             // Interact
-            hit.collider.GetComponent<IInteractable>()?.Interact();
+            if (CanInteractWithObject(hit.collider.gameObject))
+            {
+                // Call IInteractable if implemented
+                hit.collider.GetComponent<IInteractable>()?.Interact();
+
+
+                hit.collider.GetComponent<IMinable>()?.OreHit();
+            }
+
 
             // Debris FX
             if (debrisEffectPrefab)

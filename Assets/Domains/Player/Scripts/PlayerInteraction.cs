@@ -5,6 +5,7 @@ using Domains.Gameplay.Mining.Scripts;
 using Domains.Input.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Domains.Player.Scripts
@@ -23,33 +24,25 @@ namespace Domains.Player.Scripts
 
         public bool[] diggableLayers;
 
-        public string[] layerStrings;
-
-        [Header("Terrain Texture Information")] [Tooltip("The current texture index detected from terrain")]
-        public int currentTextureIndex = -1;
-
-        [Tooltip("The current texture layer name detected from terrain")]
-        public string currentTextureName = "";
-
         public float currentDigDepth;
         public Light digSpotlight;
         public float spotlightStrengthenDepth = 2f;
-        public TextureDetector ForwardTextureDetector;
 
-        private RuntimeDig _digClass;
-        private DiggerMaster _diggerMaster;
+        [FormerlySerializedAs("ForwardTextureDetector")]
+        public TextureDetector forwardTextureDetector;
+
         private DiggerMasterRuntime _diggerMasterRuntime;
         private bool _interactablePrompt;
 
         private void Start()
         {
-            _diggerMaster = FindFirstObjectByType<DiggerMaster>();
+            FindFirstObjectByType<DiggerMaster>();
             _diggerMasterRuntime = FindFirstObjectByType<DiggerMasterRuntime>();
-            _digClass = GetComponent<RuntimeDig>();
+            GetComponent<RuntimeDig>();
 
             // Find the TextureDetector in the scene
 
-            if (ForwardTextureDetector == null)
+            if (forwardTextureDetector == null)
                 UnityEngine.Debug.LogWarning(
                     "TextureDetector not found in the scene. Cannot track texture information.");
         }
@@ -100,13 +93,11 @@ namespace Domains.Player.Scripts
         // New method to update texture information
         private void UpdateTextureInformation()
         {
-            if (ForwardTextureDetector != null && !string.IsNullOrEmpty(ForwardTextureDetector.texture))
+            if (forwardTextureDetector != null && !string.IsNullOrEmpty(forwardTextureDetector.texture))
                 // Extract name and index from TextureDetector's texture string
-                if (ExtractNameAndIndex(ForwardTextureDetector.texture, out var name, out var index))
+                if (ExtractNameAndIndex(forwardTextureDetector.texture, out var name, out var index))
                 {
                     // Update our tracking variables
-                    currentTextureName = name;
-                    currentTextureIndex = index;
                 }
         }
 

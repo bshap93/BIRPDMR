@@ -7,12 +7,11 @@ using Domains.Scene.Scripts;
 using Gameplay.Events;
 using MoreMountains.Feedbacks;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Domains.Gameplay.Mining.Scripts
 
 {
-    public class OreNode : MonoBehaviour
+    public class OreNode : MonoBehaviour, IMinable
     {
         [SerializeField] private GameObject pieces;
         [SerializeField] private BaseItem itemTypeMined;
@@ -26,8 +25,6 @@ namespace Domains.Gameplay.Mining.Scripts
         [SerializeField] private MMFeedbacks oreHitFeedback;
         [SerializeField] private MMFeedbacks oreDestroyFeedback;
 
-        [FormerlySerializedAs("OreHitBehavior")]
-        public MMFeedbacks oreHitBehavior;
 
         // Unique ID for the ore node.
         public string UniqueID;
@@ -39,25 +36,8 @@ namespace Domains.Gameplay.Mining.Scripts
             StartCoroutine(InitializeAfterDestructableManager());
         }
 
-
-        // On click trigger.
-        private void OnMouseDown()
-        {
-            if (!PlayerFuelManager.IsPlayerOutOfFuel())
-                oreHitBehavior?.PlayFeedbacks();
-        }
-
-        private IEnumerator InitializeAfterDestructableManager()
-        {
-            // Wait a frame to ensure PickableManager has initialized
-            yield return null;
-
-            // Now check if this item should be destroyed
-            if (DestructableManager.IsDestuctableDestroyed(UniqueID)) Destroy(gameObject);
-        }
-
         // Sets number of pickups to spawn.
-        public void oreHit()
+        public void OreHit()
         {
             var currentFuel = PlayerFuelManager.FuelPoints;
             var maxFuel = PlayerFuelManager.MaxFuelPoints;
@@ -105,6 +85,32 @@ namespace Domains.Gameplay.Mining.Scripts
                 DestructableEvent.Trigger(DestructableEventType.Destroyed, UniqueID);
                 Destroy(gameObject);
             }
+        }
+
+
+        public void ShowInteractablePrompt()
+        {
+        }
+
+        public void HideInteractablePrompt()
+        {
+        }
+
+
+        // // On click trigger.
+        // private void OnMouseDown()
+        // {
+        //     if (!PlayerFuelManager.IsPlayerOutOfFuel())
+        //         oreHitBehavior?.PlayFeedbacks();
+        // }
+
+        private IEnumerator InitializeAfterDestructableManager()
+        {
+            // Wait a frame to ensure PickableManager has initialized
+            yield return null;
+
+            // Now check if this item should be destroyed
+            if (DestructableManager.IsDestuctableDestroyed(UniqueID)) Destroy(gameObject);
         }
 
 

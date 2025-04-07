@@ -31,7 +31,7 @@ namespace Domains.Gameplay.Tools
                     var textureIndex = textureDetector.GetTextureIndex(hit, out terrain);
 
                     // Check if the tool supports both terrain and object
-                    var canUse = tool.CanInteractWithTextureIndex(textureIndex) &&
+                    var canUse = tool.CanInteractWithTextureIndex(textureIndex) ||
                                  tool.CanInteractWithObject(hit.collider.gameObject);
 
                     if (canUse)
