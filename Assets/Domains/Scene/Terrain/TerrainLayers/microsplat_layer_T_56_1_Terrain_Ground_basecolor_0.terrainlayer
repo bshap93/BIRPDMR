@@ -7,8 +7,8 @@ TerrainLayer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: microsplat_layer_T_56_1_Terrain_Ground_basecolor_0
-  m_DiffuseTexture: {fileID: 2800000, guid: 63888ece6d264da4f8c5525f3aaf30e5, type: 3}
-  m_NormalMapTexture: {fileID: 2800000, guid: e9aa952ddcaa08849ab6169ca8706f02, type: 3}
+  m_DiffuseTexture: {fileID: 2800000, guid: b0b8583166cd7934d8a65950c051b18d, type: 3}
+  m_NormalMapTexture: {fileID: 2800000, guid: dc048730062ed41f3b91a5e85ad21a26, type: 3}
   m_MaskMapTexture: {fileID: 0}
   m_TileSize: {x: 2, y: 2}
   m_TileOffset: {x: 0, y: 0}
