@@ -43,7 +43,6 @@ crashlytics-build.properties
 /[Aa]ssets/ThirdParty/KUBIKOS-Sci-fi Cube World/*
 /[Aa]ssets/ThirdParty/_DLNK/*
 /[Aa]ssets/ThirdParty/
-/[Aa]ssets/Digger/*
 /[Aa]ssets/TutorialInfo/*
 /[Aa]ssets/ThirdParty/Modern UI Pack/*
 /[Aa]ssets/ThirdParty/PolygonSciFiWorlds/*
@@ -59,13 +58,7 @@ crashlytics-build.properties
 *.ver
 current_version.asset
 
-/[Pp]ackages/MicroSplat-Core/*
-/[Pp]ackages/MicroSplat-CoreURP6/*
-/[Pp]ackages/com.jbooth.microsplat.urp6/*
-/[Pp]ackages/com.jbooth.microsplat.core/*
-/[Pp]ackages/com.jbooth.microsplat.digger/*
-/[Pp]ackages/com.jbooth.microsplat.triplanar/*
-/[Pp]ackages/com.occasoftware.altos/*
+
 
 
 # Visual Studio / MonoDevelop generated

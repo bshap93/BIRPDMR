@@ -7,28 +7,6 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.jbooth.microsplat.core": {
-      "version": "file:com.jbooth.microsplat.core",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
-    "com.jbooth.microsplat.digger": {
-      "version": "file:com.jbooth.microsplat.digger",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.jbooth.microsplat.core": "3.9.0"
-      }
-    },
-    "com.jbooth.microsplat.triplanar": {
-      "version": "file:com.jbooth.microsplat.triplanar",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.jbooth.microsplat.core": "3.9.0"
-      }
-    },
     "com.singularitygroup.hotreload": {
       "version": "file:com.singularitygroup.hotreload",
       "depth": 0,
