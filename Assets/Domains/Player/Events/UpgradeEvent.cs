@@ -7,7 +7,8 @@ namespace Domains.Player.Events
     {
         UpgradePurchased,
         UpgradeFailed,
-        ShovelMiningSizeSet
+        ShovelMiningSizeSet,
+        PickaxeMiningSizeSet
     }
 
     public enum UpgradeType

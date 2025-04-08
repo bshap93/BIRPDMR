@@ -57,10 +57,9 @@ namespace Domains.Gameplay.Equipment.Scripts
             {
                 shovelTool.gameObject.SetActive(true);
                 scannerTool.gameObject.SetActive(false);
-                currentToolType = ToolType.MiningTool;
+                currentToolType = ToolType.Shovel;
                 currentToolIteration = ToolIteration.First;
-                EquipmentEvent.Trigger(EquipmentEventType.SwitchFromScanner);
-                EquipmentEvent.Trigger(EquipmentEventType.EquipMiner);
+                EquipmentEvent.Trigger(EquipmentEventType.EquipShovel);
                 equipMinerFeedbacks?.PlayFeedbacks();
 
                 // Set the current tool component
@@ -72,12 +71,24 @@ namespace Domains.Gameplay.Equipment.Scripts
                 scannerTool.gameObject.SetActive(true);
                 currentToolType = ToolType.Scanner;
                 currentToolIteration = ToolIteration.First;
-                EquipmentEvent.Trigger(EquipmentEventType.SwitchFromMiner);
                 EquipmentEvent.Trigger(EquipmentEventType.EquipScanner);
                 equipScannerFeedbacks?.PlayFeedbacks();
 
                 // Set the current tool component
                 CurrentToolComponent = scannerTool;
+            }
+            else if (index == 2)
+            {
+                shovelTool.gameObject.SetActive(false);
+                scannerTool.gameObject.SetActive(false);
+                currentToolType = ToolType.Pickaxe;
+                currentToolIteration = ToolIteration.First;
+                EquipmentEvent.Trigger(EquipmentEventType.EquipPickaxe);
+                CurrentToolComponent = null;
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning($"Invalid tool index: {index}");
             }
         }
     }

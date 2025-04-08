@@ -210,7 +210,7 @@ namespace Domains.Player.Scripts
                 // Apply the clamped size
                 if (shovelTool != null)
                 {
-                    shovelTool.SetShovelEffectSize(newSize, newOpacity);
+                    shovelTool.SetDiggerUsingToolEffectSize(newSize, newOpacity);
                     shovelToolEffectRadius = newSize;
                     var oldScale = miningTool.transform.localScale;
                     miningTool.transform.localScale = new Vector3(newWidth, oldScale.y, oldScale.z);
@@ -319,7 +319,7 @@ namespace Domains.Player.Scripts
                 // Directly update the ShovelMiningState
                 if (shovelTool != null)
                 {
-                    shovelTool.SetShovelEffectSize(shovelToolEffectRadius, shovelToolEffectOpacity);
+                    shovelTool.SetDiggerUsingToolEffectSize(shovelToolEffectRadius, shovelToolEffectOpacity);
                     UnityEngine.Debug.Log($"Setting shovel mining size to {shovelToolEffectRadius}");
                 }
                 else

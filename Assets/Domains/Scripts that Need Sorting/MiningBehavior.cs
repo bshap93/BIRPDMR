@@ -25,14 +25,27 @@ namespace Domains.Scripts_that_Need_Sorting
             GetTool();
             switch (toolType)
             {
-                case ToolType.MiningTool:
+                case ToolType.Shovel:
                     switch (toolIteration)
                     {
                         case ToolIteration.First:
-                            ToolEvent.Trigger(ToolEventType.UseTool, ToolType.MiningTool, ToolIteration.First);
+                            ToolEvent.Trigger(ToolEventType.UseTool, ToolType.Shovel, ToolIteration.First);
                             break;
                         case ToolIteration.Second:
-                            ToolEvent.Trigger(ToolEventType.UseTool, ToolType.MiningTool, ToolIteration.Second);
+                            ToolEvent.Trigger(ToolEventType.UseTool, ToolType.Shovel, ToolIteration.Second);
+                            break;
+                    }
+
+                    break;
+
+                case ToolType.Pickaxe:
+                    switch (toolIteration)
+                    {
+                        case ToolIteration.First:
+                            ToolEvent.Trigger(ToolEventType.UseTool, ToolType.Pickaxe, ToolIteration.First);
+                            break;
+                        case ToolIteration.Second:
+                            ToolEvent.Trigger(ToolEventType.UseTool, ToolType.Pickaxe, ToolIteration.Second);
                             break;
                     }
 

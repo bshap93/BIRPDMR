@@ -4,10 +4,9 @@ namespace Domains.Gameplay.Equipment.Events
 {
     public enum EquipmentEventType
     {
-        SwitchFromScanner,
-        SwitchFromMiner,
         EquipScanner,
-        EquipMiner
+        EquipShovel,
+        EquipPickaxe
     }
 
     public struct EquipmentEvent

@@ -1,0 +1,65 @@
+﻿using Digger.Modules.Core.Sources;
+using Digger.Modules.Runtime.Sources;
+using Domains.Player.Scripts;
+using Domains.Scripts_that_Need_Sorting;
+using MoreMountains.Feedbacks;
+using UnityEngine;
+using UnityEngine.Serialization;
+
+namespace Domains.Gameplay.Tools
+{
+    public abstract class BaseDiggerUsingTool : MonoBehaviour, IToolAction
+    {
+        [Header("Dig Settings")] public float diggerUsingRange = 5f;
+
+        [Header("Effect Settings")] public float minEffectRadius = 0.4f;
+
+        public float maxEffectRadius = 1.2f;
+        public float minEffectOpacity = 5f;
+        public float maxEffectOpacity = 150f;
+        [SerializeField] protected float miningCooldown = 1f; // seconds between digs
+
+        [FormerlySerializedAs("moveShovelDespiteFailHitFeedbacks")] [SerializeField]
+        protected MMFeedbacks moveToolDespiteFailHitFeedbacks;
+
+
+        public float effectRadius = 1f;
+        public float effectOpacity = 10f;
+        public float stalagmiteHeight = 100f;
+
+        public BrushType brush = BrushType.Stalagmite;
+        public ActionType action = ActionType.Dig;
+        public bool editAsynchronously = true;
+        public Camera mainCamera;
+
+        [Header("Feedbacks")] [Tooltip("Feedbacks to play when the tool cannot interact with an object")]
+        public MMFeedbacks cannotInteractFeedbacks;
+
+        public MMFeedbacks diggingFeedbacks;
+
+        [Header("FX")] public GameObject debrisEffectPrefab;
+
+        [Header("Allowed Layers")] [Tooltip("Allowed Unity layers for GameObjects (e.g., ore nodes)")]
+        public LayerMask diggableLayers;
+
+        [Tooltip("Allowed texture indices on terrain")]
+        public int[] allowedTerrainTextureIndices;
+
+        protected DiggerMasterRuntime digger;
+        protected float lastDigTime = -999f;
+        protected RaycastHit lastHit;
+        protected PlayerInteraction playerInteraction;
+
+
+        public ToolType ToolType { get; }
+        public abstract void UseTool(RaycastHit hit);
+
+        public abstract void PerformToolAction();
+
+        public abstract bool CanInteractWithTextureIndex(int index);
+
+        public abstract bool CanInteractWithObject(GameObject target);
+
+        public abstract void SetDiggerUsingToolEffectSize(float newEffectRadius, float newEffectOpacity);
+    }
+}

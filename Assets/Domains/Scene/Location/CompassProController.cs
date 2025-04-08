@@ -43,7 +43,8 @@ namespace Domains.Scene.Location
                 compassPro.showMiniMap = true;
                 compassPro.UpdateSettings();
             }
-            else if (eventType.EventType == EquipmentEventType.SwitchFromScanner)
+            else if (eventType.EventType == EquipmentEventType.EquipPickaxe ||
+                     eventType.EventType == EquipmentEventType.EquipShovel)
             {
                 compassPro.showOnScreenIndicators = false;
                 compassPro.showOffScreenIndicators = false;
