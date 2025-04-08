@@ -58,7 +58,14 @@ crashlytics-build.properties
 *.ver
 current_version.asset
 
-
+/[Pp]ackages/MicroSplat-Core/*
+/[Pp]ackages/MicroSplat-CoreURP6/*
+/[Pp]ackages/com.jbooth.microsplat.urp6/*
+/[Pp]ackages/com.jbooth.microsplat.core/*
+/[Pp]ackages/com.jbooth.microsplat.digger/*
+/[Pp]ackages/com.jbooth.microsplat.triplanar/*
+/[Pp]ackages/com.occasoftware.altos/*
+/
 
 
 # Visual Studio / MonoDevelop generated
