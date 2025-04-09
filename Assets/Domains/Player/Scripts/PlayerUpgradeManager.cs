@@ -242,11 +242,11 @@ namespace Domains.Player.Scripts
             {
                 // Calculate new size
                 var newEffectRadius = shovelTool.effectRadius * multiplier;
-                var newWidth = shovelToolWidth * multiplier;
+                // var newWidth = shovelToolWidth * multiplier;
                 var newOpacity = shovelToolEffectOpacity * secondaryMultiplier;
 
                 // Clamp the value
-                newWidth = Mathf.Clamp(newWidth, 1f, 2f);
+                // newWidth = Mathf.Clamp(newWidth, 1f, 2f);
 
                 // Apply the clamped size
                 if (shovelTool != null)
@@ -254,8 +254,8 @@ namespace Domains.Player.Scripts
                     shovelTool.SetDiggerUsingToolEffectSize(newEffectRadius, newOpacity);
                     shovelToolEffectRadius = newEffectRadius;
                     var oldScale = shovelTool.transform.localScale;
-                    shovelTool.transform.localScale = new Vector3(newWidth, oldScale.y, oldScale.z);
-                    shovelToolWidth = newWidth; // Update the width as well
+                    // shovelTool.transform.localScale = new Vector3(newWidth, oldScale.y, oldScale.z);
+                    // shovelToolWidth = newWidth; // Update the width as well
                 }
 
 
@@ -335,7 +335,7 @@ namespace Domains.Player.Scripts
             // Save mining tool size
             ES3.Save("ShovelToolEffectSize", shovelToolEffectRadius, "UpgradeSave.es3");
             ES3.Save("ShovelToolOpacity", shovelToolEffectOpacity, "UpgradeSave.es3");
-            ES3.Save("ShovelToolWidth", pickaxeMiningToolWidth, "UpgradeSave.es3");
+            ES3.Save("ShovelToolWidth", shovelToolWidth, "UpgradeSave.es3");
 
             // Save pickaxe tool size
             ES3.Save("PickaxeToolEffectSize", pickaxeToolEffectRadius, "UpgradeSave.es3");
@@ -401,13 +401,9 @@ namespace Domains.Player.Scripts
 
             // Load mining tool width and apply directly
             if (ES3.KeyExists("ShovelToolWidth", "UpgradeSave.es3"))
-            {
                 shovelToolWidth = ES3.Load<float>("ShovelToolWidth", "UpgradeSave.es3");
-
-                var oldScale = shovelTool.transform.localScale;
-                shovelTool.transform.localScale = new Vector3(shovelToolWidth, oldScale.y, oldScale.z);
-            }
-
+            // var oldScale = shovelTool.transform.localScale;
+            // shovelTool.transform.localScale = new Vector3(shovelToolWidth, oldScale.y, oldScale.z);
             // Load mining tool size and apply directly
             if (ES3.KeyExists("PickaxeToolEffectSize", "UpgradeSave.es3") &&
                 ES3.KeyExists("PickaxeToolOpacity", "UpgradeSave.es3"))
