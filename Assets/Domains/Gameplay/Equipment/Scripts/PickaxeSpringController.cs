@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Gameplay.Equipment.Scripts
 {
@@ -8,7 +9,9 @@ namespace Domains.Gameplay.Equipment.Scripts
     {
         [SerializeField] private MMSpringPosition springPosition;
         [SerializeField] private Vector3 moveToValue;
-        [SerializeField] private float hammerAnimationDelay;
+
+        [FormerlySerializedAs("hammerAnimationDelay")] [SerializeField]
+        private float pickaxeAnimationDelay;
 
         public void OnHammerUse()
         {
@@ -18,7 +21,7 @@ namespace Domains.Gameplay.Equipment.Scripts
         private IEnumerator SpringHammer()
         {
             springPosition.MoveToSubtractive(moveToValue);
-            yield return new WaitForSeconds(hammerAnimationDelay);
+            yield return new WaitForSeconds(pickaxeAnimationDelay);
             springPosition.MoveToAdditive(moveToValue);
         }
     }
