@@ -1,5 +1,6 @@
 using CompassNavigatorPro;
 using Domains.Gameplay.Equipment.Events;
+using Domains.Scripts_that_Need_Sorting;
 using MoreMountains.Tools;
 using UnityEngine;
 
@@ -36,15 +37,14 @@ namespace Domains.Scene.Location
 
         public void OnMMEvent(EquipmentEvent eventType)
         {
-            if (eventType.EventType == EquipmentEventType.EquipScanner)
+            if (eventType.ToolType == ToolType.Scanner)
             {
                 compassPro.showOnScreenIndicators = true;
                 compassPro.showOffScreenIndicators = true;
                 compassPro.showMiniMap = true;
                 compassPro.UpdateSettings();
             }
-            else if (eventType.EventType == EquipmentEventType.EquipPickaxe ||
-                     eventType.EventType == EquipmentEventType.EquipShovel)
+            else if (eventType.ToolType == ToolType.Pickaxe || eventType.ToolType == ToolType.Shovel)
             {
                 compassPro.showOnScreenIndicators = false;
                 compassPro.showOffScreenIndicators = false;

@@ -1,16 +1,19 @@
 ﻿using Domains.Scripts_that_Need_Sorting;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 namespace Domains.Gameplay.Tools.ToolSpecifics
 {
     public class ScannerTool : MonoBehaviour, IToolAction
     {
-        public ScannerTool(ToolType toolType)
-        {
-            ToolType = toolType;
-        }
+        [SerializeField] private ToolType toolType;
+        [SerializeField] private ToolIteration toolIteration;
+        [SerializeField] private MMFeedbacks equipFeedbacks;
 
-        public ToolType ToolType { get; }
+        public ToolType ToolType => toolType;
+        public ToolIteration ToolIteration => toolIteration;
+        public MMFeedbacks EquipFeedbacks => equipFeedbacks;
+
 
         public void UseTool(RaycastHit hit)
         {

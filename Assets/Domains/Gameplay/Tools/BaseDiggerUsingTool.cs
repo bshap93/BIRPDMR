@@ -45,13 +45,19 @@ namespace Domains.Gameplay.Tools
         [Tooltip("Allowed texture indices on terrain")]
         public int[] allowedTerrainTextureIndices;
 
+        [SerializeField] protected ToolType toolType;
+        [SerializeField] protected ToolIteration toolIteration;
+        [SerializeField] protected MMFeedbacks equipFeedbacks;
+
         protected DiggerMasterRuntime digger;
         protected float lastDigTime = -999f;
         protected RaycastHit lastHit;
         protected PlayerInteraction playerInteraction;
 
+        public ToolType ToolType => toolType;
+        public ToolIteration ToolIteration => toolIteration;
+        public MMFeedbacks EquipFeedbacks => equipFeedbacks;
 
-        public ToolType ToolType { get; }
         public abstract void UseTool(RaycastHit hit);
 
         public abstract void PerformToolAction();

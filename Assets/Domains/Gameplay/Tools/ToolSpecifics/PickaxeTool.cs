@@ -1,6 +1,5 @@
 ﻿using System;
 using Domains.Player.Events;
-using Domains.Scripts_that_Need_Sorting;
 using MoreMountains.Tools;
 using UnityEngine;
 
@@ -8,8 +7,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 {
     public class PickaxeTool : BaseDiggerUsingTool, MMEventListener<UpgradeEvent>
     {
-        public ToolType ToolType { get; }
-
         private void OnEnable()
         {
             this.MMEventStartListening();
