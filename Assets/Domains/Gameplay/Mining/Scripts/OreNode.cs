@@ -25,6 +25,8 @@ namespace Domains.Gameplay.Mining.Scripts
         [SerializeField] private MMFeedbacks oreHitFeedback;
         [SerializeField] private MMFeedbacks oreDestroyFeedback;
 
+        public int OreHardness; // Hardness of the ore node.
+
 
         // Unique ID for the ore node.
         public string UniqueID;
@@ -99,6 +101,11 @@ namespace Domains.Gameplay.Mining.Scripts
                 var fx = Instantiate(failHitParticles, hitPoint, Quaternion.identity);
                 Destroy(fx, 2f);
             }
+        }
+
+        public int GetCurrentMinableHardness()
+        {
+            return OreHardness;
         }
 
 

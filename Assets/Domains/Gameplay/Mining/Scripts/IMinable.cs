@@ -6,5 +6,7 @@ namespace Domains.Gameplay.Mining.Scripts
     {
         void MinableMineHit();
         void MinableFailHit(Vector3 hitPoint);
+
+        int GetCurrentMinableHardness();
     }
 }

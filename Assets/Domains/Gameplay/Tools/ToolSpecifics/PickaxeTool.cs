@@ -10,6 +10,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 {
     public class PickaxeTool : BaseDiggerUsingTool, MMEventListener<UpgradeEvent>
     {
+        public int hardnessCanBreak;
+
         private void Awake()
         {
             digger = FindFirstObjectByType<DiggerMasterRuntime>();
@@ -71,8 +73,16 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 var minable = hit.collider.GetComponent<IMinable>();
                 if (minable != null)
                 {
-                    minable.MinableFailHit(hit.point);
-                    moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
+                    if (minable.GetCurrentMinableHardness() <= hardnessCanBreak)
+                    {
+                        minable.MinableMineHit();
+                        moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
+                    }
+                    else
+                    {
+                        minable.MinableFailHit(hit.point);
+                        moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
+                    }
                 }
             }
 
