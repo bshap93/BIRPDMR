@@ -1,4 +1,5 @@
-﻿using Domains.Scripts_that_Need_Sorting;
+﻿using Domains.Gameplay.Equipment.Scripts;
+using Domains.Scripts_that_Need_Sorting;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 
@@ -9,6 +10,11 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         [SerializeField] private ToolType toolType;
         [SerializeField] private ToolIteration toolIteration;
         [SerializeField] private MMFeedbacks equipFeedbacks;
+        [SerializeField] private TextureDetector textureDetector;
+        [SerializeField] private LayerMask playerMask;
+        [SerializeField] private float maxToolRange = 5f;
+        [SerializeField] private Camera mainCamera;
+        private RaycastHit lastHit;
 
         public ToolType ToolType => toolType;
         public ToolIteration ToolIteration => toolIteration;
@@ -32,6 +38,26 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         public bool CanInteractWithObject(GameObject target)
         {
             return false;
+        }
+
+        public int GetCurrentTextureIndex()
+        {
+            var notPlayerMask = ~playerMask;
+            if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out var hit,
+                    maxToolRange, notPlayerMask))
+            {
+                var tool = PlayerEquipment.Instance.CurrentToolComponent;
+                if (tool == null) return -1;
+
+                // Get terrain texture index at hit point
+                Terrain terrain;
+                var textureIndex = textureDetector.GetTextureIndex(hit, out terrain);
+
+
+                return textureIndex;
+            }
+
+            return -1;
         }
     }
 }

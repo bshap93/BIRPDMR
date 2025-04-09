@@ -15,5 +15,7 @@ namespace Domains.Gameplay.Tools
 
         bool CanInteractWithTextureIndex(int index);
         bool CanInteractWithObject(GameObject target);
+
+        int GetCurrentTextureIndex();
     }
 }

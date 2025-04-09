@@ -49,6 +49,9 @@ namespace Domains.Gameplay.Tools
         [SerializeField] protected ToolIteration toolIteration;
         [SerializeField] protected MMFeedbacks equipFeedbacks;
 
+        [FormerlySerializedAs("_textureDetector")] [SerializeField]
+        protected TextureDetector textureDetector;
+
         protected DiggerMasterRuntime digger;
         protected float lastDigTime = -999f;
         protected RaycastHit lastHit;
@@ -62,10 +65,36 @@ namespace Domains.Gameplay.Tools
 
         public abstract void PerformToolAction();
 
-        public abstract bool CanInteractWithTextureIndex(int index);
+        public bool CanInteractWithTextureIndex(int index)
+        {
+            foreach (var allowed in allowedTerrainTextureIndices)
+                if (index == allowed)
+                    return true;
+            return false;
+        }
 
-        public abstract bool CanInteractWithObject(GameObject target);
+        public bool CanInteractWithObject(GameObject target)
+        {
+            return (diggableLayers.value & (1 << target.layer)) != 0;
+        }
 
-        public abstract void SetDiggerUsingToolEffectSize(float newEffectRadius, float newEffectOpacity);
+        public int GetCurrentTextureIndex()
+        {
+            return textureDetector.GetTextureIndex(lastHit, out _);
+        }
+
+
+        public void SetDiggerUsingToolEffectSize(float newEffectRadius, float newEffectOpacity)
+        {
+            // Apply safety limits
+
+
+            // Validate and apply size
+            effectRadius = Mathf.Clamp(newEffectRadius, minEffectRadius, maxEffectRadius);
+            effectOpacity = Mathf.Clamp(newEffectOpacity, minEffectOpacity, maxEffectOpacity);
+
+            // Log the assigned size for debugging
+            UnityEngine.Debug.Log($"ShovelMiningState.size set to: {effectRadius}, {effectOpacity}");
+        }
     }
 }

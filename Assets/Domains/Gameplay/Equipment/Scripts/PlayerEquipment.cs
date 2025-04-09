@@ -4,6 +4,7 @@ using Domains.Input.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Gameplay.Equipment.Scripts
 {
@@ -20,7 +21,8 @@ namespace Domains.Gameplay.Equipment.Scripts
 
         [SerializeField] private int currentToolIndex;
 
-        [SerializeField] private MonoBehaviour[] toolBehaviours; // Shown in Inspector
+        [FormerlySerializedAs("toolBehaviours")] [SerializeField]
+        private GameObject[] toolObjects; // Shown in Inspector
 
         public IToolAction CurrentToolComponent;
 
@@ -34,10 +36,10 @@ namespace Domains.Gameplay.Equipment.Scripts
             Instance = this;
 
             // Convert MonoBehaviours to IToolAction
-            Tools = new IToolAction[toolBehaviours.Length];
-            for (var i = 0; i < toolBehaviours.Length; i++)
+            Tools = new IToolAction[toolObjects.Length];
+            for (var i = 0; i < toolObjects.Length; i++)
             {
-                Tools[i] = toolBehaviours[i] as IToolAction;
+                Tools[i] = toolObjects[i].GetComponent<IToolAction>();
                 if (Tools[i] == null) UnityEngine.Debug.LogError($"Tool at index {i} does not implement IToolAction.");
             }
         }

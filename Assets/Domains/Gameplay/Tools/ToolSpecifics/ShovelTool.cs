@@ -1,4 +1,5 @@
-﻿using Digger.Modules.Runtime.Sources;
+﻿using System.Linq;
+using Digger.Modules.Runtime.Sources;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
@@ -41,6 +42,9 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         public override void PerformToolAction()
         {
+            var textureIndex = GetCurrentTextureIndex();
+
+
             if (Time.time < lastDigTime + miningCooldown)
                 return;
 
@@ -48,6 +52,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
             if (playerInteraction == null || digger == null)
                 return;
+
 
             var notPlayerMask = ~playerInteraction.playerLayerMask;
             if (!Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out var hit,
@@ -74,6 +79,9 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 }
             }
 
+            // Return after triggering failed mining feedbacks, and before digging
+            if (!allowedTerrainTextureIndices.Contains(textureIndex)) return;
+
 
             // Debris FX
             if (debrisEffectPrefab)
@@ -89,7 +97,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
             // Dig!
             var digPosition = hit.point + mainCamera.transform.forward * 0.3f;
-            var textureIndex = 1;
 
             if (editAsynchronously)
                 digger.ModifyAsyncBuffured(digPosition, brush, action, textureIndex, effectOpacity, effectRadius,
@@ -100,31 +107,31 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
         }
 
-        public override bool CanInteractWithTextureIndex(int index)
-        {
-            foreach (var allowed in allowedTerrainTextureIndices)
-                if (index == allowed)
-                    return true;
-            return false;
-        }
+        // public override bool CanInteractWithTextureIndex(int index)
+        // {
+        //     foreach (var allowed in allowedTerrainTextureIndices)
+        //         if (index == allowed)
+        //             return true;
+        //     return false;
+        // }
 
 
-        public override bool CanInteractWithObject(GameObject target)
-        {
-            return (diggableLayers.value & (1 << target.layer)) != 0;
-        }
+        // public override bool CanInteractWithObject(GameObject target)
+        // {
+        //     return (diggableLayers.value & (1 << target.layer)) != 0;
+        // }
 
-        public override void SetDiggerUsingToolEffectSize(float newEffectRadius, float newEffectOpacity)
-        {
-            // Apply safety limits
-
-
-            // Validate and apply size
-            effectRadius = Mathf.Clamp(newEffectRadius, minEffectRadius, maxEffectRadius);
-            effectOpacity = Mathf.Clamp(newEffectOpacity, minEffectOpacity, maxEffectOpacity);
-
-            // Log the assigned size for debugging
-            UnityEngine.Debug.Log($"ShovelMiningState.size set to: {effectRadius}, {effectOpacity}");
-        }
+        // public override void SetDiggerUsingToolEffectSize(float newEffectRadius, float newEffectOpacity)
+        // {
+        //     // Apply safety limits
+        //
+        //
+        //     // Validate and apply size
+        //     effectRadius = Mathf.Clamp(newEffectRadius, minEffectRadius, maxEffectRadius);
+        //     effectOpacity = Mathf.Clamp(newEffectOpacity, minEffectOpacity, maxEffectOpacity);
+        //
+        //     // Log the assigned size for debugging
+        //     UnityEngine.Debug.Log($"ShovelMiningState.size set to: {effectRadius}, {effectOpacity}");
+        // }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Domains.Gameplay.Equipment.Scripts;
 using Domains.Gameplay.Tools.ToolSpecifics;
 using Domains.Items.Events;
 using Domains.Player.Events;
@@ -44,7 +45,7 @@ namespace Domains.Player.Scripts
             // Find ShovelMiningState if not assigned
             if (shovelTool == null)
             {
-                shovelTool = FindFirstObjectByType<ShovelTool>();
+                shovelTool = FindShovelTool();
                 if (shovelTool == null)
                     UnityEngine.Debug.LogWarning(
                         "ShovelMiningState not found. Mining upgrades may not apply correctly.");
@@ -88,6 +89,16 @@ namespace Domains.Player.Scripts
                 // The event is just to notify other components that an upgrade was purchased
                 // Instead, maybe log the event
                 UnityEngine.Debug.Log($"Received UpgradePurchased event for {eventType.UpgradeData.upgradeTypeName}");
+        }
+
+        private ShovelTool FindShovelTool()
+        {
+            foreach (var tool in PlayerEquipment.Instance.Tools)
+                if (tool is ShovelTool shovel)
+                    return shovel;
+
+            UnityEngine.Debug.LogWarning("No ShovelTool found in PlayerEquipment.");
+            return null;
         }
 
 

@@ -21,5 +21,5 @@ MonoBehaviour:
   InitialUpgradeState: 0
   initialShovelToolEffectRadius: 0.8
   SkipTutorial: 0
-  MiningToolWidth: 0
-  initialShovelToolEffectOpacity: 100
+  MiningToolWidth: 0.64
+  initialShovelToolEffectOpacity: 50
