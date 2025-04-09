@@ -40,7 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal3:
-        m_Texture: {fileID: 2800000, guid: 87a0523e082bf194b977fe64a3c27afc, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0cecf139c70fbaa48919a64c9388989e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Splat0:
@@ -56,7 +56,7 @@ Material:
         m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     - _Splat3:
-        m_Texture: {fileID: 2800000, guid: 6291f62b42d5db8498d765d617e8f5dc, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0f80abba0fa3fba4780f0d4d26c55add, type: 3}
         m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
