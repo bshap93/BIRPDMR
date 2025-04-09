@@ -119,16 +119,22 @@ namespace Domains.Gameplay.Mining.Scripts
         }
 
 
-        private IEnumerator Animate() //Knock animation coroutine.
+        private IEnumerator Animate()
         {
+            var startRotation = transform.localRotation;
+            var endRotation = startRotation * Quaternion.Euler(knockAngle);
+
             float t = 0;
             while (t < knockDuration)
             {
                 var v = knockCurve.Evaluate(t / knockDuration);
-                transform.localRotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(knockAngle), v);
+                transform.localRotation = Quaternion.Lerp(startRotation, endRotation, v);
                 t += Time.deltaTime;
                 yield return null;
             }
+
+            // Optional: restore to exact start if you want
+            transform.localRotation = startRotation;
         }
     }
 }

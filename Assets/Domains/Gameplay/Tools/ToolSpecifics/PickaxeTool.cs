@@ -107,9 +107,9 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
             if (editAsynchronously)
                 digger.ModifyAsyncBuffured(digPosition, brush, action, textureIndex, effectOpacity, effectRadius,
-                    stalagmiteHeight);
+                    stalagmiteHeight, stalagmiteUpsideDown: true);
             else
-                digger.Modify(digPosition, brush, action, textureIndex, effectOpacity, effectRadius);
+                digger.Modify(digPosition, brush, action, textureIndex, effectOpacity, effectRadius, stalagmiteHeight, stalagmiteUpsideDown: true );
 
             FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
         }

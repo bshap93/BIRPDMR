@@ -968,6 +968,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3523132954729950282}
+  - component: {fileID: 3030787477994541351}
   m_Layer: 0
   m_Name: DecimatedStonePieces
   m_TagString: Untagged
@@ -1003,6 +1004,35 @@ Transform:
   - {fileID: 9219219078538622433}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3030787477994541351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6129471906034433602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015d04c0fd925d34f9f4c8ed46b746d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disintegrationDelay: 1.5
+  disintegrationFeedback: {fileID: 0}
+  disintegrationParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
+  pieces:
+  - {fileID: 5796193320972786303}
+  - {fileID: 7632137511637821525}
+  - {fileID: 6799984655012400236}
+  - {fileID: 8464235616738593212}
+  - {fileID: 7036070766179224837}
+  - {fileID: 3307152270349898076}
+  - {fileID: 6085473652072612255}
+  - {fileID: 3743287672326687207}
+  - {fileID: 1839185551541273740}
+  - {fileID: 7628226928389665168}
+  - {fileID: 8857769814990419110}
+  - {fileID: 1958348501272403280}
+  - {fileID: 5298379155928831333}
 --- !u!1 &6799984655012400236
 GameObject:
   m_ObjectHideFlags: 0

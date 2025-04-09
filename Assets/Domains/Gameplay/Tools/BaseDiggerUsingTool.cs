@@ -19,6 +19,7 @@ namespace Domains.Gameplay.Tools
         public float maxEffectOpacity = 150f;
         [SerializeField] protected float miningCooldown = 1f; // seconds between digs
 
+
         [FormerlySerializedAs("moveShovelDespiteFailHitFeedbacks")] [SerializeField]
         protected MMFeedbacks moveToolDespiteFailHitFeedbacks;
 

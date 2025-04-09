@@ -20,6 +20,9 @@ MonoBehaviour:
   InitialCurrency: 10000
   InitialUpgradeState: 0
   initialShovelToolEffectRadius: 0.8
+  initialPickaxeToolEffectRadius: 1.2
   SkipTutorial: 0
-  MiningToolWidth: 0.64
-  initialShovelToolEffectOpacity: 50
+  shovelMiningToolWidth: 0.64
+  pickaxeMiningToolWidth: 0.64
+  initialShovelToolEffectOpacity: 150
+  pickaxeMiningToolEffectOpacity: 150
