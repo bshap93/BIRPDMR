@@ -708,10 +708,12 @@ MonoBehaviour:
   knockDuration: 0.25
   oreHitFeedback: {fileID: 1277248301386597315}
   oreDestroyFeedback: {fileID: 6017877751092101060}
-  OreHardness: 1
+  OreHardness: 0
   UniqueID: fc6ff7ef-2568-41f1-9925-60716d9eac2d
   failHitFeedbacks: {fileID: 2879248722755317898}
   failHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
+  oreHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
+  oreDestroyParticles: {fileID: 6835221663383594993, guid: 9b809733ac7d0564681bf834d736489b, type: 3}
 --- !u!1 &8425722701829819162
 GameObject:
   m_ObjectHideFlags: 0

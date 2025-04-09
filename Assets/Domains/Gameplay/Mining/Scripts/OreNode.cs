@@ -33,6 +33,8 @@ namespace Domains.Gameplay.Mining.Scripts
 
         [SerializeField] private MMFeedbacks failHitFeedbacks;
         [SerializeField] private GameObject failHitParticles;
+        [SerializeField] private GameObject oreHitParticles;
+        [SerializeField] private GameObject oreDestroyParticles;
         private int dropIndex;
         private int hitIndex;
 
@@ -75,9 +77,17 @@ namespace Domains.Gameplay.Mining.Scripts
 
             if (hitIndex < hitsToDestroy) //Controls when to shatter.
             {
+                if (oreHitParticles != null)
+                {
+                    var fx = Instantiate(oreHitParticles, transform.position, Quaternion.identity);
+                    Destroy(fx, 2f);
+                }
+
+                oreHitFeedback?.PlayFeedbacks();
+
+
                 // Knock animation.
                 StartCoroutine(Animate());
-                oreHitFeedback?.PlayFeedbacks();
             }
             else
             {
@@ -85,7 +95,13 @@ namespace Domains.Gameplay.Mining.Scripts
                 oreDestroyFeedback?.PlayFeedbacks();
                 var position = transform.position;
                 var rotation = transform.rotation;
-                var spawnedPieces = Instantiate(pieces, position, rotation);
+                Instantiate(pieces, position, rotation);
+
+                if (oreDestroyParticles != null)
+                {
+                    var fx = Instantiate(oreDestroyParticles, transform.position, Quaternion.identity);
+                    Destroy(fx, 2f);
+                }
 
                 DestructableEvent.Trigger(DestructableEventType.Destroyed, UniqueID);
                 Destroy(gameObject);
