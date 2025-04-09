@@ -10,35 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b82d13edcd624048b3e42078ab62b87, type: 3}
-  m_Name: DrillUpgrades
+  m_Name: PickaxeUpgrades
   m_EditorClassIdentifier: 
-  upgradeTypeName: Mining
+  upgradeTypeName: Pickaxe
   upgradeNames:
-  - Shovel LV2
-  - Drill LV1
-  - Drill LV2
-  - Null Ray Atomizer
+  - Pickaxe LV1
+  - Pickaxe LV2
   description: 
-  upgradeCosts: 2c01000040060000800c0000581b0000
+  upgradeCosts: 90010000d0070000
   upgradeSounds:
   - {fileID: 8300000, guid: aa76393b307c859428fa0d6a35c36365, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  effectTypes: 00000000000000000000000000000000
+  - {fileID: 8300000, guid: aa76393b307c859428fa0d6a35c36365, type: 3}
+  effectTypes: 0000000000000000
   effectValues:
   - 1.5
-  - 2
-  - 2
-  - 2
+  - 1.5
   toolChangeIDs:
-  - 
-  - Drill
-  - 
-  - Atomizer
-  secondaryEffectTypes: 00000000000000000000000000000000
-  secondaryEffectValues:
   - 2
-  - 0
+  - 2
+  secondaryEffectTypes: 0000000000000000
+  secondaryEffectValues:
   - 0
   - 0

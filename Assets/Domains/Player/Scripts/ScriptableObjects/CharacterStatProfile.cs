@@ -23,11 +23,18 @@ namespace Domains.Player.Scripts.ScriptableObjects
         [FormerlySerializedAs("InitialMiningToolSize")] [Header("Tool Stats")]
         public float initialShovelToolEffectRadius;
 
+        public float initialPickaxeToolEffectRadius;
+
         [Header("Skip Tutorial")] public bool SkipTutorial;
 
-        [Header("Mining Tool Width")] public float MiningToolWidth;
+        [FormerlySerializedAs("MiningToolWidth")] [Header("Mining Tool Width")]
+        public float shovelMiningToolWidth;
+
+        public float pickaxeMiningToolWidth;
 
         [FormerlySerializedAs("MiningToolOpacity")] [Header("Mining Tool Height")]
         public float initialShovelToolEffectOpacity;
+
+        public float pickaxeMiningToolEffectOpacity;
     }
 }
