@@ -3,13 +3,14 @@ using Domains.Input.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using ThirdParty.Character_Controller_Pro.Implementation.Scripts.Character.States;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Gameplay.Tools
 {
     public class UsingToolState : CharacterState
     {
         public Camera mainCamera;
-        [SerializeField] private TextureDetector textureDetector;
+        [FormerlySerializedAs("textureDetector")] [SerializeField] private TerrainLayerDetector terrainLayerDetector;
         [SerializeField] private LayerMask playerMask;
         [SerializeField] private float maxToolRange = 5f;
 
@@ -28,7 +29,7 @@ namespace Domains.Gameplay.Tools
 
                     // Get terrain texture index at hit point
                     Terrain terrain;
-                    var textureIndex = textureDetector.GetTextureIndex(hit, out terrain);
+                    var textureIndex = terrainLayerDetector.GetTextureIndex(hit, out terrain);
 
                     // Check if the tool supports both terrain and object
                     var canUse = tool.CanInteractWithTextureIndex(textureIndex) ||

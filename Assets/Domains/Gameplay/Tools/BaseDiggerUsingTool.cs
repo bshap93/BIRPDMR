@@ -50,8 +50,8 @@ namespace Domains.Gameplay.Tools
         [SerializeField] protected ToolIteration toolIteration;
         [SerializeField] protected MMFeedbacks equipFeedbacks;
 
-        [FormerlySerializedAs("_textureDetector")] [SerializeField]
-        protected TextureDetector textureDetector;
+        [FormerlySerializedAs("textureDetector")] [FormerlySerializedAs("_textureDetector")] [SerializeField]
+        protected TerrainLayerDetector terrainLayerDetector;
 
         protected DiggerMasterRuntime digger;
         protected float lastDigTime = -999f;
@@ -81,7 +81,7 @@ namespace Domains.Gameplay.Tools
 
         public int GetCurrentTextureIndex()
         {
-            return textureDetector.GetTextureIndex(lastHit, out _);
+            return terrainLayerDetector.GetTextureIndex(lastHit, out _);
         }
 
 

@@ -28,8 +28,8 @@ namespace Domains.Player.Scripts
         public Light digSpotlight;
         public float spotlightStrengthenDepth = 2f;
 
-        [FormerlySerializedAs("ForwardTextureDetector")]
-        public TextureDetector forwardTextureDetector;
+        [FormerlySerializedAs("forwardTextureDetector")] [FormerlySerializedAs("ForwardTextureDetector")]
+        public TerrainLayerDetector forwardTerrainLayerDetector;
 
         private DiggerMasterRuntime _diggerMasterRuntime;
         private bool _interactablePrompt;
@@ -42,7 +42,7 @@ namespace Domains.Player.Scripts
 
             // Find the TextureDetector in the scene
 
-            if (forwardTextureDetector == null)
+            if (forwardTerrainLayerDetector == null)
                 UnityEngine.Debug.LogWarning(
                     "TextureDetector not found in the scene. Cannot track texture information.");
         }
@@ -93,9 +93,9 @@ namespace Domains.Player.Scripts
         // New method to update texture information
         private void UpdateTextureInformation()
         {
-            if (forwardTextureDetector != null && !string.IsNullOrEmpty(forwardTextureDetector.texture))
+            if (forwardTerrainLayerDetector != null && !string.IsNullOrEmpty(forwardTerrainLayerDetector.texture))
                 // Extract name and index from TextureDetector's texture string
-                if (ExtractNameAndIndex(forwardTextureDetector.texture, out var name, out var index))
+                if (ExtractNameAndIndex(forwardTerrainLayerDetector.texture, out var name, out var index))
                 {
                     // Update our tracking variables
                 }

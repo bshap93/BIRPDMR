@@ -2,6 +2,7 @@
 using Domains.Scripts_that_Need_Sorting;
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Gameplay.Tools.ToolSpecifics
 {
@@ -10,7 +11,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         [SerializeField] private ToolType toolType;
         [SerializeField] private ToolIteration toolIteration;
         [SerializeField] private MMFeedbacks equipFeedbacks;
-        [SerializeField] private TextureDetector textureDetector;
+        [FormerlySerializedAs("textureDetector")] [SerializeField] private TerrainLayerDetector terrainLayerDetector;
         [SerializeField] private LayerMask playerMask;
         [SerializeField] private float maxToolRange = 5f;
         [SerializeField] private Camera mainCamera;
@@ -51,7 +52,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
                 // Get terrain texture index at hit point
                 Terrain terrain;
-                var textureIndex = textureDetector.GetTextureIndex(hit, out terrain);
+                var textureIndex = terrainLayerDetector.GetTextureIndex(hit, out terrain);
 
 
                 return textureIndex;

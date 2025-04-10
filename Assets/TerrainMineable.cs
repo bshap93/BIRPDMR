@@ -3,10 +3,11 @@ using Domains.Gameplay.Mining.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TerrainMineable : MonoBehaviour, IMinable
 {
-    [SerializeField] private TextureDetector textureDetector;
+    [FormerlySerializedAs("textureDetector")] [SerializeField] private TerrainLayerDetector terrainLayerDetector;
     [SerializeField] private MMFeedbacks failHitFeedbacks;
     [SerializeField] private GameObject failHitParticles;
     [SerializeField] private int[] hardnessLevels;

@@ -146,6 +146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3480225358655319098}
+  - component: {fileID: 2678110990285133213}
   m_Layer: 0
   m_Name: DecimatedIronABPieces
   m_TagString: Untagged
@@ -176,6 +177,32 @@ Transform:
   - {fileID: 1447113376095351530}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2678110990285133213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2219998533963345909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015d04c0fd925d34f9f4c8ed46b746d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disintegrationDelay: 1
+  fadeDuration: 0.25
+  maxStagger: 0.2
+  disintegrationFeedback: {fileID: 4042057889848282364, guid: be2b4a1dc102cb745a6c5ccc747cf38c, type: 3}
+  disintegrationParticles: {fileID: 6948713295122520351, guid: 7c8451a6a150e8e47ad145dce7d7ecf0, type: 3}
+  pieces:
+  - {fileID: 3925506098345134466}
+  - {fileID: 6950071884384455168}
+  - {fileID: 3710769355641364608}
+  - {fileID: 6156174097579206532}
+  - {fileID: 626788095265612345}
+  - {fileID: 4434878662767321378}
+  - {fileID: 6084264389185845069}
+  - {fileID: 3656488808528174991}
 --- !u!1 &3656488808528174991
 GameObject:
   m_ObjectHideFlags: 0

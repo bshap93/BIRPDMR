@@ -12,6 +12,7 @@ using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using ThirdParty.Character_Controller_Pro.Implementation.Scripts.Character.States;
 using UnityEngine;
+using UnityEngine.Serialization;
 using PointedObjectInfo = Domains.Player.Events.PointedObjectInfo;
 
 namespace Domains.Gameplay.Mining.Scripts
@@ -48,8 +49,8 @@ namespace Domains.Gameplay.Mining.Scripts
         public PlayerInteraction playerInteraction;
 
         // public TextureDetector textureDetector;
-        public TextureDetector ForwardTextureDetector;
-        public TextureDetector DownTextureDetector;
+        [FormerlySerializedAs("ForwardTextureDetector")] public TerrainLayerDetector forwardTerrainLayerDetector;
+        [FormerlySerializedAs("DownTextureDetector")] public TerrainLayerDetector downTerrainLayerDetector;
 
 
         [Header("Animation")] [SerializeField] protected string groundedParameter = "Grounded";
@@ -200,7 +201,7 @@ namespace Domains.Gameplay.Mining.Scripts
                 if (playerInteraction == null)
                     return;
 
-                var textureIndex = ForwardTextureDetector.textureIndex;
+                var textureIndex = forwardTerrainLayerDetector.textureIndex;
                 var tool = PlayerEquipment.Instance.CurrentToolComponent;
 
                 if (tool == null)
@@ -712,7 +713,7 @@ namespace Domains.Gameplay.Mining.Scripts
 
         private void PlayFootstepFeedback()
         {
-            switch (DownTextureDetector.textureIndex)
+            switch (downTerrainLayerDetector.textureIndex)
             {
                 case 1: // Chunk terrain from Digger
                     chunkFootstepFeedbacks?.PlayFeedbacks();

@@ -4,11 +4,11 @@ using UnityEngine;
 public class TerrainManager : MonoBehaviour
 {
     public static int CurrentTextureIndex;
-    private TextureDetector textureDetector;
+    private TerrainLayerDetector _terrainLayerDetector;
 
     private void Awake()
     {
-        textureDetector = FindFirstObjectByType<TextureDetector>();
+        _terrainLayerDetector = FindFirstObjectByType<TerrainLayerDetector>();
         CurrentTextureIndex = -1;
     }
 }
