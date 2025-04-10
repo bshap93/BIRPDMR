@@ -25,8 +25,7 @@ namespace Domains.Player.Scripts
         public bool[] diggableLayers;
 
         public float currentDigDepth;
-        public Light digSpotlight;
-        public float spotlightStrengthenDepth = 2f;
+
 
         [FormerlySerializedAs("forwardTextureDetector")] [FormerlySerializedAs("ForwardTextureDetector")]
         public TerrainLayerDetector forwardTerrainLayerDetector;
@@ -54,7 +53,6 @@ namespace Domains.Player.Scripts
             // Update texture information from TextureDetector if available
             UpdateTextureInformation();
             currentDigDepth = transform.position.y;
-            UpdateLight();
 
             if (CustomInputBindings.IsInteractPressed()) // Press E to interact
                 PerformInteraction();
@@ -72,23 +70,7 @@ namespace Domains.Player.Scripts
                 playerCamera.transform.TransformDirection(Vector3.forward) * interactionDistance);
         }
 
-        private void UpdateLight()
-        {
-            if (digSpotlight != null)
-            {
-                var depth = currentDigDepth;
-                if (Mathf.Abs(currentDigDepth) > spotlightStrengthenDepth)
-                {
-                    digSpotlight.spotAngle = 45f;
-                    digSpotlight.intensity = 1.5f;
-                }
-                else
-                {
-                    digSpotlight.spotAngle = 30f;
-                    digSpotlight.intensity = 1f;
-                }
-            }
-        }
+
 
         // New method to update texture information
         private void UpdateTextureInformation()
