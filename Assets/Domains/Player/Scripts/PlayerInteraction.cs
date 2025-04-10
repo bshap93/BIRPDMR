@@ -3,6 +3,7 @@ using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Input.Scripts;
+using Domains.Player.Events;
 using Domains.Scripts_that_Need_Sorting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -26,12 +27,14 @@ namespace Domains.Player.Scripts
 
         public float currentDigDepth;
 
-
         [FormerlySerializedAs("forwardTextureDetector")] [FormerlySerializedAs("ForwardTextureDetector")]
         public TerrainLayerDetector forwardTerrainLayerDetector;
 
         private DiggerMasterRuntime _diggerMasterRuntime;
         private bool _interactablePrompt;
+        private readonly float _positionEventInterval = 0.2f; // Trigger every 0.2 seconds (5 times per second)
+
+        private float _positionEventTimer;
 
         private void Start()
         {
@@ -53,6 +56,14 @@ namespace Domains.Player.Scripts
             // Update texture information from TextureDetector if available
             UpdateTextureInformation();
             currentDigDepth = transform.position.y;
+            // PlayerPositionEvent.Trigger(PlayerPositionEventType.ReportDepth, transform.position);
+
+            _positionEventTimer += Time.deltaTime;
+            if (_positionEventTimer >= _positionEventInterval)
+            {
+                _positionEventTimer = 0f;
+                PlayerPositionEvent.Trigger(PlayerPositionEventType.ReportDepth, transform.position);
+            }
 
             if (CustomInputBindings.IsInteractPressed()) // Press E to interact
                 PerformInteraction();
@@ -69,7 +80,6 @@ namespace Domains.Player.Scripts
                 playerCamera.transform.position,
                 playerCamera.transform.TransformDirection(Vector3.forward) * interactionDistance);
         }
-
 
 
         // New method to update texture information

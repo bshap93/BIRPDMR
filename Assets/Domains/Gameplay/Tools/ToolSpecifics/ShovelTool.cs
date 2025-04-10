@@ -106,32 +106,5 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
             FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
         }
-
-        // public override bool CanInteractWithTextureIndex(int index)
-        // {
-        //     foreach (var allowed in allowedTerrainTextureIndices)
-        //         if (index == allowed)
-        //             return true;
-        //     return false;
-        // }
-
-
-        // public override bool CanInteractWithObject(GameObject target)
-        // {
-        //     return (diggableLayers.value & (1 << target.layer)) != 0;
-        // }
-
-        // public override void SetDiggerUsingToolEffectSize(float newEffectRadius, float newEffectOpacity)
-        // {
-        //     // Apply safety limits
-        //
-        //
-        //     // Validate and apply size
-        //     effectRadius = Mathf.Clamp(newEffectRadius, minEffectRadius, maxEffectRadius);
-        //     effectOpacity = Mathf.Clamp(newEffectOpacity, minEffectOpacity, maxEffectOpacity);
-        //
-        //     // Log the assigned size for debugging
-        //     UnityEngine.Debug.Log($"ShovelMiningState.size set to: {effectRadius}, {effectOpacity}");
-        // }
     }
 }
