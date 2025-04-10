@@ -19,10 +19,13 @@ namespace Domains.Gameplay.Tools
         public float maxEffectOpacity = 150f;
         [SerializeField] protected float miningCooldown = 1f; // seconds between digs
 
-
-        [FormerlySerializedAs("moveShovelDespiteFailHitFeedbacks")] [SerializeField]
+        [Header("Tool Settings")]
+        [Tooltip("Feedbacks to play when the tool is used")]
+        [FormerlySerializedAs("moveShovelDespiteFailHitFeedbacks")]
+        [SerializeField]
         protected MMFeedbacks moveToolDespiteFailHitFeedbacks;
 
+        [SerializeField] protected TerrainMineable terrainMineable;
 
         public float effectRadius = 1f;
         public float effectOpacity = 10f;
@@ -53,6 +56,8 @@ namespace Domains.Gameplay.Tools
         [FormerlySerializedAs("textureDetector")] [FormerlySerializedAs("_textureDetector")] [SerializeField]
         protected TerrainLayerDetector terrainLayerDetector;
 
+        private float currentDepth;
+
         protected DiggerMasterRuntime digger;
         protected float lastDigTime = -999f;
         protected RaycastHit lastHit;
@@ -81,7 +86,8 @@ namespace Domains.Gameplay.Tools
 
         public int GetCurrentTextureIndex()
         {
-            return terrainLayerDetector.GetTextureIndex(lastHit, out _);
+            // return terrainLayerDetector.GetTextureIndex(lastHit, out _);
+            return terrainMineable.GetCurrentLayerIndex();
         }
 
 
