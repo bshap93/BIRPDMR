@@ -10,7 +10,7 @@ namespace Domains.Scripts
     public class FuelConsole : MonoBehaviour, MMEventListener<UIEvent>
     {
         public int fuelPricePerUnit = 10;
-        private MMFeedbacks buyFuelFeedbacks;
+        [SerializeField] private MMFeedbacks buyFuelFeedbacks;
         private FuelUIController fuelUIController;
 
         private int playerCurrencyAmount;

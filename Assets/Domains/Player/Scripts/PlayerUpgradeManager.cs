@@ -73,7 +73,7 @@ namespace Domains.Player.Scripts
                 shovelToolWidth = characterStatProfile.shovelMiningToolWidth; // Use your default value here
 
                 // Literally the width of the onscreen tool
-                pickaxeMiningToolWidth = characterStatProfile.shovelMiningToolWidth; // Use your default value here
+                pickaxeMiningToolWidth = characterStatProfile.pickaxeMiningToolWidth; // Use your default value here
                 pickaxeToolEffectRadius =
                     characterStatProfile.initialPickaxeToolEffectRadius; // Use your default value here
                 pickaxeToolEffectOpacity =
@@ -278,7 +278,7 @@ namespace Domains.Player.Scripts
                 newWidth = Mathf.Clamp(newWidth, 1f, 2f);
 
                 // Apply the clamped size
-                if (shovelTool != null)
+                if (pickaxeTool != null)
                 {
                     pickaxeTool.SetDiggerUsingToolEffectSize(newEffectRadius, newOpacity);
                     pickaxeToolEffectRadius = newEffectRadius;
@@ -289,12 +289,12 @@ namespace Domains.Player.Scripts
 
 
                 // Log the size change for debugging
-                UnityEngine.Debug.Log($"Mining size changed to: {shovelToolEffectRadius}");
+                UnityEngine.Debug.Log($"Mining size changed to: {pickaxeToolEffectRadius}");
 
                 // Save immediately
                 ES3.Save("PickaxeToolEffectSize", pickaxeToolEffectRadius, "UpgradeSave.es3");
-                ES3.Save("PickaxeToolOpacity", shovelToolEffectOpacity, "UpgradeSave.es3");
-                ES3.Save("PickaxeToolWidth", shovelToolEffectRadius, "UpgradeSave.es3");
+                ES3.Save("PickaxeToolOpacity", pickaxeToolEffectOpacity, "UpgradeSave.es3");
+                ES3.Save("PickaxeToolWidth", pickaxeMiningToolWidth, "UpgradeSave.es3");
             }
         }
 
@@ -495,15 +495,28 @@ namespace Domains.Player.Scripts
             // Reset mining tool size to default value
 
             shovelToolEffectRadius = characterStatProfile.initialShovelToolEffectRadius; // Use your default value here
-            pickaxeMiningToolWidth = characterStatProfile.shovelMiningToolWidth; // Use your default value here
+            pickaxeToolEffectRadius =
+                characterStatProfile.initialPickaxeToolEffectRadius; // Use your default value here
+
+            shovelToolWidth = characterStatProfile.shovelMiningToolWidth; // Use your default value here
+            pickaxeMiningToolWidth =
+                characterStatProfile.pickaxeMiningToolWidth; // Use your default value here
+
+            // Opacity
+
             shovelToolEffectOpacity =
                 characterStatProfile.initialShovelToolEffectOpacity; // Use your default value here
+            pickaxeToolEffectOpacity =
+                characterStatProfile.pickaxeMiningToolEffectOpacity; // Use your default value here
 
             fuelCapacity = characterStatProfile.InitialMaxFuel;
 
 
             UpgradeEvent.Trigger(UpgradeType.Mining, UpgradeEventType.ShovelMiningSizeSet, null, 0,
                 UpgradeEffectType.None, shovelToolEffectRadius, null, shovelToolEffectOpacity);
+
+            UpgradeEvent.Trigger(UpgradeType.Mining, UpgradeEventType.PickaxeMiningSizeSet, null, 0,
+                UpgradeEffectType.None, pickaxeToolEffectRadius, null, pickaxeToolEffectOpacity);
         }
     }
 }

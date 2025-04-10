@@ -86,7 +86,7 @@ namespace Domains.Scripts_that_Need_Sorting
             }
         }
 
-        public int GetCurrentLayerIndex()
+        public int GetCurrentLayerIndexPerHeight()
         {
             return currentLayerIndex;
         }

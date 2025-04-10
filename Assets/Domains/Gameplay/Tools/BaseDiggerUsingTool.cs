@@ -86,8 +86,20 @@ namespace Domains.Gameplay.Tools
 
         public int GetCurrentTextureIndex()
         {
+            var forwardTextureIndex = terrainLayerDetector.GetTextureIndex(lastHit, out _);
             // return terrainLayerDetector.GetTextureIndex(lastHit, out _);
-            return terrainMineable.GetCurrentLayerIndex();
+            var terrainTextureIndex = terrainMineable.GetCurrentLayerIndexPerHeight();
+
+            // If height of player is such that terrain ahead is 
+            // same as preferred texture per height, return that
+            if (forwardTextureIndex == terrainTextureIndex)
+            {
+                UnityEngine.Debug.Log(
+                    $"Forward texture index: {forwardTextureIndex} | Terrain texture index: {terrainTextureIndex}");
+                return forwardTextureIndex;
+            }
+
+            return terrainTextureIndex;
         }
 
 
