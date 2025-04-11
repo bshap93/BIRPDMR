@@ -4,6 +4,7 @@ using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Camera;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
+using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 {
     public class ShovelTool : BaseDiggerUsingTool, MMEventListener<UpgradeEvent>
     {
+        public MMFeedbacks diggingFeedbacks;
+
         private void Awake()
         {
             digger = FindFirstObjectByType<DiggerMasterRuntime>();

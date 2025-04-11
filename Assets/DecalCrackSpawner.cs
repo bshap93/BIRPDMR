@@ -35,4 +35,10 @@ public class DecalCrackSpawner : MonoBehaviour
                 forwardDistance, opacity, 0, rootObject); // Spawn the decal
         }
     }
+
+    public void RemoveDecal()
+    {
+        // DecalManager.Cleanup();
+        spawner.Clear();
+    }
 }

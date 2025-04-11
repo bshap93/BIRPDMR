@@ -3,8 +3,10 @@ using Digger.Modules.Runtime.Sources;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
+using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Gameplay.Tools.ToolSpecifics
 {
@@ -14,10 +16,15 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         public DecalCrackSpawner crackSpawner;
 
+        [SerializeField] private MMFeedbacks firstHitFeedbacks;
+        [SerializeField] private MMFeedbacks secondHitFeedbacks;
+
+        [FormerlySerializedAs("diggingFeedbacks")] [SerializeField]
+        private MMFeedbacks pickaxeBehavior;
+
         [Header("Hit Number Logic")] [SerializeField]
         private readonly float hitThresholdDistance = 1f; // adjust as needed
 
-        [Header("Decal Settings")] private GameObject currentCrackObject;
 
         private Vector3 lastHitPosition;
         private int terrainHitCount;
@@ -111,7 +118,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             }
 
             // Feedback trigger (from PerformToolAction, not MMFeedbacks directly)
-            if (diggingFeedbacks != null) diggingFeedbacks.PlayFeedbacks(hit.point);
+            if (pickaxeBehavior != null) pickaxeBehavior.PlayFeedbacks(hit.point);
 
 
 // Distance check: is this close enough to the last hit?
@@ -124,18 +131,19 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
             if (terrainHitCount < 2)
             {
-                // Remove old decal if it exists
-                if (currentCrackObject != null)
-                {
-                    Destroy(currentCrackObject);
-                    currentCrackObject = null;
-                }
-
                 crackSpawner.ApplyDecal();
 
-                diggingFeedbacks?.PlayFeedbacks(hit.point); // optional first-hit feedback
+                firstHitFeedbacks?.PlayFeedbacks(hit.point); // optional first-hit feedback
                 return;
             }
+
+            if (terrainHitCount == 2)
+            {
+                UnityEngine.Debug.Log("Removing decal");
+                secondHitFeedbacks?.PlayFeedbacks(hit.point); // optional second-hit feedback
+                crackSpawner.RemoveDecal();
+            }
+
 
             terrainHitCount = 0;
 

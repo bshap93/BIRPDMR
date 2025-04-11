@@ -39,7 +39,6 @@ namespace Domains.Gameplay.Tools
         [Header("Feedbacks")] [Tooltip("Feedbacks to play when the tool cannot interact with an object")]
         public MMFeedbacks cannotInteractFeedbacks;
 
-        public MMFeedbacks diggingFeedbacks;
 
         [Header("FX")] public GameObject debrisEffectPrefab;
 
