@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Digger.Modules.Runtime.Sources;
 using Domains.Gameplay.Mining.Scripts;
+using Domains.Player.Camera;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
 using MoreMountains.Tools;
@@ -75,6 +76,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 {
                     minable.MinableFailHit(hit.point);
                     moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
+                    CameraEffectEvent.Trigger(CameraEffectEventType.ShakeCameraPosition, 0.2f);
                     return;
                 }
             }

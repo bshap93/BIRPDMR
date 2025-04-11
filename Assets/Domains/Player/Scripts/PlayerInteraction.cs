@@ -16,7 +16,7 @@ namespace Domains.Player.Scripts
         public float interactionDistance = 2f; // How far the player can interact
         public LayerMask interactableLayer; // Only detect objects in this layer
         public LayerMask terrainLayer; // Only detect objects in this layer
-        public Camera playerCamera; // Reference to the player’s camera
+        public UnityEngine.Camera playerCamera; // Reference to the player’s camera
         public Image reticle;
         public Color defaultReticleColor = Color.white;
         public Color interactReticleColor = Color.green;
@@ -30,9 +30,10 @@ namespace Domains.Player.Scripts
         [FormerlySerializedAs("forwardTextureDetector")] [FormerlySerializedAs("ForwardTextureDetector")]
         public TerrainLayerDetector forwardTerrainLayerDetector;
 
+        private readonly float _positionEventInterval = 0.2f; // Trigger every 0.2 seconds (5 times per second)
+
         private DiggerMasterRuntime _diggerMasterRuntime;
         private bool _interactablePrompt;
-        private readonly float _positionEventInterval = 0.2f; // Trigger every 0.2 seconds (5 times per second)
 
         private float _positionEventTimer;
 
