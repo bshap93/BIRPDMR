@@ -11,6 +11,10 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
     public class PickaxeTool : BaseDiggerUsingTool, MMEventListener<UpgradeEvent>
     {
         public int hardnessCanBreak;
+        [SerializeField] private readonly float hitThresholdDistance = 1f; // adjust as needed
+        private Vector3 lastHitPosition;
+        private int terrainHitCount;
+
 
         private void Awake()
         {
@@ -102,14 +106,31 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             // Feedback trigger (from PerformToolAction, not MMFeedbacks directly)
             if (diggingFeedbacks != null) diggingFeedbacks.PlayFeedbacks(hit.point);
 
-            // Dig!
+
+// Distance check: is this close enough to the last hit?
+            if (terrainHitCount > 0 && Vector3.Distance(hit.point, lastHitPosition) > hitThresholdDistance)
+                terrainHitCount = 0;
+
+            // Store current hit
+            lastHitPosition = hit.point;
+            terrainHitCount++;
+
+            if (terrainHitCount < 2)
+            {
+                diggingFeedbacks?.PlayFeedbacks(hit.point); // optional first-hit feedback
+                return;
+            }
+
+            terrainHitCount = 0;
+
             var digPosition = hit.point + mainCamera.transform.forward * 0.3f;
 
             if (editAsynchronously)
                 digger.ModifyAsyncBuffured(digPosition, brush, action, textureIndex, effectOpacity, effectRadius,
-                    stalagmiteHeight, stalagmiteUpsideDown: true);
+                    stalagmiteHeight, true);
             else
-                digger.Modify(digPosition, brush, action, textureIndex, effectOpacity, effectRadius, stalagmiteHeight, stalagmiteUpsideDown: true );
+                digger.Modify(digPosition, brush, action, textureIndex, effectOpacity, effectRadius, stalagmiteHeight,
+                    true);
 
             FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
         }
