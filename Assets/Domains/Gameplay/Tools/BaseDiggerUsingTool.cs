@@ -40,8 +40,6 @@ namespace Domains.Gameplay.Tools
         public MMFeedbacks cannotInteractFeedbacks;
 
 
-        [Header("FX")] public GameObject debrisEffectPrefab;
-
         [Header("Allowed Layers")] [Tooltip("Allowed Unity layers for GameObjects (e.g., ore nodes)")]
         public LayerMask diggableLayers;
 
@@ -103,6 +101,18 @@ namespace Domains.Gameplay.Tools
 
             // Log the assigned size for debugging
             UnityEngine.Debug.Log($"ShovelMiningState.size set to: {effectRadius}, {effectOpacity}");
+        }
+
+        protected void TriggerDebrisEffect(GameObject debrisEffectPrefab, RaycastHit hit)
+        {
+            // Debris FX
+            if (debrisEffectPrefab)
+            {
+                var pos = hit.point + hit.normal * 0.1f;
+                var rot = Quaternion.LookRotation(-mainCamera.transform.forward);
+                var fx = Instantiate(debrisEffectPrefab, pos, rot);
+                Destroy(fx, 2f);
+            }
         }
     }
 }

@@ -18,6 +18,9 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         [SerializeField] private MMFeedbacks firstHitFeedbacks;
         [SerializeField] private MMFeedbacks secondHitFeedbacks;
+        [Header("Debris Effects")] public GameObject debrisEffectFirstHitPrefab;
+
+        public GameObject debrisEffectSecondHitPrefab;
 
         [FormerlySerializedAs("diggingFeedbacks")] [SerializeField]
         private MMFeedbacks pickaxeBehavior;
@@ -109,19 +112,13 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
 
             // Debris FX
-            if (debrisEffectPrefab)
-            {
-                var pos = hit.point + hit.normal * 0.1f;
-                var rot = Quaternion.LookRotation(-mainCamera.transform.forward);
-                var fx = Instantiate(debrisEffectPrefab, pos, rot);
-                Destroy(fx, 2f);
-            }
+
 
             // Feedback trigger (from PerformToolAction, not MMFeedbacks directly)
-            if (pickaxeBehavior != null) pickaxeBehavior.PlayFeedbacks(hit.point);
+            // if (pickaxeBehavior != null) pickaxeBehavior.PlayFeedbacks(hit.point);
 
 
-// Distance check: is this close enough to the last hit?
+            // Distance check: is this close enough to the last hit?
             if (terrainHitCount > 0 && Vector3.Distance(hit.point, lastHitPosition) > hitThresholdDistance)
                 terrainHitCount = 0;
 
@@ -131,6 +128,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
             if (terrainHitCount < 2)
             {
+                TriggerDebrisEffect(debrisEffectFirstHitPrefab, hit);
                 crackSpawner.ApplyDecal();
 
                 firstHitFeedbacks?.PlayFeedbacks(hit.point); // optional first-hit feedback
@@ -140,6 +138,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             if (terrainHitCount == 2)
             {
                 UnityEngine.Debug.Log("Removing decal");
+                TriggerDebrisEffect(debrisEffectSecondHitPrefab, hit);
                 secondHitFeedbacks?.PlayFeedbacks(hit.point); // optional second-hit feedback
                 crackSpawner.RemoveDecal();
             }

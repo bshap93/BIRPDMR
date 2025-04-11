@@ -56,7 +56,7 @@ Material:
         m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     - _Splat3:
-        m_Texture: {fileID: 2800000, guid: cd8b554e7619a154fb0cb64a6bd61d2d, type: 3}
+        m_Texture: {fileID: 2800000, guid: c9a535add6958d34aa09ae5379ae63f1, type: 3}
         m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     m_Ints: []

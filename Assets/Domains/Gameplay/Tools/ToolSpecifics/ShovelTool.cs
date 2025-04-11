@@ -13,6 +13,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
     public class ShovelTool : BaseDiggerUsingTool, MMEventListener<UpgradeEvent>
     {
         public MMFeedbacks diggingFeedbacks;
+        public GameObject debrisEffectPrefab;
 
         private void Awake()
         {
@@ -88,14 +89,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             if (!allowedTerrainTextureIndices.Contains(textureIndex)) return;
 
 
-            // Debris FX
-            if (debrisEffectPrefab)
-            {
-                var pos = hit.point + hit.normal * 0.1f;
-                var rot = Quaternion.LookRotation(-mainCamera.transform.forward);
-                var fx = Instantiate(debrisEffectPrefab, pos, rot);
-                Destroy(fx, 2f);
-            }
+            TriggerDebrisEffect(debrisEffectPrefab, hit);
 
             // Feedback trigger (from PerformToolAction, not MMFeedbacks directly)
             if (diggingFeedbacks != null) diggingFeedbacks.PlayFeedbacks(hit.point);

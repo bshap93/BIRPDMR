@@ -116,6 +116,7 @@ namespace Domains.Player.Scripts
 
         public void ConsumeHealth(float healthToConsume)
         {
+            if (immuneToDamage) return;
             if (HealthPoints - healthToConsume <= 0)
             {
                 HealthPoints = 0;
