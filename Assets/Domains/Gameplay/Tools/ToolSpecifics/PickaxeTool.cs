@@ -10,8 +10,15 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 {
     public class PickaxeTool : BaseDiggerUsingTool, MMEventListener<UpgradeEvent>
     {
-        public int hardnessCanBreak;
-        [SerializeField] private readonly float hitThresholdDistance = 1f; // adjust as needed
+        [Header("Stat Settings")] public int hardnessCanBreak;
+
+        public DecalCrackSpawner crackSpawner;
+
+        [Header("Hit Number Logic")] [SerializeField]
+        private readonly float hitThresholdDistance = 1f; // adjust as needed
+
+        [Header("Decal Settings")] private GameObject currentCrackObject;
+
         private Vector3 lastHitPosition;
         private int terrainHitCount;
 
@@ -117,6 +124,15 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
             if (terrainHitCount < 2)
             {
+                // Remove old decal if it exists
+                if (currentCrackObject != null)
+                {
+                    Destroy(currentCrackObject);
+                    currentCrackObject = null;
+                }
+
+                crackSpawner.ApplyDecal();
+
                 diggingFeedbacks?.PlayFeedbacks(hit.point); // optional first-hit feedback
                 return;
             }
