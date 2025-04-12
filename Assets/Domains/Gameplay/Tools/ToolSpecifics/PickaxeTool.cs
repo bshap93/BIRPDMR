@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Events;
@@ -20,13 +21,16 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         [SerializeField] private MMFeedbacks secondHitFeedbacks;
         [Header("Debris Effects")] public GameObject debrisEffectFirstHitPrefab;
 
+        [SerializeField] private float firstHitEffectOpacity;
+        [SerializeField] private float firstHitEffectRadius;
+
         public GameObject debrisEffectSecondHitPrefab;
 
         [FormerlySerializedAs("diggingFeedbacks")] [SerializeField]
         private MMFeedbacks pickaxeBehavior;
 
         [Header("Hit Number Logic")] [SerializeField]
-        private readonly float hitThresholdDistance = 1f; // adjust as needed
+        private readonly float hitThresholdDistance = 0.5f; // adjust as needed
 
 
         private Vector3 lastHitPosition;
@@ -128,10 +132,15 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
             if (terrainHitCount < 2)
             {
+                var digPositionFirst = hit.point + mainCamera.transform.forward * 0.3f;
+
+                Dig(digPositionFirst, textureIndex, firstHitEffectOpacity,
+                    firstHitEffectRadius, BrushType.Stalagmite); // first hit dig
                 TriggerDebrisEffect(debrisEffectFirstHitPrefab, hit);
                 crackSpawner.ApplyDecal();
 
                 firstHitFeedbacks?.PlayFeedbacks(hit.point); // optional first-hit feedback
+
                 return;
             }
 
@@ -148,14 +157,23 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
             var digPosition = hit.point + mainCamera.transform.forward * 0.3f;
 
-            if (editAsynchronously)
-                digger.ModifyAsyncBuffured(digPosition, brush, action, textureIndex, effectOpacity, effectRadius,
-                    stalagmiteHeight, true);
-            else
-                digger.Modify(digPosition, brush, action, textureIndex, effectOpacity, effectRadius, stalagmiteHeight,
-                    true);
+            Dig(digPosition, textureIndex, effectOpacity, effectRadius);
+        }
 
-            FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
+        private void Dig(Vector3 digPosition, int textureIndex,
+            float effectOpacityLoc, float effectRadiusLoc, BrushType brushLoc = BrushType.Sphere)
+        {
+            {
+                if (editAsynchronously)
+                    digger.ModifyAsyncBuffured(digPosition, brushLoc, action, textureIndex, effectOpacity, effectRadius,
+                        stalagmiteHeight, true);
+                else
+                    digger.Modify(digPosition, brushLoc, action, textureIndex, effectOpacity, effectRadius,
+                        stalagmiteHeight,
+                        true);
+
+                FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
+            }
         }
     }
 }
