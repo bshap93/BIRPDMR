@@ -25,15 +25,11 @@ namespace Domains.Gameplay.Tools
         [SerializeField]
         protected MMFeedbacks moveToolDespiteFailHitFeedbacks;
 
-        [SerializeField] protected TerrainMineable terrainMineable;
-
         public float effectRadius = 1f;
         public float effectOpacity = 10f;
         public float stalagmiteHeight = 100f;
 
         public BrushType brush = BrushType.Stalagmite;
-        public ActionType action = ActionType.Dig;
-        public bool editAsynchronously = true;
         public Camera mainCamera;
 
         [Header("Feedbacks")] [Tooltip("Feedbacks to play when the tool cannot interact with an object")]
@@ -52,6 +48,9 @@ namespace Domains.Gameplay.Tools
 
         [FormerlySerializedAs("textureDetector")] [FormerlySerializedAs("_textureDetector")] [SerializeField]
         protected TerrainLayerDetector terrainLayerDetector;
+
+        protected readonly ActionType Action = ActionType.Dig;
+        protected readonly bool EditAsynchronously = true;
 
         private float currentDepth;
 

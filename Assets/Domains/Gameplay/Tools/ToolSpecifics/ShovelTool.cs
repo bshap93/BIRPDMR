@@ -97,11 +97,11 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             // Dig!
             var digPosition = hit.point + mainCamera.transform.forward * 0.3f;
 
-            if (editAsynchronously)
-                digger.ModifyAsyncBuffured(digPosition, brush, action, textureIndex, effectOpacity, effectRadius,
+            if (EditAsynchronously)
+                digger.ModifyAsyncBuffured(digPosition, brush, Action, textureIndex, effectOpacity, effectRadius,
                     stalagmiteHeight);
             else
-                digger.Modify(digPosition, brush, action, textureIndex, effectOpacity, effectRadius);
+                digger.Modify(digPosition, brush, Action, textureIndex, effectOpacity, effectRadius);
 
             FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
         }

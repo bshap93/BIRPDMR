@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96a374a1bb3e15b47babe5b6ef13b2e8, type: 3}
   m_Name: MainScene3TerrainBehavior
   m_EditorClassIdentifier: 
-  statEntries:
+  terrainChoices:
   - terrainLayerIndex: 14
     terrainToUseInstead: 1
   - terrainLayerIndex: 13
     terrainToUseInstead: 11
-  - terrainLayerIndex: 0
-    terrainToUseInstead: 0

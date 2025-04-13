@@ -117,11 +117,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             if (!allowedTerrainTextureIndices.Contains(textureIndex)) return;
 
 
-            // Debris FX
-
-
-            // Feedback trigger (from PerformToolAction, not MMFeedbacks directly)
-            // if (pickaxeBehavior != null) pickaxeBehavior.PlayFeedbacks(hit.point);
 
 
             // Distance check: is this close enough to the last hit?
@@ -167,11 +162,11 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         {
             {
                 yield return new WaitForSeconds(delayBeforeDigging);
-                if (editAsynchronously)
-                    digger.ModifyAsyncBuffured(digPosition, brushLoc, action, textureIndex, effectOpacity, effectRadius,
+                if (EditAsynchronously)
+                    digger.ModifyAsyncBuffured(digPosition, brushLoc, Action, textureIndex, effectOpacity, effectRadius,
                         stalagmiteHeight, true);
                 else
-                    digger.Modify(digPosition, brushLoc, action, textureIndex, effectOpacity, effectRadius,
+                    digger.Modify(digPosition, brushLoc, Action, textureIndex, effectOpacity, effectRadius,
                         stalagmiteHeight,
                         true);
 
