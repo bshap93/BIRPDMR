@@ -85,6 +85,11 @@ namespace Domains.Gameplay.Tools
         {
             var forwardTextureIndex = terrainLayerDetector.GetTextureIndex(lastHit, out _);
 
+            var terrainBehavior = TerrainController.Instance.terrainBehavior;
+
+            foreach (var terrainChoice in terrainBehavior.terrainChoices)
+                if (terrainChoice.terrainLayerIndex == forwardTextureIndex)
+                    return terrainChoice.terrainToUseInstead;
 
             return forwardTextureIndex;
         }
