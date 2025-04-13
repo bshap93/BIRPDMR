@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Gameplay.Mining.Scripts;
@@ -16,6 +17,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         [Header("Stat Settings")] public int hardnessCanBreak;
 
         public DecalCrackSpawner crackSpawner;
+        [SerializeField] private float delayBeforeDigging = 0.1f;
 
         [SerializeField] private MMFeedbacks firstHitFeedbacks;
         [SerializeField] private MMFeedbacks secondHitFeedbacks;
@@ -134,8 +136,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             {
                 var digPositionFirst = hit.point + mainCamera.transform.forward * 0.3f;
 
-                Dig(digPositionFirst, textureIndex, firstHitEffectOpacity,
-                    firstHitEffectRadius, BrushType.Stalagmite); // first hit dig
+                StartCoroutine(Dig(digPositionFirst, textureIndex, firstHitEffectOpacity,
+                    firstHitEffectRadius, BrushType.Stalagmite)); // first hit dig
                 TriggerDebrisEffect(debrisEffectFirstHitPrefab, hit);
                 crackSpawner.ApplyDecal();
 
@@ -157,13 +159,14 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
             var digPosition = hit.point + mainCamera.transform.forward * 0.3f;
 
-            Dig(digPosition, textureIndex, effectOpacity, effectRadius);
+            StartCoroutine(Dig(digPosition, textureIndex, effectOpacity, effectRadius));
         }
 
-        private void Dig(Vector3 digPosition, int textureIndex,
+        private IEnumerator Dig(Vector3 digPosition, int textureIndex,
             float effectOpacityLoc, float effectRadiusLoc, BrushType brushLoc = BrushType.Sphere)
         {
             {
+                yield return new WaitForSeconds(delayBeforeDigging);
                 if (editAsynchronously)
                     digger.ModifyAsyncBuffured(digPosition, brushLoc, action, textureIndex, effectOpacity, effectRadius,
                         stalagmiteHeight, true);
