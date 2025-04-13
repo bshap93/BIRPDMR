@@ -25,5 +25,18 @@ namespace Domains.Scene.Terrain.Scripts
     {
         [FormerlySerializedAs("statEntries")] public List<TerrainLayerChoices> terrainChoices;
         public List<DefaultLayerAboveDepth> defaultLayerAboveDepths;
+        
+        public int GetDefaultLayerIndex(float playerDepth)
+        {
+            foreach (var defaultLayer in defaultLayerAboveDepths)
+            {
+                if (playerDepth >= defaultLayer.playerDepth)
+                {
+                    return defaultLayer.defaultLayerIndex;
+                }
+            }
+
+            return -1; // or some other default value
+        }
     }
 }

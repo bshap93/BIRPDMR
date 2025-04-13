@@ -89,6 +89,8 @@ namespace Domains.Gameplay.Tools
             foreach (var terrainChoice in terrainBehavior.terrainChoices)
                 if (terrainChoice.terrainLayerIndex == forwardTextureIndex)
                     return terrainChoice.terrainToUseInstead;
+            
+            
 
             return forwardTextureIndex;
         }
