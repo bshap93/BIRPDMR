@@ -14,6 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terrainChoices:
   - terrainLayerIndex: 14
-    terrainToUseInstead: 1
-  - terrainLayerIndex: 13
     terrainToUseInstead: 11

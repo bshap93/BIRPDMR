@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: BasicProfile
   m_EditorClassIdentifier: 
   InitialMaxFuel: 200
-  InitialMaxHealth: 10
+  InitialMaxHealth: 20
   InitialEnduranceLevel: 1
   InitialEnduranceExperiencePoints: 0
   InitialWeightLimit: 10
   InitialCurrency: 0
   InitialUpgradeState: 0
-  InitialMiningToolSize: 0.3
+  initialShovelToolEffectRadius: 0.4
+  initialPickaxeToolEffectRadius: 0.8
   SkipTutorial: 0
-  MiningToolWidth: 0.6410909
+  shovelMiningToolWidth: 0.64
+  pickaxeMiningToolWidth: 0.64
+  initialShovelToolEffectOpacity: 75
+  pickaxeMiningToolEffectOpacity: 75

@@ -6,7 +6,8 @@ namespace Domains.Player.Scripts
     public static class CharacterResourcePaths
     {
         public static string CharacterStatProfileFilePath =>
-            "CharacterStatsProfiles/MediumProfile";
+            // "CharacterStatsProfiles/MediumProfile";
+            "CharacterStatsProfiles/BasicProfile";
 
         public static string GameLevelStatProfileFilePath =>
             "GameLevelStatsProfiles/MainSceneLevelStats";
