@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4374125592332420408}
   - component: {fileID: 8640104945982745857}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: OreHitF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -635,7 +635,7 @@ GameObject:
   - component: {fileID: 1608960719466673435}
   - component: {fileID: 5775791482648714589}
   - component: {fileID: -5264020533336785524}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: SM_Mineral_1
   m_TagString: OreNode
   m_Icon: {fileID: 0}
@@ -795,7 +795,7 @@ MonoBehaviour:
   oreHitFeedback: {fileID: 8640104945982745857}
   oreDestroyFeedback: {fileID: 2687134068422912147}
   OreHardness: 0
-  UniqueID: a7211565-852f-4821-9eca-45bb536e873f
+  UniqueID: dd5b2944-9bc5-432f-9c86-189a42e62a84
   failHitFeedbacks: {fileID: 7234271836214855775}
   failHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}
@@ -822,7 +822,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6144002678376387566}
   - component: {fileID: 1052840361668016853}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: OreHitBehavior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1065,7 +1065,7 @@ GameObject:
   m_Component:
   - component: {fileID: 732875114374334351}
   - component: {fileID: 4012177624682071890}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1162,7 +1162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7686027810921667366}
   - component: {fileID: 2687134068422912147}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: OreDestroyFB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1435,7 +1435,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1503459439250605579, guid: baa0c1bac617def4b9b0b865c377b97b, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6865631078908948581, guid: baa0c1bac617def4b9b0b865c377b97b, type: 3}
       propertyPath: m_RootOrder
@@ -1553,7 +1553,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4915262749889565103, guid: 7843a38939285bc4e8cf8521d931e4e6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5309685689194970419, guid: 7843a38939285bc4e8cf8521d931e4e6, type: 3}
       propertyPath: ShapeModule.m_Scale.x
@@ -1591,7 +1591,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7870726743665412337, guid: b9aa677b1a75171449086be551318abd, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 8281924629798770041, guid: b9aa677b1a75171449086be551318abd, type: 3}
       propertyPath: ShapeModule.radius.value
