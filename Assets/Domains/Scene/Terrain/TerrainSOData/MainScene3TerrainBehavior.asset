@@ -15,3 +15,7 @@ MonoBehaviour:
   terrainChoices:
   - terrainLayerIndex: 14
     terrainToUseInstead: 11
+  defaultLayerAboveDepths:
+  - playerDepth: 0
+    defaultLayerIndex: 0
+    alternateAcceptableLayerIndices: 
