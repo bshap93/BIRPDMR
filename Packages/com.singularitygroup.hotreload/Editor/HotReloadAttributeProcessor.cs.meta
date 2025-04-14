@@ -1,7 +1,11 @@
 fileFormatVersion: 2
-guid: f2be1b7392ef6cc4eafd0ee8ac7a090a
-AssemblyDefinitionImporter:
+guid: c63452dd912fe4c46909c1c5ce844e69
+MonoImporter:
   externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -10,5 +14,5 @@ AssetOrigin:
   productId: 254358
   packageName: Hot Reload | Edit Code Without Compiling
   packageVersion: 1.13.5
-  assetPath: Packages/com.singularitygroup.hotreload/Runtime/Public/SingularityGroup.HotReload.Runtime.Public.asmdef
+  assetPath: Packages/com.singularitygroup.hotreload/Editor/HotReloadAttributeProcessor.cs
   uploadId: 748894
