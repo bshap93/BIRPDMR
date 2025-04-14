@@ -48,7 +48,13 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         public override void PerformToolAction()
         {
-            var textureIndex = GetCurrentTextureIndex();
+            var detectedTextureIndex = terrainLayerDetector.GetTextureIndex(lastHit, out _);
+
+// Reject early if not in allowed textures (raw index)
+            if (!CanInteractWithTextureIndex(detectedTextureIndex)) return;
+
+// Determine final texture to dig into
+            var textureIndex = GetTerrainLayerBasedOnDepthAndOverrides(detectedTextureIndex, lastHit.point.y);
 
 
             if (Time.time < lastDigTime + miningCooldown)
@@ -87,7 +93,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             }
 
             // Return after triggering failed mining feedbacks, and before digging
-            if (!allowedTerrainTextureIndices.Contains(textureIndex)) return;
+            if (!allowedTerrainTextureIndices.Contains(detectedTextureIndex)) return;
 
 
             TriggerDebrisEffect(debrisEffectPrefab, hit);
@@ -104,7 +110,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             else
                 digger.Modify(digPosition, brush, Action, textureIndex, effectOpacity, effectRadius);
 
-            FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
+            // FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
         }
     }
 }

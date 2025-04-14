@@ -20,6 +20,9 @@ MonoBehaviour:
   - Deuterium Hybrid Fuel Tank
   description: 
   upgradeCosts: 2c01000040060000800c0000581b0000
+  upgradeColors:
+  - {r: 0.014813383, g: 0.67295593, b: 0.061269637, a: 1}
+  - {r: 0, g: 0.10374492, b: 0.9433962, a: 1}
   upgradeSounds:
   - {fileID: 0}
   - {fileID: 0}

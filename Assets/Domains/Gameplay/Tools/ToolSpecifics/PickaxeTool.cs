@@ -69,7 +69,10 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         public override void PerformToolAction()
         {
-            var textureIndex = GetCurrentTextureIndex();
+            var detectedTextureIndex = terrainLayerDetector.GetTextureIndex(lastHit, out _);
+            if (!CanInteractWithTextureIndex(detectedTextureIndex)) return;
+
+            var textureIndex = GetTerrainLayerBasedOnDepthAndOverrides(detectedTextureIndex, lastHit.point.y);
 
 
             if (Time.time < lastDigTime + miningCooldown)
@@ -115,8 +118,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
             // Return after triggering failed mining feedbacks, and before digging
             if (!allowedTerrainTextureIndices.Contains(textureIndex)) return;
-
-
 
 
             // Distance check: is this close enough to the last hit?

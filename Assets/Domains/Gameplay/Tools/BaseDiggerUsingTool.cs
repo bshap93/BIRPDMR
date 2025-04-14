@@ -86,12 +86,45 @@ namespace Domains.Gameplay.Tools
 
             var terrainBehavior = TerrainController.Instance.terrainBehavior;
 
+
+            var digDepth = lastHit.point.y;
+            foreach (var defaultLayer in terrainBehavior.defaultLayerAboveDepths)
+                if (digDepth >= defaultLayer.playerDepth)
+                {
+                    foreach (var acceptableLayer in defaultLayer.alternateAcceptableLayerIndices)
+                        if (acceptableLayer == forwardTextureIndex)
+                            return ConsiderTerrainChoices(acceptableLayer);
+
+                    return ConsiderTerrainChoices(defaultLayer.defaultLayerIndex);
+                }
+
+            return ConsiderTerrainChoices(forwardTextureIndex);
+        }
+
+        protected int GetTerrainLayerBasedOnDepthAndOverrides(int rawTextureIndex, float digDepth)
+        {
+            var terrainBehavior = TerrainController.Instance.terrainBehavior;
+
+            foreach (var defaultLayer in terrainBehavior.defaultLayerAboveDepths)
+                if (digDepth >= defaultLayer.playerDepth)
+                {
+                    foreach (var acceptableLayer in defaultLayer.alternateAcceptableLayerIndices)
+                        if (acceptableLayer == rawTextureIndex)
+                            return ConsiderTerrainChoices(acceptableLayer);
+
+                    return ConsiderTerrainChoices(defaultLayer.defaultLayerIndex);
+                }
+
+            return ConsiderTerrainChoices(rawTextureIndex);
+        }
+
+        private int ConsiderTerrainChoices(int forwardTextureIndex)
+        {
+            var terrainBehavior = TerrainController.Instance.terrainBehavior;
+
             foreach (var terrainChoice in terrainBehavior.terrainChoices)
                 if (terrainChoice.terrainLayerIndex == forwardTextureIndex)
                     return terrainChoice.terrainToUseInstead;
-            
-            
-
             return forwardTextureIndex;
         }
 
