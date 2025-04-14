@@ -16,29 +16,24 @@ MonoBehaviour:
   upgradeNames:
   - +5 KG Weight Limit
   - + 5 KG Weight Limit
-  - + 5 KG Weight Limit
-  - Robotic Assistants
   description: 
-  upgradeCosts: 2c01000040060000800c000000190000
+  upgradeCosts: 2c01000040060000
+  upgradeColors:
+  - {r: 0.014813383, g: 0.67295593, b: 0.061269637, a: 1}
+  - {r: 0, g: 0.10374492, b: 0.9433962, a: 1}
+  - {r: 0.34586883, g: 0.035975583, b: 0.67295593, a: 1}
+  - {r: 0.9748427, g: 0.7363685, b: 0.25444004, a: 1}
   upgradeSounds:
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  effectTypes: 01000000010000000100000001000000
+  effectTypes: 0100000001000000
   effectValues:
   - 5
   - 5
-  - 5
-  - 100
   toolChangeIDs:
   - 
   - 
-  - 
-  - 
-  secondaryEffectTypes: 00000000000000000000000000000000
+  secondaryEffectTypes: 0000000000000000
   secondaryEffectValues:
-  - 1
-  - 1
   - 1
   - 1

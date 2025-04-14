@@ -11,6 +11,8 @@ namespace Domains.Player.Scripts.ScriptableObjects
 
         public float InitialMaxHealth;
 
+        public Color initialUpgradeColor;
+
 
         [Header("Initial Endurance")] public int InitialEnduranceLevel;
         public int InitialEnduranceExperiencePoints;

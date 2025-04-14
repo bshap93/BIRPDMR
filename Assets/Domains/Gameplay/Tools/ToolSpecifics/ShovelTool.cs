@@ -15,6 +15,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         public MMFeedbacks diggingFeedbacks;
         public GameObject debrisEffectPrefab;
 
+
         private void Awake()
         {
             digger = FindFirstObjectByType<DiggerMasterRuntime>();

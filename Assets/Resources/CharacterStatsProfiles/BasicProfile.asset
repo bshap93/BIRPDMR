@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitialMaxFuel: 200
   InitialMaxHealth: 20
+  initialUpgradeColor: {r: 0.81761, g: 0.81761, b: 0.81761, a: 1}
   InitialEnduranceLevel: 1
   InitialEnduranceExperiencePoints: 0
   InitialWeightLimit: 10

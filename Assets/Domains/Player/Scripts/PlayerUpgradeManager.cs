@@ -212,6 +212,7 @@ namespace Domains.Player.Scripts
             var toolId = effectType == UpgradeEffectType.ToolChange ? upgrade.toolChangeIDs[level] : null;
             var secondaryEffectType = upgrade.secondaryEffectTypes[level];
             var secondaryEffectValue = upgrade.secondaryEffectValues[level];
+            Color upgradeColor = upgrade.upgradeColors[level];
 
             switch (effectType)
             {
@@ -225,6 +226,12 @@ namespace Domains.Player.Scripts
                     ApplyToolChangeUpgrade(toolId);
                     break;
             }
+        }
+        
+        private void ApplyColorUpgrade(string upgradeType, Color color)
+        {
+            UnityEngine.Debug.Log($"Applying color upgrade: {color} to {upgradeType}");
+
         }
 
         private void ApplyMultiplierUpgrade(string upgradeType, float multiplier, float secondaryMultiplier = 1)
