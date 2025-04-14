@@ -70,7 +70,14 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         public override void PerformToolAction()
         {
             var detectedTextureIndex = terrainLayerDetector.GetTextureIndex(lastHit, out _);
-            if (!CanInteractWithTextureIndex(detectedTextureIndex)) return;
+// First, see if it's a mesh or rock object we can mine
+            bool isMinableObject = CanInteractWithObject(lastHit.collider.gameObject);
+
+// Then decide if it’s terrain and valid
+            bool isTerrain = detectedTextureIndex >= 0;
+            bool isValidTerrain = CanInteractWithTextureIndex(detectedTextureIndex);
+
+            if (!isMinableObject && (!isTerrain || !isValidTerrain)) return;
 
             var textureIndex = GetTerrainLayerBasedOnDepthAndOverrides(detectedTextureIndex, lastHit.point.y);
 

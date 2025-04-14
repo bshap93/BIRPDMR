@@ -3,28 +3,21 @@ using Domains.Player.Scripts;
 using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Domains.UI_Global.UIUpdaters
 {
     public class HealthBarUpdater : MonoBehaviour, MMEventListener<HealthEvent>
     {
-        public bool useTextPlaceholder = true;
-        public TMP_Text textPlaceholderCurrentHealth;
-        public TMP_Text textPlaceholderMaxHealth;
-        private MMProgressBar _bar;
+        [SerializeField] private Slider healthBarSlider;
+        [SerializeField] private TMP_Text healthPercentageText;
         private float _currentHealth;
 
         private float _maxHealth;
 
         private void Awake()
         {
-            if (useTextPlaceholder)
-            {
-            }
-            else
-            {
-                _bar = GetComponent<MMProgressBar>();
-            }
+            Initialize();
         }
 
         private void OnEnable()
@@ -39,54 +32,31 @@ namespace Domains.UI_Global.UIUpdaters
 
         public void OnMMEvent(HealthEvent eventType)
         {
-            if (useTextPlaceholder)
-                switch (eventType.EventType)
-                {
-                    case HealthEventType.ConsumeHealth:
-                        _currentHealth -= eventType.ByValue;
-                        textPlaceholderCurrentHealth.text = _currentHealth.ToString();
-                        break;
-                    case HealthEventType.RecoverHealth:
-                        _currentHealth += eventType.ByValue;
-                        textPlaceholderCurrentHealth.text = _currentHealth.ToString();
-                        break;
-                    case HealthEventType.FullyRecoverHealth:
-                        _currentHealth = _maxHealth;
-                        textPlaceholderCurrentHealth.text = _currentHealth.ToString();
-                        break;
-                    case HealthEventType.IncreaseMaximumHealth:
-                        _maxHealth += eventType.ByValue;
-                        textPlaceholderMaxHealth.text = _maxHealth.ToString();
-                        break;
-                    case HealthEventType.DecreaseMaximumHealth:
-                        _maxHealth -= eventType.ByValue;
-                        textPlaceholderMaxHealth.text = _maxHealth.ToString();
-                        break;
-                }
-            else
-                switch (eventType.EventType)
-                {
-                    case HealthEventType.ConsumeHealth:
-                        _currentHealth -= eventType.ByValue;
-                        _bar.UpdateBar(_currentHealth, 0, _maxHealth);
-                        break;
-                    case HealthEventType.RecoverHealth:
-                        _currentHealth += eventType.ByValue;
-                        _bar.UpdateBar(_currentHealth, 0, _maxHealth);
-                        break;
-                    case HealthEventType.FullyRecoverHealth:
-                        _currentHealth = _maxHealth;
-                        _bar.UpdateBar(_currentHealth, 0, _maxHealth);
-                        break;
-                    case HealthEventType.IncreaseMaximumHealth:
-                        _maxHealth += eventType.ByValue;
-                        _bar.UpdateBar(_currentHealth, 0, _maxHealth);
-                        break;
-                    case HealthEventType.DecreaseMaximumHealth:
-                        _maxHealth -= eventType.ByValue;
-                        _bar.UpdateBar(_currentHealth, 0, _maxHealth);
-                        break;
-                }
+            switch (eventType.EventType)
+            {
+                case HealthEventType.ConsumeHealth:
+                    _currentHealth -= eventType.ByValue;
+
+                    break;
+                case HealthEventType.RecoverHealth:
+                    _currentHealth += eventType.ByValue;
+                    // 
+                    break;
+                case HealthEventType.FullyRecoverHealth:
+                    _currentHealth = _maxHealth;
+                    //
+                    break;
+                case HealthEventType.IncreaseMaximumHealth:
+                    _maxHealth += eventType.ByValue;
+                    //  
+                    break;
+                case HealthEventType.DecreaseMaximumHealth:
+                    _maxHealth -= eventType.ByValue;
+                    // 
+                    break;
+            }
+
+            UpdateBar();
         }
 
 
@@ -94,15 +64,13 @@ namespace Domains.UI_Global.UIUpdaters
         {
             _maxHealth = PlayerHealthManager.MaxHealthPoints;
             _currentHealth = PlayerHealthManager.HealthPoints;
-            if (useTextPlaceholder)
-            {
-                textPlaceholderCurrentHealth.text = _currentHealth.ToString();
-                textPlaceholderMaxHealth.text = _maxHealth.ToString();
-            }
-            else
-            {
-                _bar.UpdateBar(_currentHealth, 0, _maxHealth);
-            }
+            UpdateBar();
+        }
+
+        private void UpdateBar()
+        {
+            healthBarSlider.value = _currentHealth / _maxHealth;
+            healthPercentageText.text = $"{healthBarSlider.value * 100:0}%";
         }
     }
 }

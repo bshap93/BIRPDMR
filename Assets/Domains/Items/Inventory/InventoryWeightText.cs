@@ -5,7 +5,7 @@ using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
 
-namespace Domains.Scripts
+namespace Domains.Items.Inventory
 {
     public class InventoryWeightText : MonoBehaviour, MMEventListener<InventoryEvent>
     {
