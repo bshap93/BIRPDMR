@@ -69,15 +69,19 @@ namespace Domains.Player.Scripts
             }
 
 
-            if (eventType.EventType == PlayerStatusEventType.OutOfFuel && autoResetWhenOutOfFuel)
-                // Only set the post-fuel stats if this was caused by auto-reset
-                // or if we're handling a manual reset (which already set the stats)
-                if (autoResetWhenOutOfFuel)
-                {
-                    SetPostFuelOutStats();
-                    outOfFuelFeedbacks?.PlayFeedbacks();
-                    AlertEvent.Trigger(AlertReason.OutOfFuel, "You are out of fuel!", "Out of Fuel");
-                }
+            if (eventType.EventType == PlayerStatusEventType.OutOfFuel)
+
+            {
+                outOfFuelFeedbacks?.StopFeedbacks();
+                AlertEvent.Trigger(AlertReason.OutOfFuel, "You are out of fuel! Hold E to Reset", "Out of Fuel");
+            }
+
+            if (eventType.EventType == PlayerStatusEventType.SoftReset)
+            {
+                SetPostFuelOutStats();
+                outOfFuelFeedbacks?.PlayFeedbacks();
+                AlertEvent.Trigger(AlertReason.OutOfFuel, "You are out of fuel!", "Out of Fuel");
+            }
         }
 
         private void ManualReset()
@@ -102,7 +106,7 @@ namespace Domains.Player.Scripts
 
             // Use SetCurrentFuel to set the fuel amount
             FuelEvent.Trigger(FuelEventType.SetCurrentFuel, recoveryAmount, maximumFuel);
-            CurrencyEvent.Trigger(CurrencyEventType.LoseCurrency, monetaryPenalty);
+            CurrencyEvent.Trigger(CurrencyEventType.LoseCurrency, GetRescueExpense());
 
             // Ensure the UI is updated
             FuelEvent.Trigger(FuelEventType.NotifyListeners, recoveryAmount, maximumFuel);
@@ -113,6 +117,17 @@ namespace Domains.Player.Scripts
             UnityEngine.Debug.Log($"Set fuel to {recoveryAmount} after running out of fuel");
         }
 
+        public int GetRescueExpense()
+        {
+            var playerDepth = -playerCamera.transform.position.y;
+
+            if (playerDepth < 0) playerDepth = 0;
+
+            var rescueExpense = Mathf.FloorToInt(playerDepth / 10) * monetaryPenalty;
+
+            return rescueExpense;
+        }
+
 
         public void SetPostDeathStats()
         {
@@ -121,7 +136,7 @@ namespace Domains.Player.Scripts
             var currentCurrency = PlayerCurrencyManager.CompanyCredits;
             FuelEvent.Trigger(FuelEventType.SetCurrentFuel, fuelPenaltyMultiplier * maxFuel, maxFuel);
             HealthEvent.Trigger(HealthEventType.SetCurrentHealth, healthPenaltyMultiplier * maximumHealth);
-            CurrencyEvent.Trigger(CurrencyEventType.LoseCurrency, monetaryPenalty);
+            CurrencyEvent.Trigger(CurrencyEventType.LoseCurrency, GetRescueExpense());
 
             SaveManager.Instance.SaveAll();
         }

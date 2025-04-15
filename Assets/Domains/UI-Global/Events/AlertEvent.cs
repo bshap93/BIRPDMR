@@ -16,7 +16,14 @@ namespace Domains.UI_Global.Events
         DeletingDiggerData,
         Died,
         CreditsAdded,
-        LowOnFuel
+        LowOnFuel,
+        ResetManually
+    }
+
+    public enum AlertType
+    {
+        Basic,
+        CallToAction
     }
 
     public struct AlertEvent

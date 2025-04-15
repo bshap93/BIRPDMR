@@ -12,11 +12,19 @@ namespace Domains.Input.Scripts
         private const KeyCode PersistanceKey = KeyCode.P;
         private const KeyCode DeletionKey = KeyCode.Alpha0;
         private const int MineMouseButton = 0;
+        private float eKeyHoldTime = 0f;
+        private float requiredHoldDuration = 2f; // Change to desired duration in seconds
+
 
         // Methods to check input (abstraction layer)
         public static bool IsInteractPressed()
         {
             return UnityEngine.Input.GetKeyDown(InteractKey);
+        }
+
+        public static bool IsInteractHeld()
+        {
+            return UnityEngine.Input.GetKey(InteractKey);
         }
 
 
