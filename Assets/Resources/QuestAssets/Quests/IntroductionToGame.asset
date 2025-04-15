@@ -61,7 +61,8 @@ MonoBehaviour:
   m_rememberIfAbandoned: 0
   m_deleteWhenComplete: 0
   m_autostartConditionSet:
-    m_conditionList: []
+    m_conditionList:
+    - {fileID: 648425830173303379}
     m_conditionCountMode: 0
     m_minConditionCount: 0
     m_numTrueConditions: 0
@@ -125,7 +126,7 @@ MonoBehaviour:
       m_textTableFieldID: 0
     m_nodeType: 0
     m_isOptional: 0
-    m_state: 0
+    m_state: 1
     m_speaker:
       m_text: ICO
       m_stringAsset: {fileID: 0}
@@ -157,7 +158,7 @@ MonoBehaviour:
     m_canvasRect:
       serializedVersion: 2
       x: 202
-      y: 19.333336
+      y: 22.333336
       width: 120
       height: 48
   - m_id:
@@ -172,7 +173,7 @@ MonoBehaviour:
       m_textTableFieldID: 0
     m_nodeType: 4
     m_isOptional: 0
-    m_state: 1
+    m_state: 0
     m_speaker:
       m_text: EmGRAM
       m_stringAsset: {fileID: 0}
@@ -202,10 +203,36 @@ MonoBehaviour:
     m_childIndexList: 
     m_canvasRect:
       serializedVersion: 2
-      x: 270.6667
-      y: 110.66667
+      x: 269.6667
+      y: 111.66667
       width: 120
       height: 48
   m_textTable: {fileID: 0}
   m_goalEntityTypeName: 
   m_nextContentID: 0
+--- !u!114 &648425830173303379
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb2f2b9c7056cd343a6b11365c05d91a, type: 3}
+  m_Name: QuestNodeStateQuestCondition
+  m_EditorClassIdentifier: 
+  m_alreadyTrue: 0
+  m_requiredQuest: {fileID: 11400000}
+  m_requiredQuestID:
+    m_text: Quest -43214
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
+  m_requiredQuestNodeID:
+    m_text: Quest-43214.start
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
+  m_isNot: 0
+  m_requiredState: 2
