@@ -13,6 +13,10 @@ namespace Domains.Player.Scripts.ScriptableObjects
 
         public Color initialUpgradeColor;
 
+        public Material initialPickaxeMaterial;
+        public Material initialShovelMaterial;
+        public Material initialScannerMaterial;
+
 
         [Header("Initial Endurance")] public int InitialEnduranceLevel;
         public int InitialEnduranceExperiencePoints;

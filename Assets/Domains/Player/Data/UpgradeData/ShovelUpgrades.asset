@@ -21,8 +21,9 @@ MonoBehaviour:
   upgradeColors:
   - {r: 0.014813383, g: 0.67295593, b: 0.061269637, a: 1}
   - {r: 0, g: 0.10374492, b: 0.9433962, a: 1}
-  - {r: 0.34586883, g: 0.035975583, b: 0.67295593, a: 1}
-  - {r: 0.9748427, g: 0.7363685, b: 0.25444004, a: 1}
+  upgradeMaterials:
+  - {fileID: 2100000, guid: 55ca6cd7c485f3c4da5c26bb7d2a30f7, type: 2}
+  - {fileID: 2100000, guid: 86b5a14a3c924a74f809e8064b0ab30c, type: 2}
   upgradeSounds:
   - {fileID: 8300000, guid: aa76393b307c859428fa0d6a35c36365, type: 3}
   - {fileID: 8300000, guid: aa76393b307c859428fa0d6a35c36365, type: 3}

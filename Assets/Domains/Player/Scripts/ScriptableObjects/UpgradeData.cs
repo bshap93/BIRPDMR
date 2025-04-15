@@ -11,6 +11,7 @@ namespace Domains.Player.Scripts.ScriptableObjects
         public string description;
         public int[] upgradeCosts;
         public Color[] upgradeColors;
+        public Material[] upgradeMaterials;
 
         public AudioClip[] upgradeSounds;
 
