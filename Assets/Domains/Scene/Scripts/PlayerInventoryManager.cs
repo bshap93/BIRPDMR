@@ -5,11 +5,8 @@ using Domains.Items;
 using Domains.Items.Events;
 using Domains.Items.Inventory;
 using Domains.Player.Scripts;
-using Domains.Scripts;
-using Domains.UI;
 using Domains.UI_Global.Events;
 using Gameplay.Events;
-using JetBrains.Annotations;
 using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -31,8 +28,6 @@ namespace Domains.Scene.Scripts
 
         private static string _savePath;
 
-        // UI updater reference
-        [CanBeNull] public InventoryBarUpdater inventoryBarUpdater;
 
         // Single instance for easy access
         // public static PlayerInventoryManager Instance { get; private set; }
@@ -70,9 +65,6 @@ namespace Domains.Scene.Scripts
             {
                 LoadInventory();
             }
-
-            // Initialize UI if available
-            if (inventoryBarUpdater != null) inventoryBarUpdater.Initialize();
         }
 
         private void OnEnable()

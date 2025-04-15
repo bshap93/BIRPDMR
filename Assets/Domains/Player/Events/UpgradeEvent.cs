@@ -14,7 +14,8 @@ namespace Domains.Player.Events
 
     public enum UpgradeType
     {
-        Mining,
+        Shovel,
+        Pickaxe,
         Endurance,
         Inventory,
         ToolChange,

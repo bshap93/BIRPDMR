@@ -19,9 +19,6 @@ namespace Domains.Player.Scripts.ScriptableObjects
         public Material initialScannerMaterial;
 
 
-        [Header("Initial Endurance")] public int InitialEnduranceLevel;
-        public int InitialEnduranceExperiencePoints;
-
         [Header("Inventory Stats")] public int InitialWeightLimit;
         [Header("Currency Stats")] public int InitialCurrency;
 

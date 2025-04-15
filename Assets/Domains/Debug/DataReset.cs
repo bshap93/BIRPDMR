@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Domains.Debug
 {
+    [DefaultExecutionOrder(-100)] // Make this run before other scripts
     public class DataReset : MonoBehaviour
     {
         private void Awake()
@@ -27,9 +28,6 @@ namespace Domains.Debug
             PlayerHealthManager.ResetPlayerHealth();
             PlayerHealthManager.SavePlayerHealth();
 
-            // Reset inventory
-            PlayerInventoryManager.ResetInventory();
-            PlayerInventoryManager.SaveInventory();
 
             // Reset currency
             PlayerCurrencyManager.ResetPlayerCurrency();
@@ -51,6 +49,9 @@ namespace Domains.Debug
 
             // Reset digger data if it exists
             // if (DiggerDataManager.Instance != null) DiggerDataManager.Instance.ResetDiggerData();
+            // Reset inventory
+            PlayerInventoryManager.ResetInventory();
+            PlayerInventoryManager.SaveInventory();
 
 
             UnityEngine.Debug.Log("All save data cleared successfully.");

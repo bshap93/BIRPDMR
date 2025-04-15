@@ -30,6 +30,12 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         private void OnEnable()
         {
             this.MMEventStartListening();
+            // Reapply current material when enabled
+            if (currentMaterial != null)
+            {
+                SetCurrentMaterial(currentMaterial);
+                UnityEngine.Debug.Log($"{GetType().Name} enabled - reapplied material: {currentMaterial.name}");
+            }
         }
 
         private void OnDisable()

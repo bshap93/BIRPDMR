@@ -709,7 +709,7 @@ MonoBehaviour:
   oreHitFeedback: {fileID: 1277248301386597315}
   oreDestroyFeedback: {fileID: 6017877751092101060}
   OreHardness: 0
-  UniqueID: fc6ff7ef-2568-41f1-9925-60716d9eac2d
+  UniqueID: 0091b15c-2214-42c3-aeb9-9f5e8f8e0889
   failHitFeedbacks: {fileID: 2879248722755317898}
   failHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
