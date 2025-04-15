@@ -15,6 +15,11 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         public MMFeedbacks diggingFeedbacks;
         public GameObject debrisEffectPrefab;
 
+        [Header("Material Settings")] public Material currentMaterial;
+
+        [SerializeField] private GameObject shovelObject;
+        [SerializeField] private GameObject shovelGripObject;
+        [SerializeField] private GameObject shovelMidObject;
 
         private void Awake()
         {
@@ -38,6 +43,18 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             if (eventType.EventType == UpgradeEventType.ShovelMiningSizeSet)
                 SetDiggerUsingToolEffectSize(eventType.EffectValue, eventType.EffectValue2);
         }
+
+        public void SetCurrentMaterial(Material material)
+        {
+            currentMaterial = material;
+            if (shovelObject != null)
+                shovelObject.GetComponent<Renderer>().material = currentMaterial;
+            if (shovelGripObject != null)
+                shovelGripObject.GetComponent<Renderer>().material = currentMaterial;
+            if (shovelMidObject != null)
+                shovelMidObject.GetComponent<Renderer>().material = currentMaterial;
+        }
+
 
         public override void UseTool(RaycastHit hit)
         {

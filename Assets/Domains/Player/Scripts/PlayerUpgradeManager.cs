@@ -28,6 +28,7 @@ namespace Domains.Player.Scripts
         private static float shovelToolWidth = 0.6410909f; // Default mining tool width
         private static float pickaxeMiningToolWidth = 0.6410909f; // Default mining tool width
 
+
         private static float fuelCapacity = 100f; // Default fuel capacity
 
         private static string currentToolId = "Shovel"; // Default starting tool
@@ -71,6 +72,7 @@ namespace Domains.Player.Scripts
                 shovelToolEffectRadius = characterStatProfile.initialShovelToolEffectRadius;
                 shovelToolEffectOpacity = characterStatProfile.initialShovelToolEffectOpacity;
                 shovelToolWidth = characterStatProfile.shovelMiningToolWidth; // Use your default value here
+                shovelTool.SetCurrentMaterial(characterStatProfile.initialShovelMaterial);
 
                 // Literally the width of the onscreen tool
                 pickaxeMiningToolWidth = characterStatProfile.pickaxeMiningToolWidth; // Use your default value here
@@ -78,6 +80,7 @@ namespace Domains.Player.Scripts
                     characterStatProfile.initialPickaxeToolEffectRadius; // Use your default value here
                 pickaxeToolEffectOpacity =
                     characterStatProfile.pickaxeMiningToolEffectOpacity; // Use your default value here
+                pickaxeTool.SetCurrentMaterial(characterStatProfile.initialPickaxeMaterial);
             }
             else
             {
@@ -192,7 +195,9 @@ namespace Domains.Player.Scripts
                     upgrade.effectValues[currentLevel],
                     upgrade.effectTypes[currentLevel] == UpgradeEffectType.ToolChange
                         ? upgrade.toolChangeIDs[currentLevel]
-                        : null
+                        : null,
+                    upgrade.secondaryEffectValues[currentLevel],
+                    upgrade.upgradeMaterials[currentLevel]
                 );
 
                 UpdateUI();
@@ -212,7 +217,8 @@ namespace Domains.Player.Scripts
             var toolId = effectType == UpgradeEffectType.ToolChange ? upgrade.toolChangeIDs[level] : null;
             var secondaryEffectType = upgrade.secondaryEffectTypes[level];
             var secondaryEffectValue = upgrade.secondaryEffectValues[level];
-            Color upgradeColor = upgrade.upgradeColors[level];
+            var upgradeColor = upgrade.upgradeColors[level];
+            var upgradeMaterial = upgrade.upgradeMaterials[level];
 
             switch (effectType)
             {
@@ -227,14 +233,13 @@ namespace Domains.Player.Scripts
                     break;
             }
         }
-        
+
         private void ApplyColorUpgrade(string upgradeType, Color color)
         {
             UnityEngine.Debug.Log($"Applying color upgrade: {color} to {upgradeType}");
-
         }
 
-        private void ApplyMultiplierUpgrade(string upgradeType, float multiplier, float secondaryMultiplier = 1)
+        private void ApplyMultiplierUpgrade(string upgradeType, float multiplier, float secondaryMultiplier = 1,  Material upgradeMaterial = null)
         {
             UnityEngine.Debug.Log($"Applying multiplier upgrade: x{multiplier} to {upgradeType}");
 
@@ -263,6 +268,7 @@ namespace Domains.Player.Scripts
                     var oldScale = shovelTool.transform.localScale;
                     // shovelTool.transform.localScale = new Vector3(newWidth, oldScale.y, oldScale.z);
                     // shovelToolWidth = newWidth; // Update the width as well
+                    shovelTool.SetCurrentMaterial(upgradeMaterial);
                 }
 
 

@@ -31,11 +31,14 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         [FormerlySerializedAs("diggingFeedbacks")] [SerializeField]
         private MMFeedbacks pickaxeBehavior;
 
+        public Material currentMaterial;
+
         [Header("Hit Number Logic")] [SerializeField]
         private readonly float hitThresholdDistance = 0.5f; // adjust as needed
 
 
         private Vector3 lastHitPosition;
+        private MeshRenderer meshRenderer;
         private int terrainHitCount;
 
 
@@ -43,6 +46,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         {
             digger = FindFirstObjectByType<DiggerMasterRuntime>();
             playerInteraction = FindFirstObjectByType<PlayerInteraction>();
+            meshRenderer = GetComponent<MeshRenderer>();
         }
 
         private void OnEnable()
@@ -61,6 +65,13 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 SetDiggerUsingToolEffectSize(eventType.EffectValue, eventType.EffectValue2);
         }
 
+        public void SetCurrentMaterial(Material material)
+        {
+            currentMaterial = material;
+            if (meshRenderer != null)
+                meshRenderer.material = currentMaterial;
+        }
+
         public override void UseTool(RaycastHit hit)
         {
             lastHit = hit;
@@ -71,11 +82,11 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         {
             var detectedTextureIndex = terrainLayerDetector.GetTextureIndex(lastHit, out _);
 // First, see if it's a mesh or rock object we can mine
-            bool isMinableObject = CanInteractWithObject(lastHit.collider.gameObject);
+            var isMinableObject = CanInteractWithObject(lastHit.collider.gameObject);
 
 // Then decide if it’s terrain and valid
-            bool isTerrain = detectedTextureIndex >= 0;
-            bool isValidTerrain = CanInteractWithTextureIndex(detectedTextureIndex);
+            var isTerrain = detectedTextureIndex >= 0;
+            var isValidTerrain = CanInteractWithTextureIndex(detectedTextureIndex);
 
             if (!isMinableObject && (!isTerrain || !isValidTerrain)) return;
 

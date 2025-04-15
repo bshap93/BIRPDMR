@@ -1,5 +1,6 @@
 ﻿using Domains.Player.Scripts.ScriptableObjects;
 using MoreMountains.Tools;
+using UnityEngine;
 
 namespace Domains.Player.Events
 {
@@ -41,10 +42,11 @@ namespace Domains.Player.Events
         public float EffectValue; // Used for multipliers and additions
         public float EffectValue2; // Used for multipliers and additions
         public string ToolId; // Only used if EffectType == ToolChange
+        public Material CurrentMaterial; // Used for material changes
 
         public static void Trigger(UpgradeType upgradeType, UpgradeEventType upgradeEventType,
             UpgradeData upgradeData, int upgradeLevel, UpgradeEffectType effectType, float effectValue = 1,
-            string toolId = null, float effectValue2 = 1)
+            string toolId = null, float effectValue2 = 1, Material currentMaterial = null)
         {
             _e.EventType = upgradeEventType;
             _e.UpgradeType = upgradeType;
@@ -54,6 +56,7 @@ namespace Domains.Player.Events
             _e.EffectValue =
                 effectType == UpgradeEffectType.ToolChange ? 0 : effectValue; // Ensure only relevant values are used
             _e.ToolId = effectType == UpgradeEffectType.ToolChange ? toolId : null;
+            _e.CurrentMaterial = currentMaterial;
 
             MMEventManager.TriggerEvent(_e);
         }

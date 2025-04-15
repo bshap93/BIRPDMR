@@ -13,7 +13,8 @@ namespace Domains.Player.Scripts.ScriptableObjects
 
         public Color initialUpgradeColor;
 
-        public Material initialPickaxeMaterial;
+        [Header("Material Settings")] public Material initialPickaxeMaterial;
+
         public Material initialShovelMaterial;
         public Material initialScannerMaterial;
 
