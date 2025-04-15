@@ -20,8 +20,6 @@ namespace Domains.Scene.Location
             }
 
             compassPro.showOnScreenIndicators = false;
-            compassPro.showOffScreenIndicators = false;
-            compassPro.showMiniMap = false;
             compassPro.UpdateSettings();
         }
 
@@ -40,15 +38,12 @@ namespace Domains.Scene.Location
             if (eventType.ToolType == ToolType.Scanner)
             {
                 compassPro.showOnScreenIndicators = true;
-                compassPro.showOffScreenIndicators = true;
-                compassPro.showMiniMap = true;
                 compassPro.UpdateSettings();
             }
             else if (eventType.ToolType == ToolType.Pickaxe || eventType.ToolType == ToolType.Shovel)
             {
                 compassPro.showOnScreenIndicators = false;
-                compassPro.showOffScreenIndicators = false;
-                compassPro.showMiniMap = false;
+
                 compassPro.UpdateSettings();
             }
         }

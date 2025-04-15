@@ -5,7 +5,7 @@ using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
 
-namespace Domains.Scripts
+namespace Domains.UI_Global.Scripts
 {
     public class FuelConsole : MonoBehaviour, MMEventListener<UIEvent>
     {
