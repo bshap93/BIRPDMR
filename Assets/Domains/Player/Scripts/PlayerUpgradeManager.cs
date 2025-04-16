@@ -245,8 +245,17 @@ namespace Domains.Player.Scripts
             var toolId = effectType == UpgradeEffectType.ToolChange ? upgrade.toolChangeIDs[level] : null;
             var secondaryEffectType = upgrade.secondaryEffectTypes[level];
             var secondaryEffectValue = upgrade.secondaryEffectValues[level];
-            var upgradeColor = upgrade.upgradeColors[level];
-            var upgradeMaterial = upgrade.upgradeMaterials[level];
+
+            Color upgradeColor;
+            if (upgrade.upgradeColors.Length > level)
+                upgradeColor = upgrade.upgradeColors[level];
+            else
+                upgradeColor = Color.white; // Default color if not set
+            Material upgradeMaterial;
+            if (upgrade.upgradeMaterials.Length > level)
+                upgradeMaterial = upgrade.upgradeMaterials[level];
+            else
+                upgradeMaterial = null; // Default material if not set
 
             switch (effectType)
             {
@@ -707,87 +716,5 @@ namespace Domains.Player.Scripts
             UpgradeEvent.Trigger(UpgradeType.Pickaxe, UpgradeEventType.PickaxeMiningSizeSet, null, 0,
                 UpgradeEffectType.None, pickaxeToolEffectRadius, null, pickaxeToolEffectOpacity);
         }
-//         public static void ResetPlayerUpgrades()
-//         {
-//             var characterStatProfile =
-//                 Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
-//
-//             if (characterStatProfile == null)
-//             {
-//                 UnityEngine.Debug.LogError("CharacterStatProfile not found! Using default values.");
-//
-//                 // 🔥 FIX: Store keys in a separate list before modifying dictionary
-//                 var upgradeKeys = new List<string>(UpgradeLevels.Keys);
-//                 foreach (var key in upgradeKeys) UpgradeLevels[key] = 0;
-//             }
-//             else
-//             {
-//                 // 🔥 FIX: Same approach, storing keys separately
-//                 var upgradeKeys = new List<string>(UpgradeLevels.Keys);
-//                 foreach (var key in upgradeKeys) UpgradeLevels[key] = characterStatProfile.InitialUpgradeState;
-//             }
-//
-//             // Reset mining tool size to default value
-//
-//             shovelToolEffectRadius = characterStatProfile.initialShovelToolEffectRadius; // Use your default value here
-//             pickaxeToolEffectRadius =
-//                 characterStatProfile.initialPickaxeToolEffectRadius; // Use your default value here
-//
-//             // Tool width
-//             shovelToolWidth = characterStatProfile.shovelMiningToolWidth; // Use your default value here
-//             pickaxeMiningToolWidth =
-//                 characterStatProfile.pickaxeMiningToolWidth; // Use your default value here
-//
-//             // Opacity
-//
-//             shovelToolEffectOpacity =
-//                 characterStatProfile.initialShovelToolEffectOpacity; // Use your default value here
-//             pickaxeToolEffectOpacity =
-//                 characterStatProfile.pickaxeMiningToolEffectOpacity; // Use your default value here
-//
-//
-//             var shovelUpgradeScriptableObject =
-//                 characterStatProfile.initialShovelMaterial;
-//             var pickaxeUpgradeScriptableObject =
-//                 characterStatProfile.initialPickaxeMaterial;
-//
-//             shovelTool.SetCurrentMaterial(shovelUpgradeScriptableObject);
-//             pickaxeTool.SetCurrentMaterial(pickaxeUpgradeScriptableObject);
-//
-//             // Find shovel upgrade data to GET the correct material
-//             var shovelUpgradeData = Resources.FindObjectsOfTypeAll<UpgradeData>()
-//                 .FirstOrDefault(u => u.upgradeTypeName == "Shovel");
-//
-// // Set appropriate material based on upgrade level
-//             if (shovelUpgradeData != null)
-//             {
-//                 // If no upgrades purchased yet (initial state) or dictionary doesn't have the key
-//                 if (!UpgradeLevels.ContainsKey("Shovel") || UpgradeLevels["Shovel"] <= 0)
-//                 {
-//                     // Use MaterialGrey (initial material)
-//                     shovelTool.SetCurrentMaterial(characterStatProfile.initialShovelMaterial);
-//                     UnityEngine.Debug.Log("Reset to initial grey material");
-//                 }
-//                 else if (UpgradeLevels["Shovel"] == 1)
-//                 {
-//                     // Use MaterialGreen (first upgrade level)
-//                     shovelTool.SetCurrentMaterial(shovelUpgradeData.upgradeMaterials[0]);
-//                     UnityEngine.Debug.Log("Reset to green material (level 1)");
-//                 }
-//                 else if (UpgradeLevels["Shovel"] == 2)
-//                 {
-//                     // Use MaterialBlue (second upgrade level)
-//                     shovelTool.SetCurrentMaterial(shovelUpgradeData.upgradeMaterials[1]);
-//                     UnityEngine.Debug.Log("Reset to blue material (level 2)");
-//                 }
-//             }
-//
-//
-//             UpgradeEvent.Trigger(UpgradeType.Shovel, UpgradeEventType.ShovelMiningSizeSet, null, 0,
-//                 UpgradeEffectType.None, shovelToolEffectRadius, null, shovelToolEffectOpacity);
-//
-//             UpgradeEvent.Trigger(UpgradeType.Pickaxe, UpgradeEventType.PickaxeMiningSizeSet, null, 0,
-//                 UpgradeEffectType.None, pickaxeToolEffectRadius, null, pickaxeToolEffectOpacity);
-//         }
     }
 }

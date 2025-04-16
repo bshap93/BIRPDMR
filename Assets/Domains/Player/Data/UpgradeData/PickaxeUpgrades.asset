@@ -36,5 +36,5 @@ MonoBehaviour:
   - 2
   secondaryEffectTypes: 0000000000000000
   secondaryEffectValues:
-  - 0
-  - 0
+  - 1
+  - 1
