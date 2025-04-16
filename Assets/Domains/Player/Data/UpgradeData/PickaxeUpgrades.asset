@@ -16,6 +16,8 @@ MonoBehaviour:
   upgradeNames:
   - Pickaxe LV1
   - Pickaxe LV2
+  - Pickaxe LV3
+  - Pickaxe LV4
   description: 
   upgradeCosts: 90010000d0070000
   upgradeColors:

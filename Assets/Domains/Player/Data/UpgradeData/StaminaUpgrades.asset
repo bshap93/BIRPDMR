@@ -25,7 +25,11 @@ MonoBehaviour:
   - {r: 0, g: 0.10374492, b: 0.9433962, a: 1}
   - {r: 0.34586883, g: 0.035975583, b: 0.67295593, a: 1}
   - {r: 0.9748427, g: 0.7363685, b: 0.25444004, a: 1}
-  upgradeMaterials: []
+  upgradeMaterials:
+  - {fileID: -1518916840275930973, guid: b10b10fca77c23a438a89eb9cc442488, type: 3}
+  - {fileID: 2100000, guid: b2fff8e33694fca4dabe69679871ab88, type: 2}
+  - {fileID: 2100000, guid: d39f1ce55ebe7784da4290f3f9c1d628, type: 2}
+  - {fileID: 2100000, guid: d925ec10c0b00a4448c07aaa73eb4eca, type: 2}
   upgradeSounds:
   - {fileID: 0}
   - {fileID: 0}
