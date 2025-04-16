@@ -85,6 +85,7 @@ namespace Domains.Input.Scripts
         public void TriggerHealthRestore()
         {
             HealthEvent.Trigger(HealthEventType.RecoverHealth, 100);
+            CurrencyEvent.Trigger(CurrencyEventType.RemoveCurrency, amtToHeal);
         }
     }
 }
