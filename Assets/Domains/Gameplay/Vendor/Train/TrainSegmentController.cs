@@ -1,4 +1,5 @@
 using DG.Tweening;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 namespace Domains.Gameplay.Vendor.Train
@@ -13,10 +14,11 @@ namespace Domains.Gameplay.Vendor.Train
 
     public class TrainSegmentController : MonoBehaviour
     {
-        [SerializeField] private TrainSegmentAudio audio;
+        public MMFeedbacks sendoffFeedbacks;
         private bool isDocked;
         private bool isNotBlocked;
         private DOTweenAnimation sendoffAnimation;
+
 
         // Awake is called when the script instance is being loaded
         private void Awake()
@@ -43,8 +45,8 @@ namespace Domains.Gameplay.Vendor.Train
             {
                 isDocked = false;
 
-                if (audio != null)
-                    audio.PlayStartupSound();
+                sendoffFeedbacks?.PlayFeedbacks();
+
 
                 sendoffAnimation.DOPlay();
             }
@@ -53,9 +55,6 @@ namespace Domains.Gameplay.Vendor.Train
         // Add this method to your controller if you don't have it already
         public void OnExitArea()
         {
-            // Get the audio component and play shutdown sound
-            if (audio != null)
-                audio.PlayShutdownSound();
         }
     }
 }
