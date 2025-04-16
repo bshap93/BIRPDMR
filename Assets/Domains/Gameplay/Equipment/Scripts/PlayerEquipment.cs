@@ -1,3 +1,4 @@
+using Domains.Effects.Scripts;
 using Domains.Gameplay.Equipment.Events;
 using Domains.Gameplay.Tools;
 using Domains.Input.Scripts;
@@ -24,7 +25,10 @@ namespace Domains.Gameplay.Equipment.Scripts
         [FormerlySerializedAs("toolBehaviours")] [SerializeField]
         private GameObject[] toolObjects; // Shown in Inspector
 
+        [SerializeField] private float toolSwitchCooldown = 0.3f;
+
         public IToolAction CurrentToolComponent;
+        private float lastToolSwitchTime = -1f;
 
         private int numTools;
 
@@ -52,11 +56,12 @@ namespace Domains.Gameplay.Equipment.Scripts
 
         private void Update()
         {
-            if (CustomInputBindings.IsChangingWeapons())
+            if (CustomInputBindings.IsChangingWeapons() && Time.time - lastToolSwitchTime > toolSwitchCooldown)
             {
                 var direction = CustomInputBindings.GetWeaponChangeDirection();
                 currentToolIndex = (currentToolIndex + direction + numTools) % numTools;
                 SwitchTool(currentToolIndex);
+                lastToolSwitchTime = Time.time;
             }
         }
 
@@ -81,53 +86,21 @@ namespace Domains.Gameplay.Equipment.Scripts
             // Disable all tools
             foreach (var t in Tools)
                 if (t is MonoBehaviour monoBehaviour)
-                    monoBehaviour.gameObject.SetActive(false);
+                {
+                    var go = monoBehaviour.gameObject;
+                    if (go.activeSelf) FadeUtils.FadeOut(go); // Fade before disable
+                    go.SetActive(false); // Still necessary to avoid interactions
+                }
 
-            // Enable the selected tool
-            if (tool is MonoBehaviour mbh) mbh.gameObject.SetActive(true);
+            if (tool is MonoBehaviour mbh)
+            {
+                mbh.gameObject.SetActive(true);
+                FadeUtils.FadeIn(mbh.gameObject); // Smooth appearance
+            }
 
             // Trigger the appropriate events and feedbacks
             EquipmentEvent.Trigger(currentToolType);
             tool.EquipFeedbacks?.PlayFeedbacks();
-
-
-            // if (index == 0)
-            // {
-            //     shovelTool.gameObject.SetActive(true);
-            //     scannerTool.gameObject.SetActive(false);
-            //     currentToolType = ToolType.Shovel;
-            //     currentToolIteration = ToolIteration.First;
-            //     EquipmentEvent.Trigger(EquipmentEventType.EquipShovel);
-            //     equipMinerFeedbacks?.PlayFeedbacks();
-            //
-            //     // Set the current tool component
-            //     CurrentToolComponent = shovelTool;
-            // }
-            // else if (index == 1)
-            // {
-            //     shovelTool.gameObject.SetActive(false);
-            //     scannerTool.gameObject.SetActive(true);
-            //     currentToolType = ToolType.Scanner;
-            //     currentToolIteration = ToolIteration.First;
-            //     EquipmentEvent.Trigger(EquipmentEventType.EquipScanner);
-            //     equipScannerFeedbacks?.PlayFeedbacks();
-            //
-            //     // Set the current tool component
-            //     CurrentToolComponent = scannerTool;
-            // }
-            // else if (index == 2)
-            // {
-            //     shovelTool.gameObject.SetActive(false);
-            //     scannerTool.gameObject.SetActive(false);
-            //     currentToolType = ToolType.Pickaxe;
-            //     currentToolIteration = ToolIteration.First;
-            //     EquipmentEvent.Trigger(EquipmentEventType.EquipPickaxe);
-            //     CurrentToolComponent = null;
-            // }
-            // else
-            // {
-            //     UnityEngine.Debug.LogWarning($"Invalid tool index: {index}");
-            // }
         }
     }
 }

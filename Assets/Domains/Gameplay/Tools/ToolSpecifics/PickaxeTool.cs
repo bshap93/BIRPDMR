@@ -195,7 +195,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                         stalagmiteHeight,
                         true);
 
-                FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
+                // FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
             }
         }
     }
