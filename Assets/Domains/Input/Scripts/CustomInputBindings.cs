@@ -38,11 +38,6 @@ namespace Domains.Input.Scripts
             return UnityEngine.Input.GetKey(RunKey);
         }
 
-        public static bool IsChangePerspectivePressed()
-        {
-            return UnityEngine.Input.GetKeyDown(ChangePerspectiveKey);
-        }
-
         public static bool IsPersistanceKeyPressed()
         {
             return UnityEngine.Input.GetKeyDown(PersistanceKey);
@@ -51,16 +46,6 @@ namespace Domains.Input.Scripts
         public static bool IsDeletionKeyPressed()
         {
             return UnityEngine.Input.GetKeyDown(DeletionKey);
-        }
-
-        public static int GetPressedNumberKey()
-        {
-            for (var i = 0; i < 9; i++) // Checks keys 1-9
-                if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha1 + i) ||
-                    UnityEngine.Input.GetKeyDown(KeyCode.Keypad1 + i))
-                    return i; // Returns the number key that was pressed (0 = "1", 1 = "2", etc.)
-
-            return -1; // No number key was pressed
         }
 
 

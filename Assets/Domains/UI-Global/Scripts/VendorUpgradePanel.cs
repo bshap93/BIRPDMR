@@ -44,6 +44,7 @@ namespace Domains.Scripts
             this.MMEventStopListening();
         }
 
+
         public void OnMMEvent(UpgradeEvent eventType)
         {
             if (eventType.EventType == UpgradeEventType.UpgradePurchased)

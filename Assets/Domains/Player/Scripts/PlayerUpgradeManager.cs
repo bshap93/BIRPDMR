@@ -376,105 +376,6 @@ namespace Domains.Player.Scripts
             }
         }
 
-        // private void ApplyMultiplierUpgrade(int level, string upgradeType, float multiplier,
-        //     float secondaryMultiplier = 1, Material upgradeMaterial = null)
-        // {
-        //     UnityEngine.Debug.Log($"Applying multiplier upgrade: x{multiplier} to {upgradeType}");
-        //
-        //     if (upgradeType == "Endurance") // Example: Multiply stamina
-        //     {
-        //         var newFuel = PlayerFuelManager.MaxFuelPoints * multiplier;
-        //         PlayerFuelManager.MaxFuelPoints = newFuel;
-        //
-        //         FuelEvent.Trigger(FuelEventType.SetMaxFuel, newFuel, newFuel);
-        //     }
-        //     else if (upgradeType == "Shovel") // Example: Multiply mining speed
-        //     {
-        //         // Calculate new size
-        //         var newEffectRadius = shovelTool.effectRadius * multiplier;
-        //         // var newWidth = shovelToolWidth * multiplier;
-        //         var newOpacity = shovelToolEffectOpacity * secondaryMultiplier;
-        //
-        //         // Clamp the value
-        //         // newWidth = Mathf.Clamp(newWidth, 1f, 2f);
-        //
-        //         // Apply the clamped size
-        //         if (shovelTool != null)
-        //         {
-        //             shovelTool.SetDiggerUsingToolEffectSize(newEffectRadius, newOpacity);
-        //             shovelToolEffectRadius = newEffectRadius;
-        //             var oldScale = shovelTool.transform.localScale;
-        //             // shovelTool.transform.localScale = new Vector3(newWidth, oldScale.y, oldScale.z);
-        //             // shovelToolWidth = newWidth; // Update the width as well
-        //             shovelTool.SetCurrentMaterial(upgradeMaterial);
-        //         }
-        //
-        //
-        //         // Log the size change for debugging
-        //         UnityEngine.Debug.Log($"Mining size changed to: {shovelToolEffectRadius}");
-        //
-        //         // Save immediately
-        //         ES3.Save("ShovelToolEffectSize", shovelToolEffectRadius, "UpgradeSave.es3");
-        //         ES3.Save("ShovelToolOpacity", shovelToolEffectOpacity, "UpgradeSave.es3");
-        //         ES3.Save("ShovelToolWidth", shovelToolEffectRadius, "UpgradeSave.es3");
-        //         ES3.Save("ShovelToolMaterialLevel", level, "UpgradeSave.es3");
-        //     }
-        //     else if (upgradeType == "Pickaxe")
-        //     {
-        //         // Calculate new size
-        //         var newEffectRadius = pickaxeTool.effectRadius * multiplier;
-        //         var newWidth = pickaxeMiningToolWidth * multiplier;
-        //         var newOpacity = pickaxeToolEffectOpacity * secondaryMultiplier;
-        //
-        //         // Clamp the value
-        //         newWidth = Mathf.Clamp(newWidth, 1f, 2f);
-        //
-        //         // Apply the clamped size
-        //         if (pickaxeTool != null)
-        //         {
-        //             pickaxeTool.SetDiggerUsingToolEffectSize(newEffectRadius, newOpacity);
-        //             pickaxeToolEffectRadius = newEffectRadius;
-        //             var oldScale = pickaxeTool.transform.localScale;
-        //             pickaxeTool.transform.localScale = new Vector3(newWidth, oldScale.y, oldScale.z);
-        //             pickaxeMiningToolWidth = newWidth; // Update the width as well
-        //             pickaxeTool.SetCurrentMaterial(upgradeMaterial);
-        //         }
-        //
-        //
-        //         // Log the size change for debugging
-        //         UnityEngine.Debug.Log($"Mining size changed to: {pickaxeToolEffectRadius}");
-        //
-        //         // Save immediately
-        //         ES3.Save("PickaxeToolEffectSize", pickaxeToolEffectRadius, "UpgradeSave.es3");
-        //         ES3.Save("PickaxeToolOpacity", pickaxeToolEffectOpacity, "UpgradeSave.es3");
-        //         ES3.Save("PickaxeToolWidth", pickaxeMiningToolWidth, "UpgradeSave.es3");
-        //         ES3.Save("PickaxeToolMaterialLevel", level, "UpgradeSave.es3");
-        //     }
-        // }
-
-        // private void ApplyAdditionUpgrade(string upgradeType, float addition)
-        // {
-        //     UnityEngine.Debug.Log($"Applying addition upgrade: +{addition} to {upgradeType}");
-        //
-        //     if (upgradeType == "Inventory")
-        //     {
-        //         PlayerInventoryManager.IncreaseWeightLimit(addition);
-        //         InventoryEvent.Trigger(InventoryEventType.UpgradedWeightLimit, PlayerInventoryManager.PlayerInventory,
-        //             addition);
-        //     }
-        //     else if (upgradeType == "Endurance")
-        //     {
-        //         // Increase stamina directly
-        //         PlayerFuelManager.MaxFuelPoints += addition;
-        //         ES3.Save("MaxStamina", PlayerFuelManager.MaxFuelPoints, "UpgradeSave.es3"); // Save stamina
-        //     }
-        //     else if (upgradeType == "FuelCapacity")
-        //     {
-        //         // Increase fuel capacity
-        //         fuelCapacity += addition;
-        //         ES3.Save("MaxFuelCapacity", fuelCapacity, "UpgradeSave.es3"); // Save fuel capacity
-        //     }
-        // }
 
         private void UpdateUI()
         {
@@ -514,7 +415,24 @@ namespace Domains.Player.Scripts
         public int GetUpgradeCost(string upgradeTypeName)
         {
             var level = GetUpgradeLevel(upgradeTypeName);
-            return availableUpgrades.Find(u => u.upgradeTypeName == upgradeTypeName)?.upgradeCosts[level] ?? 9999;
+            var upgrade = availableUpgrades.Find(u => u.upgradeTypeName == upgradeTypeName);
+
+            // Safely handle when upgrade data is null
+            if (upgrade == null)
+            {
+                UnityEngine.Debug.LogWarning($"No upgrade data found for {upgradeTypeName}");
+                return 9999;
+            }
+
+            // Safely handle when level is out of bounds
+            if (level < 0 || level >= upgrade.upgradeCosts.Length)
+            {
+                UnityEngine.Debug.LogWarning(
+                    $"Level {level} is out of bounds for {upgradeTypeName} upgrades (max: {upgrade.upgradeCosts.Length - 1})");
+                return 9999;
+            }
+
+            return upgrade.upgradeCosts[level];
         }
 
         public void LoadUpgrades()
@@ -551,86 +469,6 @@ namespace Domains.Player.Scripts
 
             UnityEngine.Debug.Log("Finished loading all upgrades");
             isInitialLoad = false;
-
-            // // Load upgrade levels
-            // foreach (var upgrade in availableUpgrades)
-            //     if (ES3.KeyExists(upgrade.upgradeTypeName, "UpgradeSave.es3"))
-            //         UpgradeLevels[upgrade.upgradeTypeName] = ES3.Load<int>(upgrade.upgradeTypeName, "UpgradeSave.es3");
-            //     else
-            //         UpgradeLevels[upgrade.upgradeTypeName] = 0;
-            //
-            // // Load saved values directly without re-applying effects
-            //
-            // // Load mining tool size and apply directly
-            // if (ES3.KeyExists("ShovelToolEffectSize", "UpgradeSave.es3") &&
-            //     ES3.KeyExists("ShovelToolOpacity", "UpgradeSave.es3"))
-            // {
-            //     shovelToolEffectRadius = ES3.Load<float>("ShovelToolEffectSize", "UpgradeSave.es3");
-            //     shovelToolEffectOpacity =
-            //         ES3.Load<float>("ShovelToolOpacity", "UpgradeSave.es3");
-            //
-            //     // Directly update the ShovelMiningState
-            //     if (shovelTool != null)
-            //     {
-            //         shovelTool.SetDiggerUsingToolEffectSize(shovelToolEffectRadius, shovelToolEffectOpacity);
-            //         UnityEngine.Debug.Log($"Setting shovel mining size to {shovelToolEffectRadius}");
-            //     }
-            //     else
-            //     {
-            //         UnityEngine.Debug.LogWarning("ShovelMiningState reference is null during LoadUpgrades");
-            //     }
-            // }
-            //
-            //
-            // if (ES3.KeyExists("PickaxeToolEffectSize", "UpgradeSave.es3") &&
-            //     ES3.KeyExists("PickaxeToolOpacity", "UpgradeSave.es3"))
-            // {
-            //     pickaxeToolEffectRadius = ES3.Load<float>("PickaxeToolEffectSize", "UpgradeSave.es3");
-            //     pickaxeToolEffectOpacity =
-            //         ES3.Load<float>("PickaxeToolOpacity", "UpgradeSave.es3");
-            //
-            //     // Directly update the ShovelMiningState
-            //     if (pickaxeTool != null)
-            //     {
-            //         pickaxeTool.SetDiggerUsingToolEffectSize(pickaxeToolEffectRadius, pickaxeToolEffectOpacity);
-            //         UnityEngine.Debug.Log($"Setting pickaxe mining size to {pickaxeToolEffectRadius}");
-            //     }
-            //     else
-            //     {
-            //         UnityEngine.Debug.LogWarning("Pickaxe reference is null during LoadUpgrades");
-            //     }
-            // }
-            //
-            // // Load mining tool width and apply directly
-            // if (ES3.KeyExists("PickaxeToolWidth", "UpgradeSave.es3"))
-            // {
-            //     pickaxeMiningToolWidth = ES3.Load<float>("PickaxeToolWidth", "UpgradeSave.es3");
-            //
-            //     var oldScale = pickaxeTool.transform.localScale;
-            //     pickaxeTool.transform.localScale = new Vector3(pickaxeMiningToolWidth, oldScale.y, oldScale.z);
-            // }
-            //
-            //
-            // // Load stamina
-            // if (ES3.KeyExists("MaxStamina", "UpgradeSave.es3"))
-            //     PlayerFuelManager.MaxFuelPoints = ES3.Load<float>("MaxStamina", "UpgradeSave.es3");
-            //
-            // // Load fuel capacity
-            // if (ES3.KeyExists("MaxFuelCapacity", "UpgradeSave.es3"))
-            //     fuelCapacity = ES3.Load<float>("MaxFuelCapacity", "UpgradeSave.es3");
-            //
-            // // Load inventory size
-            // if (ES3.KeyExists("InventoryMaxWeight", "GameSave.es3"))
-            // {
-            //     var savedWeight = ES3.Load<float>("InventoryMaxWeight", "GameSave.es3");
-            //     PlayerInventoryManager.SetWeightLimit(savedWeight);
-            // }
-            //
-            // // Load tool ID if necessary
-            // if (ES3.KeyExists("CurrentToolID", "UpgradeSave.es3"))
-            //     currentToolId = ES3.Load<string>("CurrentToolID", "UpgradeSave.es3");
-            //
-            // UnityEngine.Debug.Log("Finished loading all upgrades");
         }
 
         private void LoadToolProperties()
@@ -718,10 +556,20 @@ namespace Domains.Player.Scripts
             var level = GetUpgradeLevel(upgradeTypeName);
             var upgrade = availableUpgrades.Find(u => u.upgradeTypeName == upgradeTypeName);
 
-            if (upgrade != null && level < upgrade.upgradeNames.Length)
-                return upgrade.upgradeNames[level]; // Return the name for the current level
+            if (upgrade == null)
+            {
+                UnityEngine.Debug.LogWarning($"No upgrade data found for {upgradeTypeName}");
+                return "Unknown Upgrade";
+            }
 
-            return "Unknown Upgrade"; // Default fallback
+            if (level < 0 || level >= upgrade.upgradeNames.Length)
+            {
+                UnityEngine.Debug.LogWarning(
+                    $"Level {level} is out of bounds for {upgradeTypeName} upgrade names (max: {upgrade.upgradeNames.Length - 1})");
+                return "Max Level Reached";
+            }
+
+            return upgrade.upgradeNames[level]; // Return the name for the current level
         }
 
         public bool HasSavedData()

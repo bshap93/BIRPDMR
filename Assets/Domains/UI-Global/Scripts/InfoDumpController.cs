@@ -3,87 +3,96 @@ using Domains.UI_Global.Events;
 using MoreMountains.Tools;
 using UnityEngine;
 
-public class InfoDumpController : MonoBehaviour, MMEventListener<UIEvent>
+namespace Domains.UI_Global.Scripts
 {
-    private bool _isPaused;
-    private CanvasGroup canvasGroup;
-
-    public InfoDumpController(bool isPaused)
+    public class InfoDumpController : MonoBehaviour, MMEventListener<UIEvent>
     {
-        _isPaused = isPaused;
-    }
+        [SerializeField] private bool shouldShowInfoDump = true;
+        private bool _isPaused;
+        private CanvasGroup canvasGroup;
 
-    private void Start()
-    {
-        canvasGroup = GetComponent<CanvasGroup>();
-        if (canvasGroup == null)
+        public InfoDumpController(bool isPaused)
         {
-            Debug.LogError("InfoDumpController: No CanvasGroup found on this GameObject.");
-            return;
+            _isPaused = isPaused;
         }
 
-        StartCoroutine(DelayedShowInfoDump());
-    }
-
-
-    private void OnEnable()
-    {
-        this.MMEventStartListening();
-    }
-
-    private void OnDisable()
-    {
-        this.MMEventStopListening();
-    }
-
-    public void OnMMEvent(UIEvent eventType)
-    {
-        if (eventType.EventType == UIEventType.CloseUI) HideInfoDump();
-    }
-
-    private IEnumerator DelayedShowInfoDump()
-    {
-        yield return null; // Wait one frame
-        ShowInfoDump();
-    }
-
-    private void ShowInfoDump()
-    {
-        if (canvasGroup != null)
+        private void Start()
         {
-            canvasGroup.alpha = 1f;
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
+            canvasGroup = GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                UnityEngine.Debug.LogError("InfoDumpController: No CanvasGroup found on this GameObject.");
+                return;
+            }
 
-            _isPaused = true;
-            Time.timeScale = 0;
-
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            if (shouldShowInfoDump)
+                StartCoroutine(DelayedShowInfoDump());
         }
-        else
+
+
+        private void OnEnable()
         {
-            Debug.LogError("InfoDumpController: No CanvasGroup found on this GameObject.");
+            this.MMEventStartListening();
         }
-    }
 
-    private void HideInfoDump()
-    {
-        if (canvasGroup != null)
+        private void OnDisable()
         {
-            canvasGroup.alpha = 0f;
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-
-            _isPaused = false;
-            Time.timeScale = 1;
-
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            this.MMEventStopListening();
         }
-        else
+
+        public void OnMMEvent(UIEvent eventType)
         {
-            Debug.LogError("InfoDumpController: No CanvasGroup found on this GameObject.");
+            if (eventType.EventType == UIEventType.CloseUI)
+            {
+                shouldShowInfoDump = false;
+                HideInfoDump();
+            }
+        }
+
+        private IEnumerator DelayedShowInfoDump()
+        {
+            yield return null; // Wait one frame
+            ShowInfoDump();
+        }
+
+        private void ShowInfoDump()
+        {
+            if (canvasGroup != null)
+            {
+                canvasGroup.alpha = 1f;
+                canvasGroup.interactable = true;
+                canvasGroup.blocksRaycasts = true;
+
+                _isPaused = true;
+                Time.timeScale = 0;
+
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                UnityEngine.Debug.LogError("InfoDumpController: No CanvasGroup found on this GameObject.");
+            }
+        }
+
+        private void HideInfoDump()
+        {
+            if (canvasGroup != null)
+            {
+                canvasGroup.alpha = 0f;
+                canvasGroup.interactable = false;
+                canvasGroup.blocksRaycasts = false;
+
+                _isPaused = false;
+                Time.timeScale = 1;
+
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+            else
+            {
+                UnityEngine.Debug.LogError("InfoDumpController: No CanvasGroup found on this GameObject.");
+            }
         }
     }
 }

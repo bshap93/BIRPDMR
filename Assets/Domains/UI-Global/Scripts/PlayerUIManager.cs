@@ -1,23 +1,39 @@
+using Domains.UI_Global.Events;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class PlayerUIManager : MonoBehaviour
+namespace Domains.UI_Global.Scripts
 {
-    public static PlayerUIManager Instance;
-
-    public PlayerUIManager(bool isUIOpen)
+    public class PlayerUIManager : MonoBehaviour
     {
-        this.IsUIOpen = isUIOpen;
-    }
+        public static PlayerUIManager Instance;
 
-    public bool IsUIOpen { get; set; }
+        [FormerlySerializedAs("SkipIntroduction")]
+        public bool skipIntroduction;
 
-    private void Awake()
-    {
-        Instance = this;
-    }
+        public PlayerUIManager(bool isUIOpen)
+        {
+            IsUIOpen = isUIOpen;
+        }
 
-    private void Start()
-    {
-        IsUIOpen = false;
+        public bool IsUIOpen { get; set; }
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        private void Start()
+        {
+            if (skipIntroduction)
+            {
+                UIEvent.Trigger(UIEventType.CloseUI);
+                IsUIOpen = false;
+            }
+            else
+            {
+                IsUIOpen = true;
+            }
+        }
     }
 }
