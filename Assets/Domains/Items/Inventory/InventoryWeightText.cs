@@ -15,6 +15,7 @@ namespace Domains.Items.Inventory
         private void Start()
         {
             _text = GetComponent<TMP_Text>();
+            UpdateWeightText();
         }
 
 
@@ -32,12 +33,7 @@ namespace Domains.Items.Inventory
         {
             if (eventType.EventType == InventoryEventType.ContentChanged)
             {
-                var currentWeight = PlayerInventoryManager.GetCurrentWeight();
-                var maxWeight = PlayerInventoryManager.GetMaxWeight();
-                if (_text == null || _text.text == null) return;
-                _text.text =
-                    $"{currentWeight.ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
-                // _text.text = eventType.Inventory.CurrentWeight().ToString(CultureInfo.InvariantCulture);
+                UpdateWeightText();
             }
             else if (eventType.EventType == InventoryEventType.UpgradedWeightLimit)
             {
@@ -45,6 +41,16 @@ namespace Domains.Items.Inventory
                 _text.text =
                     $"{PlayerInventoryManager.GetCurrentWeight().ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
             }
+        }
+
+        private void UpdateWeightText()
+        {
+            var currentWeight = PlayerInventoryManager.GetCurrentWeight();
+            var maxWeight = PlayerInventoryManager.GetMaxWeight();
+            if (_text == null || _text.text == null) return;
+            _text.text =
+                $"{currentWeight.ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
+            // _text.text = eventType.Inventory.CurrentWeight().ToString(CultureInfo.InvariantCulture);
         }
     }
 }

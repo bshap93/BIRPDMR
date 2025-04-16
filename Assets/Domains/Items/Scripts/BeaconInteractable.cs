@@ -3,6 +3,7 @@ using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Events;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
+using Plugins.Kronnect.CompassNavigatorPro.Scripts;
 using UnityEngine;
 
 namespace Domains.Items

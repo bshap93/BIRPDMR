@@ -10,7 +10,7 @@ namespace Domains.Scripts_that_Need_Sorting
         public float spotlightStrengthenDepth = 2f;
 
         public float initialSpotlightAngle = 30f;
-        public float initialSpotlightIntensity = 1f;
+        public float initialSpotlightIntensity;
 
         public float increasedSpotlightAngle = 45f;
         public float increasedSpotlightIntensity = 1.5f;
