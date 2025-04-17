@@ -1,9 +1,10 @@
 using Domains.Player.Scripts;
 using Domains.Scene.Events;
+using Domains.UI_Global.Events;
 using MoreMountains.Tools;
 using UnityEngine;
 
-namespace Domains.Scripts
+namespace Domains.UI_Global.Scripts
 {
     public class PauseOverlay : MonoBehaviour, MMEventListener<SceneEvent>
     {
@@ -42,7 +43,10 @@ namespace Domains.Scripts
 
         public void DieAndReset()
         {
-            PlayerStatusEvent.Trigger(PlayerStatusEventType.Died);
+            // Trigger the event to reset the player
+            PlayerStatusEvent.Trigger(PlayerStatusEventType.ResetManaully);
+            // Optionally, you can also trigger a UI event to close the pause menu
+            UIEvent.Trigger(UIEventType.CloseUI);
         }
 
         public void QuitGame()

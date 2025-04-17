@@ -13,7 +13,8 @@ namespace Domains.Player.Scripts
         ResetHealth,
         ResetFuel,
         RegainedFuel,
-        SoftReset
+        SoftReset,
+        ResetManaully
     }
 
     public struct PlayerStatusEvent

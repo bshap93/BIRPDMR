@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Domains.Player.Scripts;
 using MoreMountains.Feedbacks;
 using UnityEngine;
@@ -38,6 +39,16 @@ public class PlaneBarrier : MonoBehaviour
     {
         if (other.CompareTag("Player"))
             if (planeBarrierType == PlaneBarrierType.Lava)
+            {
                 PlayerStatusEvent.Trigger(PlayerStatusEventType.Died);
+                StartCoroutine(DieByLava(other));
+            }
+    }
+
+    private IEnumerator DieByLava(Collider other)
+    {
+        playerHitPlaneBarrierFeedbacks?.PlayFeedbacks();
+        yield return new WaitForSeconds(0.5f);
+        PlayerStatusEvent.Trigger(PlayerStatusEventType.ResetManaully);
     }
 }

@@ -40,32 +40,23 @@ namespace Domains.Scripts_that_Need_Sorting
 
         private void Update()
         {
-            if (CustomInputBindings.IsInteractHeld())
+            if (CustomInputBindings.IsResetHeld())
             {
-                if (CustomInputBindings.IsInteractHeld())
+                eKeyHoldTime += Time.deltaTime;
+
+                if (eKeyHoldTime >= requiredHoldDuration)
                 {
-                    eKeyHoldTime += Time.deltaTime;
+                    UnityEngine.Debug.Log("E key held long enough!");
+                    ResetManually();
 
-                    if (eKeyHoldTime >= requiredHoldDuration)
-                    {
-                        UnityEngine.Debug.Log("E key held long enough!");
-                        // Trigger your logic here
-                        playerDeathManager.SetPostFuelOutStats();
-                        TeleportPlayerToSpawn();
-
-                        AlertEvent.Trigger(AlertReason.ResetManually,
-                            "You were charged " + playerDeathManager.GetRescueExpense() + " credits for your rescue.",
-                            "Reset Manually");
-
-                        // Optional: Reset to avoid retriggering
-                        eKeyHoldTime = 0f;
-                    }
-                }
-                else
-                {
-                    // Reset if key is released
+                    // Optional: Reset to avoid retriggering
                     eKeyHoldTime = 0f;
                 }
+            }
+            else
+            {
+                // Reset if key is released
+                eKeyHoldTime = 0f;
             }
         }
 
@@ -82,11 +73,23 @@ namespace Domains.Scripts_that_Need_Sorting
 
         public void OnMMEvent(PlayerStatusEvent eventType)
         {
-            if (eventType.EventType == PlayerStatusEventType.Died) TeleportPlayerToSpawn();
+            if (eventType.EventType == PlayerStatusEventType.Died) ResetManually();
 
             if (eventType.EventType == PlayerStatusEventType.SoftReset
                )
-                TeleportPlayerToSpawn();
+                ResetManually();
+            if (eventType.EventType == PlayerStatusEventType.ResetManaully) ResetManually();
+        }
+
+        private void ResetManually()
+        {
+            // Trigger your logic here
+            playerDeathManager.SetPostFuelOutStats();
+            TeleportPlayerToSpawn();
+
+            AlertEvent.Trigger(AlertReason.ResetManually,
+                "You were charged " + playerDeathManager.GetRescueExpense() + " credits for your rescue.",
+                "Reset Manually");
         }
 
 

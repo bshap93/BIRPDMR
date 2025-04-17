@@ -34,7 +34,7 @@ namespace Domains.Input.Scripts
             return UnityEngine.Input.GetKeyDown(SaveDebugKey);
         }
 
-        public static bool IsInteractHeld()
+        public static bool IsResetHeld()
         {
             return UnityEngine.Input.GetKey(InteractKey);
         }
