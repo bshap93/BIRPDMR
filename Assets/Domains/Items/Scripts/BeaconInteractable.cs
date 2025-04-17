@@ -1,41 +1,12 @@
-﻿using CompassNavigatorPro;
-using Domains.Gameplay.Mining.Scripts;
-using Domains.Player.Events;
+﻿using Domains.Player.Events;
 using Domains.UI_Global.Events;
-using MoreMountains.Feedbacks;
-using Plugins.Kronnect.CompassNavigatorPro.Scripts;
 using UnityEngine;
 
-namespace Domains.Items
+namespace Domains.Items.Scripts
 {
-    public class BeaconInteractable : MonoBehaviour, IInteractable
+    public class BeaconInteractable : InteractableObjective
     {
-        public string UniqueID;
-
-        [SerializeField] private bool hasBeenInteractedWith;
-
-        public MMFeedbacks interactFeedbacks;
-
-        private CompassPro compassPro;
-
-        private CompassProPOI compassProPOI;
-
-        private void Start()
-        {
-            compassProPOI = GetComponent<CompassProPOI>();
-            if (compassProPOI != null)
-            {
-                compassProPOI.ToggleIndicatorVisibility(false);
-
-
-                UnityEngine.Debug.Log("POI visibility set to always hidden");
-            }
-
-            compassPro = FindFirstObjectByType<CompassPro>();
-            if (compassPro != null) compassPro.UpdateSettings();
-        }
-
-        public void Interact()
+        public override void Interact()
         {
             if (hasBeenInteractedWith) return;
             CurrencyEvent.Trigger(CurrencyEventType.AddCurrency, 800);
@@ -44,14 +15,6 @@ namespace Domains.Items
 
             interactFeedbacks?.PlayFeedbacks();
             hasBeenInteractedWith = true;
-        }
-
-        public void ShowInteractablePrompt()
-        {
-        }
-
-        public void HideInteractablePrompt()
-        {
         }
     }
 }

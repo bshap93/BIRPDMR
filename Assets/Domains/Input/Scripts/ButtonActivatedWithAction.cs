@@ -84,5 +84,10 @@ namespace Domains.Input.Scripts
         {
             HealthEvent.Trigger(HealthEventType.RecoverHealth, 100);
         }
+
+        public void HidePrompt()
+        {
+            if (_buttonPrompt != null) _buttonPrompt.Hide();
+        }
     }
 }

@@ -1,154 +1,199 @@
+using Domains.UI_Global.Events;
 using Lightbug.CharacterControllerPro.Core;
 using Lightbug.CharacterControllerPro.Implementation;
 using Lightbug.Utilities;
+using MoreMountains.Tools;
 using UnityEngine;
 
 namespace Domains
 {
-
     [AddComponentMenu("Character Controller Pro/Demo/Camera/Camera 3D")]
-    [DefaultExecutionOrder(ExecutionOrder.CharacterGraphicsOrder + 100)]  // <--- Do your job after everything else
-    public class MyCamera3D : MonoBehaviour
+    [DefaultExecutionOrder(ExecutionOrder.CharacterGraphicsOrder + 100)] // <--- Do your job after everything else
+    public class MyCamera3D : MonoBehaviour, MMEventListener<UIEvent>
     {
-        [Header("Inputs")]
+        public enum CameraMode
+        {
+            FirstPerson,
+            ThirdPerson
+        }
 
-        [SerializeField]
-        InputHandlerSettings inputHandlerSettings = new InputHandlerSettings();
+        [Header("Inputs")] [SerializeField] private InputHandlerSettings inputHandlerSettings = new();
 
-        [SerializeField]
-        string axes = "Camera";
+        [SerializeField] private string axes = "Camera";
 
-        [SerializeField]
-        string zoomAxis = "Camera Zoom";
+        [SerializeField] private string zoomAxis = "Camera Zoom";
 
         [Header("Target")]
-
-
-        [Tooltip("Select the graphics root object as your target, the one containing all the meshes, sprites, animated models, etc. \n\nImportant: This will be the considered as the actual target (visual element).")]
+        [Tooltip(
+            "Select the graphics root object as your target, the one containing all the meshes, sprites, animated models, etc. \n\nImportant: This will be the considered as the actual target (visual element).")]
         [SerializeField]
-        Transform targetTransform = null;
+        private Transform targetTransform;
 
-        [SerializeField]
-        Vector3 offsetFromHead = Vector3.zero;
+        [SerializeField] private Vector3 offsetFromHead = Vector3.zero;
 
-        [Tooltip("The interpolation speed used when the height of the character changes.")]
-        [SerializeField]
-        float heightLerpSpeed = 10f;
+        [Tooltip("The interpolation speed used when the height of the character changes.")] [SerializeField]
+        private float heightLerpSpeed = 10f;
 
-        [Header("View")]
+        [Header("View")] public CameraMode cameraMode = CameraMode.ThirdPerson;
 
-        public CameraMode cameraMode = CameraMode.ThirdPerson;
+        [Header("First Person")] public bool hideBody = true;
 
-        [Header("First Person")]
+        [SerializeField] private GameObject bodyObject;
 
-        public bool hideBody = true;
-
-        [SerializeField]
-        GameObject bodyObject = null;
-
-        [Header("Yaw")]
-
-        public bool updateYaw = true;
+        [Header("Yaw")] public bool updateYaw = true;
 
         public float yawSpeed = 180f;
 
 
-        [Header("Pitch")]
+        [Header("Pitch")] public bool updatePitch = true;
 
-        public bool updatePitch = true;
-
-        [SerializeField]
-        float initialPitch = 45f;
+        [SerializeField] private float initialPitch = 45f;
 
         public float pitchSpeed = 180f;
 
-        [Range(1f, 85f)]
-        public float maxPitchAngle = 80f;
+        [Range(1f, 85f)] public float maxPitchAngle = 80f;
 
-        [Range(1f, 85f)]
-        public float minPitchAngle = 80f;
+        [Range(1f, 85f)] public float minPitchAngle = 80f;
 
 
-        [Header("Roll")]
-        public bool updateRoll = false;
+        [Header("Roll")] public bool updateRoll;
 
 
-        [Header("Zoom (Third person)")]
+        [Header("Zoom (Third person)")] public bool updateZoom = true;
 
-        public bool updateZoom = true;
+        [Min(0f)] [SerializeField] private float distanceToTarget = 5f;
 
-        [Min(0f)]
-        [SerializeField]
-        float distanceToTarget = 5f;
+        [Min(0f)] public float zoomInOutSpeed = 40f;
 
-        [Min(0f)]
-        public float zoomInOutSpeed = 40f;
+        [Min(0f)] public float zoomInOutLerpSpeed = 5f;
 
-        [Min(0f)]
-        public float zoomInOutLerpSpeed = 5f;
+        [Min(0f)] public float minZoom = 2f;
 
-        [Min(0f)]
-        public float minZoom = 2f;
-
-        [Min(0.001f)]
-        public float maxZoom = 12f;
+        [Min(0.001f)] public float maxZoom = 12f;
 
 
-        [Header("Collision")]
+        [Header("Collision")] public bool collisionDetection = true;
 
-        public bool collisionDetection = true;
-        public bool collisionAffectsZoom = false;
+        public bool collisionAffectsZoom;
         public float detectionRadius = 0.5f;
         public LayerMask layerMask = 0;
         public bool considerKinematicRigidbodies = true;
         public bool considerDynamicRigidbodies = true;
+        private readonly RaycastHit[] hitsBuffer = new RaycastHit[10];
+        private readonly RaycastHit[] validHits = new RaycastHit[10];
+        private Renderer[] bodyRenderers;
 
         // ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
         // ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
         // ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 
-        CharacterActor characterActor = null;
-        Rigidbody characterRigidbody = null;
+        private CharacterActor characterActor;
+        private Vector3 characterPosition;
+        private Rigidbody characterRigidbody;
 
-        float currentDistanceToTarget;
-        float smoothedDistanceToTarget;
+        private float currentDistanceToTarget;
+        private float deltaPitch;
 
-        float deltaYaw = 0f;
-        float deltaPitch = 0f;
-        float deltaZoom = 0f;
+        private float deltaYaw;
+        private float deltaZoom;
 
-        Vector3 lerpedCharacterUp = Vector3.up;       
+        private Vector3 lerpedCharacterUp = Vector3.up;
+        private float lerpedHeight;
 
-        Transform viewReference = null;
-        Renderer[] bodyRenderers = null;
-        RaycastHit[] hitsBuffer = new RaycastHit[10];
-        RaycastHit[] validHits = new RaycastHit[10];
-        Vector3 characterPosition = default(Vector3);
-        float lerpedHeight;
 
-        public enum CameraMode
+        private Vector3 previousLerpedCharacterUp = Vector3.up;
+        private float smoothedDistanceToTarget;
+
+        private Transform viewReference;
+
+        private void Awake()
         {
-            FirstPerson,
-            ThirdPerson,
+            Initialize(targetTransform);
+        }
+
+
+        private void Start()
+        {
+            characterPosition = targetTransform.position;
+
+            previousLerpedCharacterUp = targetTransform.up;
+            lerpedCharacterUp = previousLerpedCharacterUp;
+
+
+            currentDistanceToTarget = distanceToTarget;
+            smoothedDistanceToTarget = currentDistanceToTarget;
+
+            viewReference.rotation = targetTransform.rotation;
+            viewReference.Rotate(Vector3.right, initialPitch);
+
+            lerpedHeight = characterActor.BodySize.y;
+        }
+
+
+        private void Update()
+        {
+            // Check if game is paused
+            if (Time.timeScale == 0)
+                return; // Stop all camera movement while paused
+
+            if (targetTransform == null)
+            {
+                enabled = false;
+                return;
+            }
+
+            var cameraAxes = inputHandlerSettings.InputHandler.GetVector2(axes);
+
+            if (updatePitch)
+                deltaPitch = -cameraAxes.y;
+
+            if (updateYaw)
+                deltaYaw = cameraAxes.x;
+
+            if (updateZoom)
+                deltaZoom = -inputHandlerSettings.InputHandler.GetFloat(zoomAxis);
+
+            var dt = Time.fixedDeltaTime;
+
+            UpdateCamera(dt);
+        }
+
+        private void OnEnable()
+        {
+            this.MMEventStartListening();
+
+            if (characterActor == null)
+                return;
+
+            characterActor.OnTeleport += OnTeleport;
+        }
+
+        private void OnDisable()
+        {
+            this.MMEventStopListening();
+            if (characterActor == null)
+                return;
+
+            characterActor.OnTeleport -= OnTeleport;
+        }
+
+
+        private void OnValidate()
+        {
+            initialPitch = Mathf.Clamp(initialPitch, -minPitchAngle, maxPitchAngle);
+        }
+
+        public void OnMMEvent(UIEvent eventType)
+        {
+            if (eventType.EventType == UIEventType.OpenVendorConsole) EnableCameraControl(false);
+            else if (eventType.EventType == UIEventType.CloseVendorConsole) EnableCameraControl(true);
         }
 
 
         public void ToggleCameraMode()
         {
             cameraMode = cameraMode == CameraMode.FirstPerson ? CameraMode.ThirdPerson : CameraMode.FirstPerson;
-        }
-
-        
-        
-        void OnValidate()
-        {
-            initialPitch = Mathf.Clamp(initialPitch, -minPitchAngle, maxPitchAngle);
-        }
-
-        void Awake()
-        {
-            Initialize(targetTransform);
         }
 
         public bool Initialize(Transform targetTransform)
@@ -168,7 +213,7 @@ namespace Domains
 
             inputHandlerSettings.Initialize(gameObject);
 
-            GameObject referenceObject = new GameObject("Camera reference");
+            var referenceObject = new GameObject("Camera reference");
             viewReference = referenceObject.transform;
 
             if (bodyObject != null)
@@ -177,100 +222,25 @@ namespace Domains
             return true;
         }
 
-        void OnEnable()
-        {
-            if (characterActor == null)
-                return;
 
-            characterActor.OnTeleport += OnTeleport;
-        }
-
-        void OnDisable()
-        {
-            if (characterActor == null)
-                return;
-
-            characterActor.OnTeleport -= OnTeleport;
-        }
-
-       
-
-        void Start()
-        {
-
-            characterPosition = targetTransform.position;
-
-            previousLerpedCharacterUp = targetTransform.up;
-            lerpedCharacterUp = previousLerpedCharacterUp;
-
-
-            currentDistanceToTarget = distanceToTarget;
-            smoothedDistanceToTarget = currentDistanceToTarget;
-
-            viewReference.rotation = targetTransform.rotation;
-            viewReference.Rotate(Vector3.right, initialPitch);
-
-            lerpedHeight = characterActor.BodySize.y;
-        }
-
-
-        void Update()
-        {
-            // Check if game is paused
-            if (Time.timeScale == 0)
-                return; // Stop all camera movement while paused
-
-            if (targetTransform == null)
-            {
-                this.enabled = false;
-                return;
-            }
-
-            Vector2 cameraAxes = inputHandlerSettings.InputHandler.GetVector2(axes);
-
-            if (updatePitch)
-                deltaPitch = -cameraAxes.y;
-
-            if (updateYaw)
-                deltaYaw = cameraAxes.x;
-
-            if (updateZoom)
-                deltaZoom = -inputHandlerSettings.InputHandler.GetFloat(zoomAxis);
-
-            float dt = Time.fixedDeltaTime;
-
-            UpdateCamera(dt);
-        }
-
-
-
-
-        
-
-
-        void OnTeleport(Vector3 position, Quaternion rotation)
+        private void OnTeleport(Vector3 position, Quaternion rotation)
         {
             viewReference.rotation = rotation;
             transform.rotation = viewReference.rotation;
 
             lerpedCharacterUp = characterActor.Up;
             previousLerpedCharacterUp = lerpedCharacterUp;
-
         }
 
-
-        Vector3 previousLerpedCharacterUp = Vector3.up;
-
-        void HandleBodyVisibility()
+        private void HandleBodyVisibility()
         {
             if (cameraMode == CameraMode.FirstPerson)
             {
                 if (bodyRenderers != null)
-                    for (int i = 0; i < bodyRenderers.Length; i++)
-                    {
+                    for (var i = 0; i < bodyRenderers.Length; i++)
                         if (bodyRenderers[i].GetType().IsSubclassOf(typeof(SkinnedMeshRenderer)))
                         {
-                            SkinnedMeshRenderer skinnedMeshRenderer = (SkinnedMeshRenderer)bodyRenderers[i];
+                            var skinnedMeshRenderer = (SkinnedMeshRenderer)bodyRenderers[i];
                             if (skinnedMeshRenderer != null)
                                 skinnedMeshRenderer.forceRenderingOff = hideBody;
                         }
@@ -278,20 +248,18 @@ namespace Domains
                         {
                             bodyRenderers[i].enabled = !hideBody;
                         }
-                    }
-
             }
             else
             {
                 if (bodyRenderers != null)
-                    for (int i = 0; i < bodyRenderers.Length; i++)
+                    for (var i = 0; i < bodyRenderers.Length; i++)
                     {
                         if (bodyRenderers[i] == null)
                             continue;
 
                         if (bodyRenderers[i].GetType().IsSubclassOf(typeof(SkinnedMeshRenderer)))
                         {
-                            SkinnedMeshRenderer skinnedMeshRenderer = (SkinnedMeshRenderer)bodyRenderers[i];
+                            var skinnedMeshRenderer = (SkinnedMeshRenderer)bodyRenderers[i];
                             if (skinnedMeshRenderer != null)
                                 skinnedMeshRenderer.forceRenderingOff = false;
                         }
@@ -299,15 +267,12 @@ namespace Domains
                         {
                             bodyRenderers[i].enabled = true;
                         }
-
-
                     }
             }
         }
 
-        
 
-        void UpdateCamera(float dt)
+        private void UpdateCamera(float dt)
         {
             // Body visibility ---------------------------------------------------------------------
             HandleBodyVisibility();
@@ -316,11 +281,10 @@ namespace Domains
             lerpedCharacterUp = targetTransform.up;
 
             // Rotate the reference based on the lerped character up vector 
-            Quaternion deltaRotation = Quaternion.FromToRotation(previousLerpedCharacterUp, lerpedCharacterUp);
+            var deltaRotation = Quaternion.FromToRotation(previousLerpedCharacterUp, lerpedCharacterUp);
             previousLerpedCharacterUp = lerpedCharacterUp;
 
             viewReference.rotation = deltaRotation * viewReference.rotation;
-
 
 
             // Yaw rotation -----------------------------------------------------------------------------------------        
@@ -328,29 +292,29 @@ namespace Domains
 
             // Pitch rotation -----------------------------------------------------------------------------------------            
 
-            float angleToUp = Vector3.Angle(viewReference.forward, lerpedCharacterUp);
+            var angleToUp = Vector3.Angle(viewReference.forward, lerpedCharacterUp);
 
 
-            float minPitch = -angleToUp + (90f - minPitchAngle);
-            float maxPitch = 180f - angleToUp - (90f - maxPitchAngle);
+            var minPitch = -angleToUp + (90f - minPitchAngle);
+            var maxPitch = 180f - angleToUp - (90f - maxPitchAngle);
 
-            float pitchAngle = Mathf.Clamp(deltaPitch * pitchSpeed * dt, minPitch, maxPitch);
+            var pitchAngle = Mathf.Clamp(deltaPitch * pitchSpeed * dt, minPitch, maxPitch);
             viewReference.Rotate(Vector3.right, pitchAngle);
 
             // Roll rotation -----------------------------------------------------------------------------------------    
             if (updateRoll)
-            {
-                viewReference.up = lerpedCharacterUp;//Quaternion.FromToRotation( viewReference.up , lerpedCharacterUp ) * viewReference.up;
-            }
+                viewReference.up =
+                    lerpedCharacterUp; //Quaternion.FromToRotation( viewReference.up , lerpedCharacterUp ) * viewReference.up;
 
             // Position of the target -----------------------------------------------------------------------
             characterPosition = targetTransform.position;
 
             lerpedHeight = Mathf.Lerp(lerpedHeight, characterActor.BodySize.y, heightLerpSpeed * dt);
-            Vector3 targetPosition = characterPosition + targetTransform.up * lerpedHeight + targetTransform.TransformDirection(offsetFromHead);
+            var targetPosition = characterPosition + targetTransform.up * lerpedHeight +
+                                 targetTransform.TransformDirection(offsetFromHead);
             viewReference.position = targetPosition;
 
-            Vector3 finalPosition = viewReference.position;
+            var finalPosition = viewReference.position;
 
             // ------------------------------------------------------------------------------------------------------
             if (cameraMode == CameraMode.ThirdPerson)
@@ -358,17 +322,16 @@ namespace Domains
                 currentDistanceToTarget += deltaZoom * zoomInOutSpeed * dt;
                 currentDistanceToTarget = Mathf.Clamp(currentDistanceToTarget, minZoom, maxZoom);
 
-                smoothedDistanceToTarget = Mathf.Lerp(smoothedDistanceToTarget, currentDistanceToTarget, zoomInOutLerpSpeed * dt);
-                Vector3 displacement = -viewReference.forward * smoothedDistanceToTarget;
+                smoothedDistanceToTarget = Mathf.Lerp(smoothedDistanceToTarget, currentDistanceToTarget,
+                    zoomInOutLerpSpeed * dt);
+                var displacement = -viewReference.forward * smoothedDistanceToTarget;
 
                 if (collisionDetection)
                 {
-                    bool hit = DetectCollisions(ref displacement, targetPosition);
+                    var hit = DetectCollisions(ref displacement, targetPosition);
 
                     if (collisionAffectsZoom && hit)
-                    {
                         currentDistanceToTarget = smoothedDistanceToTarget = displacement.magnitude;
-                    }
                 }
 
                 finalPosition = targetPosition + displacement;
@@ -377,15 +340,12 @@ namespace Domains
 
             transform.position = finalPosition;
             transform.rotation = viewReference.rotation;
-
         }
 
 
-        
-
-        bool DetectCollisions(ref Vector3 displacement, Vector3 lookAtPosition)
+        private bool DetectCollisions(ref Vector3 displacement, Vector3 lookAtPosition)
         {
-            int hits = Physics.SphereCastNonAlloc(
+            var hits = Physics.SphereCastNonAlloc(
                 lookAtPosition,
                 detectionRadius,
                 Vector3.Normalize(displacement),
@@ -396,12 +356,12 @@ namespace Domains
             );
 
             // Order the results
-            int validHitsNumber = 0;
-            for (int i = 0; i < hits; i++)
+            var validHitsNumber = 0;
+            for (var i = 0; i < hits; i++)
             {
-                RaycastHit hitBuffer = hitsBuffer[i];
+                var hitBuffer = hitsBuffer[i];
 
-                Rigidbody detectedRigidbody = hitBuffer.collider.attachedRigidbody;
+                var detectedRigidbody = hitBuffer.collider.attachedRigidbody;
 
                 // Filter the results ---------------------------
                 if (hitBuffer.distance == 0)
@@ -428,10 +388,10 @@ namespace Domains
                 return false;
 
 
-            float distance = Mathf.Infinity;
-            for (int i = 0; i < validHitsNumber; i++)
+            var distance = Mathf.Infinity;
+            for (var i = 0; i < validHitsNumber; i++)
             {
-                RaycastHit hitBuffer = validHits[i];
+                var hitBuffer = validHits[i];
 
                 if (hitBuffer.distance < distance)
                     distance = hitBuffer.distance;
@@ -443,7 +403,18 @@ namespace Domains
             return true;
         }
 
-        
-    }
+        public void EnableCameraControl(bool enable)
+        {
+            updateYaw = enable;
+            updatePitch = enable;
+            updateZoom = enable;
 
+            if (!enable)
+            {
+                deltaYaw = 0f;
+                deltaPitch = 0f;
+                deltaZoom = 0f;
+            }
+        }
+    }
 }

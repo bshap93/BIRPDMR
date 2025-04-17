@@ -57,7 +57,7 @@ namespace Domains.Player.Scripts
             _canvasGroup.blocksRaycasts = false;
 
             _isPaused = false;
-            Time.timeScale = 1;
+            // Time.timeScale = 1;
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -70,7 +70,7 @@ namespace Domains.Player.Scripts
             _canvasGroup.blocksRaycasts = true;
 
             _isPaused = true;
-            Time.timeScale = 0;
+            // Time.timeScale = 0;
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;

@@ -52,6 +52,17 @@ namespace Domains.Gameplay.Vendor.Train
             }
         }
 
+        public void RecallSegment()
+        {
+            if (!isDocked)
+            {
+                isDocked = true;
+
+                sendoffAnimation.DOPause();
+                sendoffAnimation.DOPlayBackwards();
+            }
+        }
+
         // Add this method to your controller if you don't have it already
         public void OnExitArea()
         {

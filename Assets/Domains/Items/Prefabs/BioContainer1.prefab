@@ -1209,8 +1209,9 @@ GameObject:
   - component: {fileID: 8275593136953515971}
   - component: {fileID: 9199762985975648440}
   - component: {fileID: 5238239488811631005}
-  - component: {fileID: 6072082489148198074}
-  m_Layer: 0
+  - component: {fileID: 8470458955489027135}
+  - component: {fileID: 2585476258058633831}
+  m_Layer: 6
   m_Name: Cylinder010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1291,8 +1292,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6072082489148198074
-MeshCollider:
+--- !u!65 &8470458955489027135
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1309,10 +1310,43 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -1616458658916155781, guid: 0d9543cb577c9cd41a9a7634f233aa5e, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 1.2350448, y: 1.2162817, z: 2.9999995}
+  m_Center: {x: 0.0000076293945, y: -0.0000038444996, z: 0.00000047683716}
+--- !u!114 &2585476258058633831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5129937216799408654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62f12250d0d048d7aa4fa2bd2bceec9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnActivation:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Domains.Items.BeaconInteractable, Assembly-CSharp
+        m_MethodName: Interact
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  ButtonPromptPrefab: {fileID: 8627712031620381495, guid: ab3f165a466f93a4e9e311e69fd2342b, type: 3}
+  promptTransformOffset: {x: 0, y: 1.5, z: 0}
+  promptRotationOffset: {x: 0, y: 0, z: 0}
+  activationFeedback: {fileID: 0}
+  PromptActionStr: Recover Data
+  PromptTextColor: {r: 1, g: 1, b: 1, a: 1}
+  PromptKeyStr: E
 --- !u!1 &5289687248869096457
 GameObject:
   m_ObjectHideFlags: 0
@@ -1535,8 +1569,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.28595585, g: 0.9622642, b: 0.3085604, a: 1}
-      maxColor: {r: 0.252047, g: 0.9056604, b: 0.80201685, a: 1}
+      minColor: {r: 0.28595585, g: 0.9622642, b: 0.3085604, a: 0.92156863}
+      maxColor: {r: 0.2819001, g: 0.90588236, b: 0.2509804, a: 0.3764706}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -6106,7 +6140,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 14670aa7d0fb4c1429a48870576c937c, type: 2}
-  - {fileID: 2100000, guid: 14670aa7d0fb4c1429a48870576c937c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6657,6 +6690,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4622499526921975077}
   - component: {fileID: 4275539392135804462}
+  - component: {fileID: 5599844303084659692}
   m_Layer: 0
   m_Name: AlienCreature1
   m_TagString: Untagged
@@ -6691,7 +6725,7 @@ Animator:
   m_GameObject: {fileID: 7183117972703265249}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4e22e14d87d67d240bec4f665fee00f6, type: 3}
-  m_Controller: {fileID: 9100000, guid: a895670a1d59f6b4192755a81ac3b335, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -6703,6 +6737,114 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5599844303084659692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7183117972703265249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d0390bd8b8ffd640b34fe25065ff1df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateType: 0
+  isSpeedBased: 0
+  hasOnStart: 0
+  hasOnPlay: 0
+  hasOnUpdate: 0
+  hasOnStepComplete: 0
+  hasOnComplete: 0
+  hasOnTweenCreated: 0
+  hasOnRewind: 0
+  onStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlay:
+    m_PersistentCalls:
+      m_Calls: []
+  onUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  onStepComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onTweenCreated:
+    m_PersistentCalls:
+      m_Calls: []
+  onRewind:
+    m_PersistentCalls:
+      m_Calls: []
+  targetIsSelf: 1
+  targetGO: {fileID: 0}
+  tweenTargetIsTargetGO: 1
+  delay: 0
+  duration: 2
+  easeType: 7
+  easeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  loopType: 1
+  loops: 200
+  id: 
+  isRelative: 1
+  isFrom: 0
+  isIndependentUpdate: 0
+  autoKill: 1
+  autoGenerate: 1
+  isActive: 1
+  isValid: 1
+  target: {fileID: 4622499526921975077}
+  animationType: 2
+  targetType: 11
+  forcedTargetType: 0
+  autoPlay: 1
+  useTargetAsV3: 0
+  endValueFloat: 0
+  endValueV3: {x: 0, y: 0.1, z: 0}
+  endValueV2: {x: 0, y: 0}
+  endValueColor: {r: 1, g: 1, b: 1, a: 1}
+  endValueString: 
+  endValueRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  endValueTransform: {fileID: 0}
+  optionalBool0: 0
+  optionalBool1: 0
+  optionalFloat0: 0
+  optionalInt0: 0
+  optionalRotationMode: 0
+  optionalScrambleMode: 0
+  optionalShakeRandomnessMode: 0
+  optionalString: 
 --- !u!1 &7198192673126757689
 GameObject:
   m_ObjectHideFlags: 0
