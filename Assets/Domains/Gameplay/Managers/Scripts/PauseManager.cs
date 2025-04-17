@@ -1,7 +1,8 @@
+using Domains.Input.Scripts;
 using Domains.Scene.Events;
 using UnityEngine;
 
-namespace Domains.Scripts
+namespace Domains.Gameplay.Managers.Scripts
 {
     public class PauseManager : MonoBehaviour
     {
@@ -9,10 +10,12 @@ namespace Domains.Scripts
 
         private void Update()
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+            if (CustomInputBindings.IsPausePressed())
             {
                 _isPaused = !_isPaused;
                 Time.timeScale = _isPaused ? 0 : 1;
+                AudioListener.pause = _isPaused;
+
 
                 SceneEvent.Trigger(SceneEventType.TogglePauseScene);
             }

@@ -186,8 +186,10 @@ namespace Domains
 
         public void OnMMEvent(UIEvent eventType)
         {
-            if (eventType.EventType == UIEventType.OpenVendorConsole) EnableCameraControl(false);
-            else if (eventType.EventType == UIEventType.CloseVendorConsole) EnableCameraControl(true);
+            if (eventType.EventType == UIEventType.OpenVendorConsole ||
+                eventType.EventType == UIEventType.OpenFuelConsole) EnableCameraControl(false);
+            else if (eventType.EventType == UIEventType.CloseVendorConsole ||
+                     eventType.EventType == UIEventType.CloseFuelConsole) EnableCameraControl(true);
         }
 
 

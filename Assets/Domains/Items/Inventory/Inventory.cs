@@ -16,6 +16,8 @@ namespace Domains.Items.Inventory
         [FormerlySerializedAs("InventoryFullFeedbacks")]
         public MMFeedbacks inventoryFullFeedbacks;
 
+        public bool IsEmpty => content.Count == 0;
+
         // Get grouped items for UI display
         public List<GroupedItem> GetGroupedItems()
         {

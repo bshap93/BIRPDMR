@@ -17,7 +17,8 @@ namespace Domains.UI_Global.Events
         Died,
         CreditsAdded,
         LowOnFuel,
-        ResetManually
+        ResetManually,
+        InventotryEmpty
     }
 
     public enum AlertType

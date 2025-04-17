@@ -1,4 +1,5 @@
-﻿using Domains.Player.Events;
+﻿using Domains.Input.Scripts;
+using Domains.Player.Events;
 using Domains.Player.Scripts.ScriptableObjects;
 using Domains.Scene.Scripts;
 using Domains.UI_Global.Events;
@@ -62,7 +63,7 @@ namespace Domains.Player.Scripts
 
         private void Update()
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.F5)) // Press F5 to force save
+            if (CustomInputBindings.IsSaveDebugKeyPressed()) // Press F5 to force save
             {
                 SavePlayerCurrency();
                 UnityEngine.Debug.Log("Player currency saved");

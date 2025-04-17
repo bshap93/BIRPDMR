@@ -11,6 +11,8 @@ namespace Domains.Input.Scripts
         private const KeyCode ChangePerspectiveKey = KeyCode.V;
         private const KeyCode PersistanceKey = KeyCode.P;
         private const KeyCode DeletionKey = KeyCode.Alpha0;
+        private const KeyCode SaveDebugKey = KeyCode.F5;
+        private const KeyCode PauseKey = KeyCode.Escape;
         private const int MineMouseButton = 0;
         private float eKeyHoldTime = 0f;
         private float requiredHoldDuration = 2f; // Change to desired duration in seconds
@@ -22,21 +24,21 @@ namespace Domains.Input.Scripts
             return UnityEngine.Input.GetKeyDown(InteractKey);
         }
 
+        public static bool IsPausePressed()
+        {
+            return UnityEngine.Input.GetKeyDown(PauseKey);
+        }
+
+        public static bool IsSaveDebugKeyPressed()
+        {
+            return UnityEngine.Input.GetKeyDown(SaveDebugKey);
+        }
+
         public static bool IsInteractHeld()
         {
             return UnityEngine.Input.GetKey(InteractKey);
         }
 
-
-        public static bool IsCrouchPressed()
-        {
-            return UnityEngine.Input.GetKey(CrouchKey);
-        }
-
-        public static bool IsRunHeld()
-        {
-            return UnityEngine.Input.GetKey(RunKey);
-        }
 
         public static bool IsPersistanceKeyPressed()
         {

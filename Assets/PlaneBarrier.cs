@@ -1,0 +1,43 @@
+using System;
+using Domains.Player.Scripts;
+using MoreMountains.Feedbacks;
+using UnityEngine;
+
+public class PlaneBarrier : MonoBehaviour
+{
+    [Serializable]
+    public enum PlaneBarrierPosition
+    {
+        Top,
+        Bottom,
+        Vertical
+    }
+
+    [Serializable]
+    public enum PlaneBarrierType
+    {
+        Lava,
+        InvisibleWall
+    }
+
+    [SerializeField] private MMFeedbacks playerHitPlaneBarrierFeedbacks;
+
+    public PlaneBarrierPosition planeBarrierPosition;
+    public PlaneBarrierType planeBarrierType;
+
+    private BoxCollider _boxCollider;
+
+    // Start is called before the first frame update
+    private void Start()
+    {
+        _boxCollider = GetComponent<BoxCollider>();
+        _boxCollider.isTrigger = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+            if (planeBarrierType == PlaneBarrierType.Lava)
+                PlayerStatusEvent.Trigger(PlayerStatusEventType.Died);
+    }
+}
