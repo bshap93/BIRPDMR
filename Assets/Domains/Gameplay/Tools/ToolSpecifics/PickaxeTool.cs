@@ -194,8 +194,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     digger.Modify(digPosition, brushLoc, Action, textureIndex, effectOpacity, effectRadius,
                         stalagmiteHeight,
                         true);
-
-                // FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
             }
         }
     }
