@@ -39,10 +39,7 @@ public class PlaneBarrier : MonoBehaviour
     {
         if (other.CompareTag("Player"))
             if (planeBarrierType == PlaneBarrierType.Lava)
-            {
-                PlayerStatusEvent.Trigger(PlayerStatusEventType.Died);
                 StartCoroutine(DieByLava(other));
-            }
     }
 
     private IEnumerator DieByLava(Collider other)

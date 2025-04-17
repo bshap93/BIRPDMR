@@ -120,7 +120,7 @@ namespace Domains.Player.Scripts
             if (HealthPoints - healthToConsume <= 0)
             {
                 HealthPoints = 0;
-                PlayerStatusEvent.Trigger(PlayerStatusEventType.Died);
+                PlayerStatusEvent.Trigger(PlayerStatusEventType.ResetManaully);
             }
             else
             {

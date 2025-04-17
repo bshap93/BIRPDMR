@@ -5,7 +5,7 @@ using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Domains.Scripts_that_Need_Sorting
+namespace Domains.Gameplay.Managers.Scripts
 {
     public class GlobalFeedbackManager : MonoBehaviour, MMEventListener<UpgradeEvent>,
         MMEventListener<PlayerStatusEvent>, MMEventListener<CurrencyEvent>, MMEventListener<FuelEvent>
