@@ -631,7 +631,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8276423442547739770}
   - component: {fileID: 7913526014788743277}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -732,7 +732,7 @@ GameObject:
   - component: {fileID: 2853849295063243705}
   - component: {fileID: 1989880791653112441}
   - component: {fileID: 8320398912542478590}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Uranium
   m_TagString: OreNode
   m_Icon: {fileID: 0}
@@ -892,7 +892,7 @@ MonoBehaviour:
   oreHitFeedback: {fileID: 2390133131216529343}
   oreDestroyFeedback: {fileID: 2007819807374824732}
   OreHardness: 0
-  UniqueID: ac654330-5fad-401d-8079-37659e34fdbf
+  UniqueID: f4d6c75f-49e7-488e-9b3f-e107d5670111
   failHitFeedbacks: {fileID: 5939243206290031498}
   failHitParticles: {fileID: 6835221663383594993, guid: b4fdebf16c953b245b30edeebb4ed72c, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: b4fdebf16c953b245b30edeebb4ed72c, type: 3}
@@ -1479,7 +1479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4915262749889565103, guid: 8204f85f040465649903e12f6217e473, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1505,7 +1505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7870726743665412337, guid: 37962700362f6ea47a29968a2d3d9c31, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 8362608110537613069, guid: 37962700362f6ea47a29968a2d3d9c31, type: 3}
       propertyPath: m_RootOrder
@@ -1575,7 +1575,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1503459439250605579, guid: ca72b8e53e0122d4cb5963dc79ca4e7f, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6865631078908948581, guid: ca72b8e53e0122d4cb5963dc79ca4e7f, type: 3}
       propertyPath: m_RootOrder
