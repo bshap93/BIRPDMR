@@ -647,7 +647,7 @@ Transform:
   m_GameObject: {fileID: 3675843010317040656}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -664,8 +664,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0.33598348, g: 0.7798742, b: 0.33600116, a: 1}
-  m_Intensity: 1
-  m_Range: 10
+  m_Intensity: 4.83
+  m_Range: 2
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -703,7 +703,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -892,7 +892,7 @@ MonoBehaviour:
   oreHitFeedback: {fileID: 2390133131216529343}
   oreDestroyFeedback: {fileID: 2007819807374824732}
   OreHardness: 0
-  UniqueID: 12bc46ad-c146-43df-b499-21abc902eb14
+  UniqueID: ac654330-5fad-401d-8079-37659e34fdbf
   failHitFeedbacks: {fileID: 5939243206290031498}
   failHitParticles: {fileID: 6835221663383594993, guid: b4fdebf16c953b245b30edeebb4ed72c, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: b4fdebf16c953b245b30edeebb4ed72c, type: 3}

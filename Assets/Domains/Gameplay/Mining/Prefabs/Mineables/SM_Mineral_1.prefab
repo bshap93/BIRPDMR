@@ -795,7 +795,7 @@ MonoBehaviour:
   oreHitFeedback: {fileID: 8640104945982745857}
   oreDestroyFeedback: {fileID: 2687134068422912147}
   OreHardness: 0
-  UniqueID: 0b6a842c-657a-4be3-8f87-1d8b44ca60a5
+  UniqueID: f152202d-28da-4b64-9d73-c8445438178f
   failHitFeedbacks: {fileID: 7234271836214855775}
   failHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}
@@ -1098,8 +1098,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0.0184129, g: 0.11465594, b: 0.836478, a: 1}
-  m_Intensity: 3.08
-  m_Range: 2.29
+  m_Intensity: 5.52
+  m_Range: 2
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -1137,7 +1137,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
